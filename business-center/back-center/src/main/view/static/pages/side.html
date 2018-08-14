@@ -1,0 +1,66 @@
+<div class="layui-side-scroll">
+    <ul class="layui-nav layui-nav-tree" style="margin-top: 15px;">
+		<!-- 左部菜单 -->
+        <script id="sideNav" type="text/html">
+            {{#  layui.each(d, function(index, item){ }}
+            {{# if(!item.hidden){ }}
+            <li class="layui-nav-item">
+                <a href="{{item.url}}"><i class="layui-icon {{item.icon}}"></i>&emsp;<cite>{{ item.name }}</cite></a>
+                {{# if(item.subMenus&&item.subMenus.length>0){ }}
+                <dl class="layui-nav-child">
+                    {{# layui.each(item.subMenus, function(index, subItem){ }}
+                    {{# if(!subItem.hidden){ }}
+                    <dd>
+                        <a href="{{ subItem.url }}">{{ subItem.name }}</a>
+
+                        {{# if(subItem.subMenus&&subItem.subMenus.length>0){ }}
+                        <dl class="layui-nav-child">
+                            {{# layui.each(subItem.subMenus, function(index, thrItem){ }}
+                            {{# if(!thrItem.hidden){ }}
+                            <dd>
+                                <a href="{{ thrItem.url }}">{{ thrItem.name }}</a>
+                            </dd>
+                            {{# } }}
+                            {{# }); }}
+                        </dl>
+                        {{# } }}
+                    </dd>
+                    {{# } }}
+                    {{# }); }}
+                </dl>
+                {{# } }}
+            </li>
+            {{# } }}
+            {{#  }); }}
+        </script>
+
+        <!--<li class="layui-nav-item">-->
+            <!--<a href="javascript:;"><i class="layui-icon layui-icon-senior"></i>&emsp;<cite>系统监控</cite></a>-->
+            <!--<dl class="layui-nav-child">-->
+                <!--&lt;!&ndash;<dd><a id="Swagger" href="javascript:;" target="_blank">Swagger文档</a></dd>&ndash;&gt;-->
+                <!--&lt;!&ndash;<dd><a id="Swagger" href="javascript:;">Swagger文档</a></dd>&ndash;&gt;-->
+                <!--<dd><a href="#!swagger" lay-href="iframe?url=swagger-ui.html">Swagger文档</a></dd>-->
+            <!--</dl>-->
+            <!--<dl class="layui-nav-child">-->
+                <!--<dd><a id="Druid" href="javascript:;" target="_blank">Druid监控</a></dd>-->
+            <!--</dl>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+<script>
+    layui.use(['config'], function () {
+        // http://192.168.60.6:9200/swagger-ui.html
+        var config = layui.config;
+
+        // Swagger文档
+        // $("#Swagger").click(function () {
+        //     window.open(config.base_server + "swagger-ui.html");
+        // });
+        //
+        // // Druid监控
+        // $("#Druid").click(function () {
+        //     window.open(config.base_server + "druid");
+        // });
+    });
+</script>
