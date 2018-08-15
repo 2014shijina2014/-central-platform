@@ -51,16 +51,13 @@ layui.define(function (exports) {
             }, {
                 name: 'API文档',
                 url: '#!api',
-                path: 'tpl/iframe.html',
-                //自定义一个字段 携带参数
-                params: 'http://127.0.0.1:9200/swagger-ui.html'
+                path: 'http://127.0.0.1:9200/swagger-ui.html'
                 // auth: 'get:/loginRecord'
             }, {
                 name: '监控中心',
                 url: '#!monitor',
-                path: 'tpl/iframe.html',
+                path: 'http://127.0.0.1:9001/#/wallboard'
                 //自定义一个字段 携带参数
-                params: 'http://127.0.0.1:9001/#/wallboard'
             }
             ]
         }

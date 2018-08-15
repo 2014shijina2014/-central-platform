@@ -106,11 +106,11 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     Q.reg(data.url.substring(2), function () {
                         console.log(data.params);
                         //临时保存url
-                        admin.putTempData("params",data.params);
+                        data.path.startWith("http://") ?  admin.putTempData("params",data.path) : null ;
 
                         var menuId = data.url.substring(2);
                         //add by owen 修复 path 无法引用http://页面的问题
-                        var menuPath = data.path.startWith("http://") ? data.path : 'pages/' + data.path
+                        var menuPath = data.path.startWith("http://") ? 'pages/tpl/iframe.html' : 'pages/' + data.path
                         index.loadView(menuId, menuPath, data.name);
                     });
                 }
