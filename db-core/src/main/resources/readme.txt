@@ -73,6 +73,7 @@ logging:
 
 
 redis使用说明
+ConfigurableApplicationContext context =  SpringApplication.run(UserCenterApp.class, args);
 
 RedisTemplate redisTemplate = context.getBean(RedisTemplate.class) ;
 
@@ -80,15 +81,34 @@ RedisTemplate redisTemplate = context.getBean(RedisTemplate.class) ;
 方式1：	
 	redisTemplate.opsForValue().set("33", "hello");
 	
-放水2：	
-	redisTemplate.execute(new RedisCallback<Long>() {
+方式2:	
 
-		@Override
-		public Long doInRedis(RedisConnection connection) throws DataAccessException {
-			connection.set(redisTemplate.getKeySerializer().serialize("44"), redisTemplate.getValueSerializer().serialize("hello"),
-					Expiration.from(10, TimeUnit.MINUTES), SetOption.UPSERT);
-			return 1L;
-		}
-	});
+		
+		RedisTemplate redisTemplate = context.getBean(RedisTemplate.class) ;
+		final byte[][] EMPTY_ARGS = new byte[0][];
+		
+		
+		redisTemplate.execute(new RedisCallback<Long>() {
+
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				
+				//redis info
+				connection.info();
+				
+				System.out.println("11111"+connection.info());
+				
+				//已使用的keysize
+				Object obj = connection.execute("DBSIZE", EMPTY_ARGS);
+				
+				System.out.println("DBSIZE"+obj);
+				
+				//总内存能获取，
+				System.out.println("memory"+connection.info("memory").get("used_memory"));;
+				
+				return 1L;
+			}
+		});
+		context.close();
 
 	
