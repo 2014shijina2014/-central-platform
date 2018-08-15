@@ -22,7 +22,7 @@
             <div class="layui-card-header">
                 <i class="layui-icon layui-icon-engine"></i>&nbsp;&nbsp;用户登录
             </div>
-            <div class="layui-card-body layui-form layui-form-pane">
+            <form class="layui-card-body layui-form layui-form-pane">
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
                     <div class="layui-input-block">
@@ -54,7 +54,7 @@
                 <div class="layui-form-item">
                     <button lay-filter="login-submit" class="layui-btn layui-btn-fluid" lay-submit>登 录</button>
                 </div>
-            </div>
+            </form>
         </div>
 
     </div>
@@ -113,12 +113,13 @@ layui.config({
                 }
             }
         });
+        return false; //阻止表单跳转
     });
 
     // 图形验证码
-    $('.login-captcha').click(function () {
-        this.src = this.src + '?t=' + (new Date).getTime();
-    });
+    // $('.login-captcha').click(function () {
+    //     this.src = this.src + '?t=' + (new Date).getTime();
+    // });
 });
 </script>
 </body>
