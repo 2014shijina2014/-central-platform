@@ -196,12 +196,18 @@
                             simpleData: {enable: true}
                         }
                     };
-                    $.get('api-user/permissions', {
-                        roleId: roleId
-                    }, function (data) {
+                    // $.get('api-user/menus/current', {
+                    //     // roleId: roleId
+                    // }, function (data) {
+                    //     $.fn.zTree.init($('#treeAuth'), setting, data);
+                    //     layer.closeAll('loading');
+                    // }, 'json');
+
+                    admin.req('api-user/menus/tree', {}, function (data) {
                         $.fn.zTree.init($('#treeAuth'), setting, data);
                         layer.closeAll('loading');
-                    }, 'json');
+                    }, 'GET');
+
                 },
                 yes: function (index) {
                     layer.load(1);
