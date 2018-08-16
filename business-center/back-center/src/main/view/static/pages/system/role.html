@@ -212,16 +212,17 @@
                     for (var i = 0; i < nodes.length; i++) {
                         ids[i] = nodes[i].id;
                     }
-                    admin.req('api-user/menus/granted', {
-                        roleId: roleId,
-                        menuIds: JSON.stringify(ids)
-                    }, function (data) {
+                    var data = new Object();
+                    data.roleId = roleId;
+                    data.menuIds = ids;
+
+                    admin.req('api-user/menus/granted', JSON.stringify(data) , function (data) {
                         layer.closeAll('loading');
-                        if (0 == data.code) {
-                            layer.msg(data.msg, {icon: 1});
+                        if (0 == data.resp_code) {
+                            layer.msg(data.resp_msg, {icon: 1});
                             layer.close(index);
                         } else {
-                            layer.msg(data.msg, {icon: 2});
+                            layer.msg(data.resp_msg, {icon: 2});
                         }
                     }, 'POST');
                 }
