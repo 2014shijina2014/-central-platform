@@ -3,18 +3,12 @@ package com.central.user.controller;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.central.model.common.Result;
 import com.central.model.user.SysPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.central.model.common.utils.SysUserUtil;
 import com.central.model.user.LoginAppUser;
@@ -68,17 +62,6 @@ public class SysMenuController {
 				setChild(c, menus);
 			});
 		}
-	}
-
-	/**
-	 * 给角色分配菜单
-	 * @param menuIds
-	 */
-	@PreAuthorize("hasAuthority('back:menu:granted')")
-	@ApiOperation(value = "角色分配菜单")
-	@PostMapping("/granted")
-	public void setMenuToRole(Long roleId, @RequestBody Set<Long> menuIds) {
-		menuService.setMenuToRole(roleId, menuIds);
 	}
 
 	/**
@@ -227,6 +210,18 @@ public class SysMenuController {
 		return authTrees;
 	}
 
+	/**
+	 * 给角色分配菜单
+	 */
+	@PreAuthorize("hasAuthority('back:menu:granted')")
+	@ApiOperation(value = "角色分配菜单")
+	@PostMapping("/granted")
+	public Result setMenuToRole(@RequestBody SysMenu sysMenu) {
+		System.out.println(sysMenu);
+		menuService.setMenuToRole(sysMenu.getRoleId(), sysMenu.getMenuIds());
+
+		return Result.succeed("操作成功");
+	}
 
 
 

@@ -3,6 +3,7 @@ package com.central.model.user;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -21,7 +22,12 @@ public class SysMenu implements Serializable {
 	private Date createTime;
 	private Date updateTime;
 
-	private Long pId;
 
 	private List<SysMenu> child;
+
+	private Long roleId;
+	private Set<Long> menuIds;
+
+
+
 }
