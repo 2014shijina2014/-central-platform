@@ -182,7 +182,7 @@
             layer.open({
                 type: 1,
                 title: '权限管理',
-                area: ['450px', '380px'],
+                area: ['600px', '500px'],
                 offset: '120px',
                 content: '<ul id="treeAuth" class="ztree" style="padding: 25px 0px 20px 60px;"></ul>',
                 btn: ['保存', '关闭'],
@@ -194,21 +194,11 @@
                         check: {enable: true},
                         data: {
                             simpleData: {
-                                enable: true,
-                                idKey:"id",
-                                pidKey:"parentId",
-                                rootPId: "0"
+                                enable: true
                             }
                         }
                     };
-                    // $.get('api-user/menus/current', {
-                    //     // roleId: roleId
-                    // }, function (data) {
-                    //     $.fn.zTree.init($('#treeAuth'), setting, data);
-                    //     layer.closeAll('loading');
-                    // }, 'json');
-
-                    admin.req('api-user/roles/'+roleId+'/permissions', {}, function (data) {
+                    admin.req('api-user/menus/'+roleId+'/menus', {}, function (data) {
                         $.fn.zTree.init($('#treeAuth'), setting, data);
                         layer.closeAll('loading');
                     }, 'GET');
@@ -222,18 +212,18 @@
                     for (var i = 0; i < nodes.length; i++) {
                         ids[i] = nodes[i].id;
                     }
-                    $.post('system/role/updateRoleAuth', {
+                    admin.req('api-user/menus/granted', {
                         roleId: roleId,
-                        authIds: JSON.stringify(ids)
+                        menuIds: JSON.stringify(ids)
                     }, function (data) {
                         layer.closeAll('loading');
-                        if (200 == data.code) {
+                        if (0 == data.code) {
                             layer.msg(data.msg, {icon: 1});
                             layer.close(index);
                         } else {
                             layer.msg(data.msg, {icon: 2});
                         }
-                    }, 'json');
+                    }, 'POST');
                 }
             });
         }

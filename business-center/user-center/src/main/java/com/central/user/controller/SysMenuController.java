@@ -1,11 +1,9 @@
 package com.central.user.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.central.model.user.SysPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
@@ -74,7 +72,6 @@ public class SysMenuController {
 
 	/**
 	 * 给角色分配菜单
-	 * @param userId
 	 * @param menuIds
 	 */
 	@PreAuthorize("hasAuthority('back:menu:granted')")
@@ -202,5 +199,36 @@ public class SysMenuController {
 	public SysMenu findById(@PathVariable Long id) {
 		return menuService.findById(id);
 	}
+
+
+	@PreAuthorize("hasAuthority('back:menu:findMenusByRoleId')")
+	@ApiOperation(value = "根据roleId获取对应的菜单")
+	@GetMapping("/{roleId}/menus")
+	public List<Map<String, Object>> findMenusByRoleId(@PathVariable Long roleId) {
+		Set<Long> roleIds = new HashSet<Long>() {{ add(roleId); }};
+		List<SysMenu> roleMenus = menuService.findByRoles(roleIds); 		//获取该角色对应的菜单
+		List<SysMenu> allMenus = menuService.findAll();						//全部的菜单列表
+		List<Map<String, Object>> authTrees = new ArrayList<>();
+
+		Map<Long,SysMenu> roleMenusMap = roleMenus.stream().collect(Collectors.toMap(SysMenu::getId,SysMenu->SysMenu));
+
+		for (SysMenu sysMenu : allMenus) {
+			Map<String, Object> authTree = new HashMap<>();
+			authTree.put("id",sysMenu.getId());
+			authTree.put("name",sysMenu.getName());
+			authTree.put("pId",sysMenu.getParentId());
+			authTree.put("open",true);
+			authTree.put("checked", false);
+			if (roleMenusMap.get(sysMenu.getId())!=null){
+				authTree.put("checked", true);
+			}
+			authTrees.add(authTree);
+		}
+		return authTrees;
+	}
+
+
+
+
 
 }

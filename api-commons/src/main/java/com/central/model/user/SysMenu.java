@@ -21,5 +21,7 @@ public class SysMenu implements Serializable {
 	private Date createTime;
 	private Date updateTime;
 
+	private Long pId;
+
 	private List<SysMenu> child;
 }
