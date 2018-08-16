@@ -193,7 +193,12 @@
                     var setting = {
                         check: {enable: true},
                         data: {
-                            simpleData: {enable: true}
+                            simpleData: {
+                                enable: true,
+                                idKey:"id",
+                                pidKey:"parentId",
+                                rootPId: "0"
+                            }
                         }
                     };
                     // $.get('api-user/menus/current', {
@@ -203,7 +208,7 @@
                     //     layer.closeAll('loading');
                     // }, 'json');
 
-                    admin.req('api-user/menus/tree', {}, function (data) {
+                    admin.req('api-user/roles/'+roleId+'/permissions', {}, function (data) {
                         $.fn.zTree.init($('#treeAuth'), setting, data);
                         layer.closeAll('loading');
                     }, 'GET');

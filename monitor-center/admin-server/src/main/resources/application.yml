@@ -16,7 +16,7 @@ spring:
       notify:  
         mail:  
           enabled: true
-          to: 624191343@qq.com  
+          to: 986969368@qq.com
           from: 18579068155@163.com  
 #          ignore-changes: UNKNOWN:UP  
           ignore-changes:  
