@@ -26,7 +26,8 @@
 
 
 <script>
-    layui.use(['form', 'table', 'util', 'admin', 'treetable','config'],function () {
+
+    layui.use(['form', 'table', 'util', 'config', 'admin', 'formSelects', 'treetable'],function () {
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -34,6 +35,8 @@
         var admin = layui.admin;
         var treetable = layui.treetable;
         var config = layui.config;
+        var formSelects = layui.formSelects;
+
 
         // 渲染表格
         var renderTable = function () {
@@ -98,7 +101,20 @@
             }
         });
 
+        // 显示编辑弹窗
+        var showEditModel = function (data) {
+            var title = data ? '修改菜单' : '添加菜单';
+            admin.putTempData('t_menus', data);
 
+            admin.popupCenter({
+                title: title,
+                path: 'pages/system/menus_form.html',
+                finish: function () {
+                    table.reload('menus-table', {});
+                }
+            });
+
+        };
 
 
 
