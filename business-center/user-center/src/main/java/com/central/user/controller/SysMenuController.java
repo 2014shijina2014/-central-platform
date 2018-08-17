@@ -3,17 +3,15 @@ package com.central.user.controller;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.central.model.common.PageResult;
 import com.central.model.common.Result;
-import com.central.model.user.SysPermission;
+import com.central.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.central.model.common.utils.SysUserUtil;
-import com.central.model.user.LoginAppUser;
-import com.central.model.user.SysMenu;
-import com.central.model.user.SysRole;
 import com.central.user.service.SysMenuService;
 
 import io.swagger.annotations.Api;
@@ -144,8 +142,16 @@ public class SysMenuController {
 	@PreAuthorize("hasAuthority('back:menu:delete')")
 	@ApiOperation(value = "删除菜单")
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
-		menuService.delete(id);
+	public Result delete(@PathVariable Long id) {
+
+		try {
+			menuService.delete(id);
+			return Result.succeed("操作成功");
+		}catch (Exception ex){
+			ex.printStackTrace();
+			return Result.failed("操作失败");
+		}
+
 	}
 
 	/**
@@ -221,6 +227,16 @@ public class SysMenuController {
 		menuService.setMenuToRole(sysMenu.getRoleId(), sysMenu.getMenuIds());
 
 		return Result.succeed("操作成功");
+	}
+
+
+	@PreAuthorize("hasAuthority('back:menu:query')")
+	@ApiOperation(value = "查询所有菜单")
+	@GetMapping("/findAlls")
+	public PageResult<SysMenu> findAlls() {
+		List<SysMenu> list = menuService.findAll();
+
+		return PageResult.<SysMenu>builder().data(list).code(0).count(list.size()).build() ;
 	}
 
 

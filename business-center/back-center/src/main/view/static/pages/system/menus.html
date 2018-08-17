@@ -40,23 +40,23 @@
             treetable.render({
                 treeColIndex: 1,
                 treeSpid: -1,
-                treeIdName: 'authorityId',
+                treeIdName: 'id',
                 treePidName: 'parentId',
-                elem: '#auth-table',
-                url: config.base_server + 'api-user/menus/all',
+                elem: '#menus-table',
+                url: config.base_server + 'api-user/menus/findAlls',
                 where: {
                     access_token: config.getToken().access_token
                 },
                 page: false,
                 cols: [[
                     {type: 'numbers'},
-                    {field: 'authorityName', minWidth: 200, title: '权限名称'},
-                    {field: 'authority', title: '权限标识'},
-                    {field: 'menuUrl', title: '菜单url'},
-                    {field: 'orderNumber', width: 80, align: 'center', title: '排序号'},
+                    {field: 'name', minWidth: 200, title: '菜单名称'},
+                    {field: 'url', title: '菜单url'},
+                    {field: 'path', title: '菜单path'},
+                    {field: 'sort', width: 80, align: 'center', title: '排序号'},
                     {
                         field: 'isMenu', width: 80, align: 'center', templet: function (d) {
-                            if (d.isMenu == 1) {
+                            if (d.isMenu == 2) {
                                 return '<span class="layui-badge layui-bg-gray">按钮</span>';
                             }
                             if (d.parentId == -1) {
@@ -66,12 +66,39 @@
                             }
                         }, title: '类型'
                     },
-                    {templet: '#auth-state', width: 120, align: 'center', title: '操作'}
+                    {templet: '#menus-state', width: 120, align: 'center', title: '操作'}
                 ]]
             });
         };
 
         renderTable();
+
+        // 工具条点击事件
+        table.on('tool(menus-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'edit') { // 修改
+                showEditModel(data);
+            } else if (layEvent === 'del') {
+                layer.confirm('确定删除此菜单吗？', function () {
+                    layer.load(2);
+
+                    admin.req('api-user/menus/'+obj.data.id, {}, function (data) {
+                        layer.closeAll('loading');
+                        if (0 == data.resp_code) {
+                            layer.msg(data.resp_msg, {icon: 1});
+                            renderTable();
+                        } else {
+                            layer.msg(data.resp_msg, {icon: 2});
+                        }
+                    }, 'DELETE');
+
+                });
+            }
+        });
+
+
 
 
 
