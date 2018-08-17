@@ -18,34 +18,6 @@
     </div>
 </div>
 
-
-<!-- 表单弹窗 -->
-<script type="text/html" id="menus-model">
-    <form id="role-form" lay-filter="role-form" class="layui-form model-form">
-        <input name="id" type="hidden"/>
-        <div class="layui-form-item">
-            <label class="layui-form-label">角色名</label>
-            <div class="layui-input-block">
-                <input name="name" placeholder="请输入角色名" type="text" class="layui-input" maxlength="20"
-                       lay-verify="required" required/>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">Code</label>
-            <div class="layui-input-block">
-                <input name="code" placeholder="请输入Code" type="text" class="layui-input" maxlength="20"
-                       lay-verify="required" required />
-            </div>
-        </div>
-        <div class="layui-form-item model-form-footer">
-            <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
-            <button class="layui-btn" lay-filter="role-form-submit" lay-submit>保存</button>
-        </div>
-    </form>
-</script>
-
-
-
 <!-- 表格操作列 -->
 <script type="text/html" id="menus-state">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
@@ -54,7 +26,8 @@
 
 
 <script>
-    layui.use(['form', 'table', 'util', 'admin', 'treetable','config'],function () {
+
+    layui.use(['form', 'table', 'util', 'config', 'admin', 'formSelects', 'treetable'],function () {
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
@@ -62,6 +35,8 @@
         var admin = layui.admin;
         var treetable = layui.treetable;
         var config = layui.config;
+        var formSelects = layui.formSelects;
+
 
         // 渲染表格
         var renderTable = function () {
@@ -126,7 +101,20 @@
             }
         });
 
+        // 显示编辑弹窗
+        var showEditModel = function (data) {
+            var title = data ? '修改菜单' : '添加菜单';
+            admin.putTempData('t_menus', data);
 
+            admin.popupCenter({
+                title: title,
+                path: 'pages/system/menus_form.html',
+                finish: function () {
+                    table.reload('menus-table', {});
+                }
+            });
+
+        };
 
 
 
