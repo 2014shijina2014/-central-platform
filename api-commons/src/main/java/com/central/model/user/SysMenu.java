@@ -21,6 +21,7 @@ public class SysMenu implements Serializable {
 	private Integer sort;
 	private Date createTime;
 	private Date updateTime;
+	private Integer isMenu;
 
 
 	private List<SysMenu> child;

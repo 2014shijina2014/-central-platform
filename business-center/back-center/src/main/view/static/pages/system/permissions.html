@@ -13,9 +13,6 @@
                 <option value="">-请选择角色-</option>
                 <option p-for="roles" p-bind="value:{{id}}">{{name}}</option>
             </select>&emsp;
-            <!--<button id="auth-btn-sync" class="layui-btn icon-btn" lay-tips="自动扫描所有接口同步到数据库">-->
-                <!--<i class="layui-icon">&#xe669;</i>同步-->
-            <!--</button>-->
         </div>
 
         <!-- 数据表格 -->
@@ -62,28 +59,6 @@
         // 角色切换事件
         form.on('select(auth-slt-role)', function (data) {
             table.reload('auth-table', {where: {roleId: data.value}});
-        });
-
-        // 同步按钮点击事件
-        $('#auth-btn-sync').click(function () {
-            layer.confirm('确定进行同步？', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                layer.load(2);
-                $.get(config.base_server + 'user_state.json', function (data) {
-                    admin.req('user_state.json', {
-                        json: JSON.stringify(data)
-                    }, function (data) {
-                        layer.closeAll('loading');
-                        if (200 == data.code) {
-                            layer.msg(data.msg, {icon: 1});
-                            table.reload('auth-table');
-                        } else {
-                            layer.msg(data.msg, {icon: 2});
-                        }
-                    }, 'GET');
-                });
-            });
         });
 
         // 获取角色

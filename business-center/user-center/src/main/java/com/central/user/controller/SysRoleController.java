@@ -74,11 +74,14 @@ public class SysRoleController {
 	@DeleteMapping("/roles/{id}")
 	public Result deleteRole(@PathVariable Long id) {
 		try {
+			if (id == 1L){
+				return Result.failed("管理员不可以删除");
+			}
 			sysRoleService.deleteRole(id);
 			return Result.succeed("操作成功");
 		}catch (Exception e){
 			e.printStackTrace();
-			return Result.succeed("操作失败");
+			return Result.failed("操作失败");
 		}
 	}
 
@@ -156,7 +159,7 @@ public class SysRoleController {
 	}
 
 	/**
-	 * 角色新增或者删除
+	 * 角色新增或者更新
 	 * @param sysRole
 	 * @return
 	 */

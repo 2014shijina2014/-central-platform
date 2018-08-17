@@ -45,8 +45,8 @@ layui.define(function (exports) {
                 // auth: 'get:/role'
             },  {
                 name: '菜单管理',
-                url: '#!menu',
-                path: 'system/menu.html',
+                url: '#!menus',
+                path: 'system/menus.html',
                 // auth: 'get:/authorities'
             }, {
                 name: '权限管理',
