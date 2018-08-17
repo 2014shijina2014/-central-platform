@@ -28,15 +28,11 @@
 <script>
 
     layui.use(['form', 'table', 'util', 'config', 'admin', 'formSelects', 'treetable'],function () {
-        var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
-        var util = layui.util;
         var admin = layui.admin;
         var treetable = layui.treetable;
         var config = layui.config;
-        var formSelects = layui.formSelects;
-
 
         // 渲染表格
         var renderTable = function () {
@@ -103,6 +99,10 @@
 
         // 显示编辑弹窗
         var showEditModel = function (data) {
+
+            if (data){
+                data.isMenu = data.isMenu.toString();
+            }
             var title = data ? '修改菜单' : '添加菜单';
             admin.putTempData('t_menus', data);
 
@@ -110,13 +110,38 @@
                 title: title,
                 path: 'pages/system/menus_form.html',
                 finish: function () {
-                    table.reload('menus-table', {});
+                    renderTable();
                 }
             });
 
         };
 
+        // 添加按钮点击事件
+        $('#menus-btn-add').click(function () {
+            showEditModel();
+        });
 
-
+        // 搜索按钮点击事件
+        $('#menus-btn-search').click(function () {
+            var keyword = $('#menus-edit-search').val();
+            var searchCount = 0;
+            $('#menus-table').next('.treeTable').find('.layui-table-body tbody tr td').each(function () {
+                $(this).css('background-color', 'transparent');
+                var text = $(this).text();
+                if (keyword != '' && text.indexOf(keyword) >= 0) {
+                    $(this).css('background-color', 'rgba(250,230,160,0.5)');
+                    if (searchCount == 0) {
+                        $('.layui-tab-item.layui-show').stop(true);
+                        $('.layui-tab-item.layui-show').animate({scrollTop: $(this).offset().top - 150}, 500);
+                    }
+                    searchCount++;
+                }
+            });
+            if (keyword != '' && searchCount == 0) {
+                layer.msg("没有匹配结果", {icon: 5});
+            } else {
+                treetable.expandAll('#menus-table');
+            }
+        });
     });
 </script>

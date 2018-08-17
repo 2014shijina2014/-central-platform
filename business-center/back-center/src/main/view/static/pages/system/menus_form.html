@@ -45,14 +45,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">上级菜单</label>
         <div class="layui-input-block">
-            <select name="parentId">
+            <select name="parentId" id="parentId">
             </select>
         </div>
     </div>
 
     <div class="layui-form-item model-form-footer">
         <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
-        <button class="layui-btn" lay-filter="role-form-submit" lay-submit>保存</button>
+        <button class="layui-btn" lay-filter="menus-form-submit" lay-submit>保存</button>
     </div>
 </form>
 
@@ -67,22 +67,22 @@
 
         // 获取一级菜单
         layer.load(2);
-        admin.req('api-user/roles', {}, function (data) {
+        admin.req('api-user/menus/findOnes', {}, function (data) {
             layer.closeAll('loading');
             if (0 == data.code) {
-                // 渲染多选下拉框
-                var roleSelectData = new Array();
-                for (var i = 0; i < data.data.length; i++) {
-                    roleSelectData.push({name: data.data[i].name, value: data.data[i].id});
-                }
-                formSelects.data('parentId', 'local', {arr: roleSelectData});
+
+                $.each(data.data,function(index,item){
+                    $('#parentId').append(new Option(item.name,item.id));//往下拉菜单里添加元素
+                })
+
+                form.render();  //菜单渲染 把内容加载进去
 
                 // 回显user数据
                 var menus = admin.getTempData('t_menus');
                 console.log(menus);
                 $('#menus-form').attr('method', 'POST');
                 if (menus) {
-                    menus.isMenu = menus.isMenu.toString();
+
                     form.val('menus-form', menus);
                     $('#menus-form').attr('method', 'POST');
                 }
@@ -90,6 +90,22 @@
                 layer.msg('获取一级菜单', {icon: 2});
             }
         }, 'GET');
+
+        // 表单提交事件
+        form.on('submit(menus-form-submit)', function (data) {
+            layer.load(2);
+            admin.req('api-user/menus/saveOrUpdate', JSON.stringify(data.field), function (data) {
+                layer.closeAll('loading');
+                if (data.resp_code == 0) {
+                    layer.msg(data.resp_msg, {icon: 1});
+                    admin.finishPopupCenter();
+                } else {
+                    layer.msg(data.resp_msg, {icon: 2});
+                }
+            }, $('#menus-form').attr('method'));
+            return false;
+        });
+
 
     });
 </script>

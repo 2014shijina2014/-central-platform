@@ -16,8 +16,8 @@ import com.central.model.user.SysMenu;
 @Mapper
 public interface SysMenuDao {
 
-	@Insert("insert into sys_menu(parentId, name, url, path, css, sort, createTime, updateTime) "
-			+ "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime})")
+	@Insert("insert into sys_menu(parentId, name, url, path, css, sort, createTime, updateTime,isMenu) "
+			+ "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime},#{isMenu})")
 	int save(SysMenu menu);
 
 	int update(SysMenu menu);
@@ -33,4 +33,7 @@ public interface SysMenuDao {
 
 	@Select("select * from sys_menu t order by t.sort")
 	List<SysMenu> findAll();
+
+	@Select("select * from sys_menu t where t.isMenu = 1 order by t.sort")
+	List<SysMenu> findOnes();
 }

@@ -87,4 +87,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return roleMenuDao.findMenuIdsByRoleId(roleId);
 	}
 
+	@Override
+	public List<SysMenu> findOnes() {
+		return menuDao.findOnes();
+	}
+
 }

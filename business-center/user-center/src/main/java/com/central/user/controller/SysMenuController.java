@@ -239,6 +239,37 @@ public class SysMenuController {
 		return PageResult.<SysMenu>builder().data(list).code(0).count(list.size()).build() ;
 	}
 
+	@ApiOperation(value = "获取菜单以及顶级菜单")
+	@GetMapping("/findOnes")
+	@PreAuthorize("hasAuthority('back:menu:findOnes')")
+	public PageResult<SysMenu> findOnes(){
+		List<SysMenu> list = menuService.findOnes();
+		return PageResult.<SysMenu>builder().data(list).code(0).count(list.size()).build() ;
+	}
+
+	/**
+	 * 添加菜单 或者 更新
+	 * @param menu
+	 * @return
+	 */
+	@PreAuthorize("hasAuthority('back:menu:saveOrUpdate')")
+	@ApiOperation(value = "新增菜单")
+	@PostMapping("saveOrUpdate")
+	public Result saveOrUpdate(@RequestBody SysMenu menu) {
+
+		try{
+			if (menu.getId() != null){
+				menuService.update(menu);
+			}else {
+				menuService.save(menu);
+			}
+			return Result.succeed("操作成功");
+		}catch (Exception ex){
+			ex.printStackTrace();
+			return Result.failed("操作失败");
+		}
+
+	}
 
 
 

@@ -24,6 +24,9 @@
 			<if test="updateTime != null">
 				updateTime = #{updateTime,jdbcType=TIMESTAMP},
 			</if>
+			<if test="isMenu != null">
+				isMenu = #{isMenu,jdbcType=INTEGER},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
