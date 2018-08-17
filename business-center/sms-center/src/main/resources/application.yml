@@ -11,14 +11,14 @@ management:
 #阿里短信配置      
 aliyun:
   sms:
-    accessKeyId: xxxxx
-    accessKeySecret: xxxxxxx
-    #[xxx] 尊敬的用户，您好 ，阿里云配置
+    accessKeyId: LTAISjYxxr5qLmio
+    accessKeySecret: pkqEMJIcVQVBG5fkNEQNDQV7rsntKV
+    #[CP] 尊敬的用户，您好 ，阿里云配置
     sign:
-      name: xxx
+      name: CP
     template:
     # 模板code
-      code: xxx
+      code: SMS_95590008
     expire-minute: 15
     day-count: 30
     
