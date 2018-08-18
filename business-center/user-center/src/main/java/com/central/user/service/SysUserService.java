@@ -25,7 +25,7 @@ public interface SysUserService {
 
 	void setRoleToUser(Long id, Set<Long> roleIds);
 
-	void updatePassword(Long id, String oldPassword, String newPassword);
+	Result updatePassword(Long id, String oldPassword, String newPassword);
 
 	PageResult<SysUser> findUsers(Map<String, Object> params);
 

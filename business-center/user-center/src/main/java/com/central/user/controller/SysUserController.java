@@ -117,20 +117,19 @@ public class SysUserController {
     /**
      * 修改密码
      *
-     * @param oldPassword
-     * @param newPassword
+     * @param sysUser
      */
-    @PutMapping(value = "/users/password", params = {"oldPassword", "newPassword"})
-    public void updatePassword(String oldPassword, String newPassword) {
-        if (StringUtils.isBlank(oldPassword)) {
+    @PutMapping(value = "/users/password")
+    public Result updatePassword(@RequestBody SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getOldPassword())) {
             throw new IllegalArgumentException("旧密码不能为空");
         }
-        if (StringUtils.isBlank(newPassword)) {
+        if (StringUtils.isBlank(sysUser.getNewPassword())) {
             throw new IllegalArgumentException("新密码不能为空");
         }
 
         SysUser user = SysUserUtil.getLoginAppUser();
-        appUserService.updatePassword(user.getId(), oldPassword, newPassword);
+        return appUserService.updatePassword(user.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
     }
 
     /**

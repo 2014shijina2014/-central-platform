@@ -164,11 +164,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Transactional
     @Override
-    public void updatePassword(Long id, String oldPassword, String newPassword) {
+    public Result updatePassword(Long id, String oldPassword, String newPassword) {
         SysUser sysUser = sysUserDao.findById(id);
         if (StringUtils.isNoneBlank(oldPassword)) {
             if (!passwordEncoder.matches(oldPassword, sysUser.getPassword())) {
-                throw new IllegalArgumentException("旧密码错误");
+               return Result.failed("旧密码错误");
             }
         }
 
@@ -178,6 +178,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         updateSysUser(user);
         log.info("修改密码：{}", user);
+        return Result.succeed("修改成功");
     }
 
     @Override

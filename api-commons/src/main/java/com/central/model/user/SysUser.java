@@ -35,4 +35,7 @@ public class SysUser implements Serializable {
 	private String roleId;
 
 
+	private String oldPassword;
+	private String newPassword;
+
 }
