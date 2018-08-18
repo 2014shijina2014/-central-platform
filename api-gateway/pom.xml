@@ -113,6 +113,13 @@
 			<version>1.6</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.zyplayer/swagger-mg-ui -->
+		<dependency>
+			<groupId>com.zyplayer</groupId>
+			<artifactId>swagger-mg-ui</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>

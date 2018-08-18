@@ -104,8 +104,8 @@ security:
 
 
 permit:
-  http_urls:  /test163/** , /api-auth/** , /health ,/doc.html,/test111 ,/api-user/users-anon/login ,/user-center/users-anon/login
-  oauth_urls: /test163/** , /api-auth/** , /doc.html ,/test111 ,/api-user/users-anon/login,/user-center/users-anon/login
+  http_urls:  /test163/** , /api-auth/** , /health ,/doc.html,/test111 ,/api-user/users-anon/login ,/user-center/users-anon/login,/document.html
+  oauth_urls: /test163/** , /api-auth/** , /doc.html ,/test111 ,/api-user/users-anon/login,/user-center/users-anon/login,/document.html
   
 
  
