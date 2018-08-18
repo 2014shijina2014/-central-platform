@@ -106,8 +106,8 @@ public class SysUserController {
      */
     @PutMapping("/users/me")
     public Result updateMe(@RequestBody SysUser sysUser) {
-        SysUser user = SysUserUtil.getLoginAppUser();
-        sysUser.setId(user.getId());
+//        SysUser user = SysUserUtil.getLoginAppUser();
+//        sysUser.setId(user.getId());
 
         appUserService.updateSysUser(sysUser);
 

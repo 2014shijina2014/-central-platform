@@ -52,8 +52,8 @@
 
         form.render('radio');
 
-        admin.req('api-user/users/current', {}, function (data) {
-            var user = data;
+        admin.req('api-auth/oauth/userinfo', {}, function (data) {
+            var user = data.user;
             console.log(user);
             // 回显user数据
             $('#user-form').attr('method', 'PUT');
@@ -72,16 +72,12 @@
                 if (data.resp_code == 0) {
                     layer.msg(data.resp_msg, {icon: 1});
 
-                    admin.req('api-auth/oauth/remove/token?access_token='+config.getToken().access_token, {}, function (data) {
-                        config.removeToken();
-                        location.replace('login.html');
+                    admin.req('api-auth/oauth/refresh/token?access_token='+config.getToken().access_token, {}, function (data) {
+                        if (data.access_token) {
+                            config.putToken(data);
+                            admin.refresh();
+                        }
                     }, 'POST');
-
-                    // var $title = $('.layui-layout-admin .layui-body .layui-tab .layui-tab-title');
-                    // if ($title.find('li').first().hasClass('layui-this')) {
-                    //     return;
-                    // }
-                    // $title.find('li.layui-this').find(".layui-tab-close").trigger("click");
                 } else {
                     layer.msg(data.resp_msg, {icon: 2});
                 }
