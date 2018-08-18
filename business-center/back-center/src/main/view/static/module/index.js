@@ -191,8 +191,11 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             // 退出登录
             $('#btnLogout').click(function () {
                 layer.confirm('确定退出登录？', function () {
-                    config.removeToken();
-                    location.replace('login.html');
+                    //通过认证中心 退出
+                    admin.req('api-auth/oauth/remove/token?access_token='+config.getToken().access_token, {}, function (data) {
+                            config.removeToken();
+                            location.replace('login.html');
+                    }, 'POST');
                 });
             });
             // 修改密码
