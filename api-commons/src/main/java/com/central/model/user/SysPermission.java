@@ -2,6 +2,7 @@ package com.central.model.user;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -22,4 +23,8 @@ public class SysPermission implements Serializable {
 	private String name;
 	private Date createTime;
 	private Date updateTime;
+
+	private Long roleId;
+	private Set<Long> authIds;
+
 }

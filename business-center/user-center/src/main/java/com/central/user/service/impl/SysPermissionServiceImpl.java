@@ -16,6 +16,7 @@ import com.central.user.dao.SysRolePermissionDao;
 import com.central.user.service.SysPermissionService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 /**
 * @author 作者 owen E-mail: 624191343@qq.com
@@ -81,5 +82,17 @@ public class SysPermissionServiceImpl implements SysPermissionService {
 
 		}
 		return PageResult.<SysPermission>builder().data(list).code(0).count(total).build()  ;
+	}
+
+	@Override
+	public void setAuthToRole(Long roleId, Set<Long> authIds) {
+		rolePermissionDao.deleteRolePermission(roleId,null);
+
+		if (!CollectionUtils.isEmpty(authIds)) {
+			authIds.forEach(authId -> {
+				rolePermissionDao.saveRolePermission(roleId, authId);
+			});
+		}
+
 	}
 }

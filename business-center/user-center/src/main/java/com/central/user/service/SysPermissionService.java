@@ -27,4 +27,12 @@ public interface SysPermissionService {
 	void delete(Long id);
 
 	PageResult<SysPermission> findPermissions(Map<String, Object> params);
+
+	/**
+	 * 授权
+	 * @param roleId
+	 * @param authIds
+	 */
+	void setAuthToRole(Long roleId, Set<Long> authIds);
+
 }

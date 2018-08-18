@@ -1,8 +1,11 @@
 package com.central.user.controller;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.central.model.common.Result;
+import com.central.model.user.SysMenu;
 import com.central.model.user.SysRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +149,53 @@ public class SysPermissionController {
 			return Result.failed("操作失败");
 		}
 	}
+
+	@PreAuthorize("hasAuthority('back:permissions:findAuthByRoleId')")
+	@ApiOperation(value = "根据roleId获取对应的权限")
+	@GetMapping("/permissions/{roleId}/permissions")
+	public List<Map<String, Object>> findAuthByRoleId(@PathVariable Long roleId) {
+		List<Map<String, Object>> authTrees = new ArrayList<>();
+		Set<Long> roleIds = new HashSet<Long>() {{ add(roleId); }};
+		Set<SysPermission> roleAuths = sysPermissionService.findByRoleIds(roleIds);//根据roleId获取对应的权限
+		PageResult<SysPermission> allAuths = sysPermissionService.findPermissions(null);//根据roleId获取对应的权限
+
+
+		Map<Long,SysPermission> roleAuthsMap = roleAuths.stream().collect(Collectors.toMap(SysPermission::getId,SysPermission->SysPermission));
+
+		for (SysPermission sysPermission : allAuths.getData() ){
+			Map<String, Object> authTree = new HashMap<>();
+			authTree.put("id",sysPermission.getId());
+			authTree.put("name",sysPermission.getName());
+			authTree.put("open",true);
+			authTree.put("checked", false);
+			if (roleAuthsMap.get(sysPermission.getId())!=null){
+				authTree.put("checked", true);
+			}
+			authTrees.add(authTree);
+		}
+
+		return authTrees;
+	}
+	/**
+	 * 给角色分配权限
+	 */
+	@PreAuthorize("hasAuthority('back:permissions:granted')")
+	@ApiOperation(value = "角色分配菜单")
+	@PostMapping("/permissions/granted")
+	public Result setAuthToRole(@RequestBody SysPermission sysPermission) {
+		System.out.println(sysPermission);
+		sysPermissionService.setAuthToRole(sysPermission.getRoleId(),sysPermission.getAuthIds());
+		return Result.succeed("操作成功");
+	}
+
+
+
+
+
+
+
+
+
 
 
 
