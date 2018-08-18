@@ -1,7 +1,6 @@
 layui.define(function (exports) {
 
     var config = {
-//        base_server: 'json/', // 接口地址，实际项目请换成http形式的地址
         base_server: 'http://127.0.0.1:9200/', // 接口地址，实际项目请换成http形式的地址
         tableName: 'easyweb',  // 存储表名
         autoRender: false,  // 窗口大小改变后是否自动重新渲染表格，解决layui数据表格非响应式的问题，目前实现的还不是很好，暂时关闭该功能
@@ -54,6 +53,11 @@ layui.define(function (exports) {
                 path: 'system/permissions.html',
                 // auth: 'get:/authorities'
             }, {
+                name: '我的信息',
+                url: '#!myInfo',
+                path: 'system/myInfo.html',
+                hidden :true
+            }, {
                 name: 'API文档',
                 url: '#!api',
                 path: 'http://127.0.0.1:9200/swagger-ui.html'
@@ -66,19 +70,6 @@ layui.define(function (exports) {
             }
             ]
         }
-        // , {
-        //     name: '多级菜单',
-        //     url: 'javascript:;',
-        //     icon: 'layui-icon-unlink',
-        //     subMenus: [{
-        //         name: '二级菜单',
-        //         url: 'javascript:;',
-        //         subMenus: [{
-        //             name: '三级菜单',
-        //             url: 'javascript:;'
-        //         }]
-        //     }]
-        // }
         ],
         // 当前登录的用户
         getUser: function () {

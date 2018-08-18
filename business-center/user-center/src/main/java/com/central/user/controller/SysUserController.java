@@ -105,13 +105,13 @@ public class SysUserController {
      * @return
      */
     @PutMapping("/users/me")
-    public SysUser updateMe(@RequestBody SysUser sysUser) {
+    public Result updateMe(@RequestBody SysUser sysUser) {
         SysUser user = SysUserUtil.getLoginAppUser();
         sysUser.setId(user.getId());
 
         appUserService.updateSysUser(sysUser);
 
-        return sysUser;
+        return Result.succeed("操作成功");
     }
 
     /**

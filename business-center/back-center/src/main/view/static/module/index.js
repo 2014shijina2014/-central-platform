@@ -104,7 +104,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             $.each(menus, function (i, data) {
                 if (data.url && data.url.indexOf('#!') == 0) {
                     Q.reg(data.url.substring(2), function () {
-                        console.log(data.params);
                         //临时保存url
                         data.path.startWith("http://") ?  admin.putTempData("params",data.path) : null ;
 
@@ -152,10 +151,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     $iframe.scrollWidth;
                     $iframe.style.height = "100%";
                 }
-                //修改layui-tab-item 的样式
-                var $parent = $("#admin-iframe").parent();
-                $parent.css({'padding': '0', 'overflow-y': 'hidden'});
-
             }
             if (!flag || admin.isRefresh) {
                 $(contentDom).load(menuPath, function () {
@@ -206,7 +201,10 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             });
             // 个人信息
             $('#setInfo').click(function () {
-
+                admin.req('api-user/users/current', {}, function (data) {
+                    admin.putTempData('t_user',data);
+                }, 'GET');
+                Q.go('myInfo');
             });
             // 消息
             $('#btnMessage').click(function () {
