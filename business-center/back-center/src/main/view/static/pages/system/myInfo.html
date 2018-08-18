@@ -73,7 +73,6 @@
             layer.load(2);
             admin.req('api-user/users/me', JSON.stringify(data.field), function (data) {
                 if (data.resp_code == 0) {
-                    layer.msg(data.resp_msg, {icon: 1});
                     $(".layui-nav-img").attr("src",$("[name=headImgUrl]").val());
                     admin.req('api-auth/oauth/refresh/token?access_token='+config.getToken().access_token, {}, function (data) {
                         layer.closeAll('loading');
@@ -81,6 +80,7 @@
                             config.putToken(data);
                             admin.refresh();
                         }
+                        layer.msg("操作成功", {icon: 1});
                     }, 'POST');
                 } else {
                     layer.msg(data.resp_msg, {icon: 2});
@@ -108,6 +108,9 @@
                 layer.closeAll('loading');
                 console.log(data);
                 $("[name=headImgUrl]").val(data.url);
+            },
+            error: function (data) {
+                layer.closeAll('loading');
             }
         });
 
