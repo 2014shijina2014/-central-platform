@@ -2,6 +2,7 @@ package com.central.user.controller;
 
 import java.util.Map;
 
+import com.central.model.common.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -97,8 +98,16 @@ public class SysPermissionController {
 	@PreAuthorize("hasAuthority('back:permission:delete')")
 	@ApiOperation(value = "后台管理删除权限标识")
 	@DeleteMapping("/permissions/{id}")
-	public void delete(@PathVariable Long id) {
-		sysPermissionService.delete(id);
+	public Result delete(@PathVariable Long id) {
+
+		try{
+			sysPermissionService.delete(id);
+			return  Result.succeed("操作成功");
+		}catch (Exception ex){
+			ex.printStackTrace();
+			return  Result.failed("操作失败");
+		}
+
 	}
 
 	/**

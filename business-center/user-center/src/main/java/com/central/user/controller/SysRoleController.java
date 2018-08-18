@@ -164,7 +164,7 @@ public class SysRoleController {
 	 * @return
 	 */
 	@PreAuthorize("hasAuthority('back:role:saveOrUpdate')")
-	@PostMapping("/saveOrUpdate")
+	@PostMapping("/roles/saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysRole sysRole) {
 		return sysRoleService.saveOrUpdate(sysRole);
 	}
