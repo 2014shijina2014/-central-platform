@@ -178,10 +178,12 @@ zuul:
       strip-prefix: true
       custom-sensitive-headers: true  #http://blog.didispace.com/spring-cloud-zuul-cookie-redirect/ zuul授权码跳转问题
     file:
+      sensitiveHeaders: Access-Control-Allow-Origin,Access-Control-Allow-Methods
       path: /api-file/**
       service-id: file-center  
       strip-prefix: true
     sms:
+      sensitiveHeaders: Access-Control-Allow-Origin,Access-Control-Allow-Methods
       path: /api-sms/**
       service-id: sms-center  
       strip-prefix: true

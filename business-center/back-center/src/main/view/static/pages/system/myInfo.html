@@ -29,6 +29,13 @@
         </div>
     </div>
 
+    <div class="layui-upload">
+        <label class="layui-form-label">头像:</label>
+        <div class="layui-upload layui-input-block">
+            <input type="hidden" name="headImgUrl" required lay-verify="required" />
+            <button type="button" class="layui-btn layui-btn-primary" id="fileBtn"><i class="layui-icon">&#xe67c;</i>选择文件</button>
+        </div>
+    </div>
 
     <div class="layui-form-item model-form-footer">
         <button class="layui-btn" lay-filter="user-form-submit" lay-submit>保存</button>
@@ -36,11 +43,12 @@
 </form>
 
 <script>
-    layui.use(['layer', 'admin', 'form', 'formSelects','index','config'], function () {
+    layui.use(['layer', 'admin', 'form', 'formSelects','index','config','upload'], function () {
         var layer = layui.layer;
         var admin = layui.admin;
         var form = layui.form;
         var config = layui.config;
+        var upload = layui.upload;
 
         form.render('radio');
 
@@ -80,5 +88,23 @@
             }, $('#user-form').attr('method'));
             return false;
         });
+
+        //文件上传
+        upload.render({
+            elem: '#fileBtn' ,
+            url:  config.base_server + 'api-file/files-anon',
+            accept: 'file' ,
+            auto: true ,
+            before: function(obj){
+                layer.load(); //上传loading
+                this.data={access_token:config.getToken().access_token};
+            },
+            done: function(data){
+                layer.closeAll('loading');
+                console.log(data);
+                $("[name=headImgUrl]").val(data.url);
+            }
+        });
+
     });
 </script>
