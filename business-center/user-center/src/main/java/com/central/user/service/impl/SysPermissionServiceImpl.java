@@ -75,24 +75,10 @@ public class SysPermissionServiceImpl implements SysPermissionService {
 		int total = sysPermissionDao.count(params);
 		List<SysPermission> list = Collections.emptyList();
 
-		String roleId = (String) params.get("roleId");
-		Set<SysPermission> sysPermissions = new HashSet<>();
-		if (roleId != null){
-			Set<Long> roleIds = new HashSet(){};
-			roleIds.add(Long.parseLong(roleId));
-			sysPermissions = rolePermissionDao.findPermissionsByRoleIds(roleIds);
-		}
-
 		if (total > 0) {
 			PageUtil.pageParamConver(params, false);
-
 			list = sysPermissionDao.findList(params);
 
-			for (SysPermission sysPermission: list) {
-				if (sysPermissions.contains(sysPermission)){
-					sysPermission.setChecked(1);
-				}
-			}
 		}
 		return PageResult.<SysPermission>builder().data(list).code(0).count(total).build()  ;
 	}

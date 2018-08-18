@@ -22,7 +22,4 @@ public class SysPermission implements Serializable {
 	private String name;
 	private Date createTime;
 	private Date updateTime;
-
-	private Integer checked;
-
 }

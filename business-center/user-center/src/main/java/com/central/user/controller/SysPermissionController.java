@@ -3,6 +3,7 @@ package com.central.user.controller;
 import java.util.Map;
 
 import com.central.model.common.Result;
+import com.central.model.user.SysRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -115,7 +116,6 @@ public class SysPermissionController {
 	 * 参考 ?start=0&length=10
 	 * @return
 	 */
-	
 	@PreAuthorize("hasAuthority('back:permission:query')")
 	@ApiOperation(value = "后台管理查询所有的权限标识")
 	@ApiImplicitParams({
@@ -126,4 +126,27 @@ public class SysPermissionController {
 	public PageResult<SysPermission> findPermissions(@RequestParam Map<String, Object> params) {
 		return sysPermissionService.findPermissions(params);
 	}
+
+	/**
+	 * 权限新增或者更新
+	 * @param sysPermission
+	 * @return
+	 */
+	@PreAuthorize("hasAuthority('back:permissions:saveOrUpdate')")
+	@PostMapping("/permissions/saveOrUpdate")
+	public Result saveOrUpdate(@RequestBody SysPermission sysPermission) {
+		try{
+			if (sysPermission.getId()!=null){
+				sysPermissionService.update(sysPermission);
+			}else {
+				sysPermissionService.save(sysPermission);
+			}
+			return Result.succeed("操作成功");
+		}catch (Exception ex){
+			return Result.failed("操作失败");
+		}
+	}
+
+
+
 }

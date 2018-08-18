@@ -132,19 +132,26 @@
         // 表单提交事件
         form.on('submit(auth-form-submit)', function (data) {
             layer.load(2);
-            admin.req('api-user/saveOrUpdate', JSON.stringify(data.field), function (data) {
+            admin.req('api-user/permissions/saveOrUpdate', JSON.stringify(data.field), function (data) {
                 layer.closeAll('loading');
                 console.log(data);
                 if (data.resp_code == 0) {
                     layer.msg(data.resp_msg, {icon: 1});
-                    table.reload('role-table');
+                    table.reload('auth-table');
                     layer.closeAll('page');
                 } else {
                     layer.msg(data.resp_msg, {icon: 2});
                 }
-            }, $('#role-form').attr('method'));
+            }, $('#auth-form').attr('method'));
             return false;
         });
+
+        // 搜索按钮点击事件
+        $('#auth-btn-search').click(function () {
+            var key = $('#auth-edit-search').val();
+            table.reload('auth-table', {where: {searchKey: key}});
+        });
+
 
 
     });

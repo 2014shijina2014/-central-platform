@@ -11,6 +11,9 @@
 			<if test="name != null and name != ''">
 				and t.name like concat('%', #{name}, '%')
 			</if>
+			<if test="searchKey != null and searchKey != ''">
+				and t.name like concat('%', #{searchKey}, '%')
+			</if>
 		</where>
 	</sql>
 	<select id="count" resultType="int">
