@@ -100,6 +100,7 @@
                 this.data={access_token:config.getToken().access_token};
                 //预读本地文件示例，不支持ie8
                 obj.preview(function (index, file, result) {
+                    $(".layui-upload-img").remove();
                     $('#demo2').append('<img src="' + result + '" width="50px" height="50px" alt="' + file.name + '" class="layui-upload-img">')
                 });
             },
