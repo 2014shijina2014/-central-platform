@@ -31,7 +31,6 @@
 
 
     <div class="layui-form-item model-form-footer">
-        <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
         <button class="layui-btn" lay-filter="user-form-submit" lay-submit>保存</button>
     </div>
 </form>
@@ -61,7 +60,11 @@
                 layer.closeAll('loading');
                 if (data.resp_code == 0) {
                     layer.msg(data.resp_msg, {icon: 1});
-                    admin.finishPopupCenter();
+                    var $title = $('.layui-layout-admin .layui-body .layui-tab .layui-tab-title');
+                    if ($title.find('li').first().hasClass('layui-this')) {
+                        return;
+                    }
+                    $title.find('li.layui-this').find(".layui-tab-close").trigger("click");
                 } else {
                     layer.msg(data.resp_msg, {icon: 2});
                 }
