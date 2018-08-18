@@ -201,9 +201,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             });
             // 个人信息
             $('#setInfo').click(function () {
-                admin.req('api-user/users/current', {}, function (data) {
-                    admin.putTempData('t_user',data);
-                }, 'GET');
                 Q.go('myInfo');
             });
             // 消息
