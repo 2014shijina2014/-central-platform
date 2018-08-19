@@ -38,12 +38,69 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         // 渲染左侧菜单栏
         initLeftNav: function () {
             // var menus = admin.getTempData("menus");
-            // console.log( menus )
+            // // var menus = layui.data(config.tableName).menus;
+            // console.log( menus );
+            // // 判断权限
+            // for (var i = config.menus.length - 1; i >= 0; i--) {
+            //     var tempMenu = config.menus[i];
+            //     if (tempMenu.auth && !admin.hasPerm(tempMenu.auth)) {
+            //         config.menus.splice(i, 1);
+            //         continue;
+            //     }
+            //     if (!tempMenu.subMenus) {
+            //         continue;
+            //     }
+            //     for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
+            //         var jMenus = tempMenu.subMenus[j];
+            //         if (jMenus.auth && !admin.hasPerm(jMenus.auth)) {
+            //             tempMenu.subMenus.splice(j, 1);
+            //             continue;
+            //         }
+            //         if (!jMenus.subMenus) {
+            //             continue;
+            //         }
+            //         for (var k = jMenus.subMenus.length - 1; k >= 0; k--) {
+            //             if (jMenus.subMenus[k].auth && !admin.hasPerm(jMenus.subMenus[k].auth)) {
+            //                 jMenus.subMenus.splice(k, 1);
+            //                 continue;
+            //             }
+            //         }
+            //     }
+            // }
+            // // 去除空的目录
+            // for (var i = config.menus.length - 1; i >= 0; i--) {
+            //     var tempMenu = config.menus[i];
+            //     if (tempMenu.subMenus && tempMenu.subMenus.length <= 0) {
+            //         config.menus.splice(i, 1);
+            //         continue;
+            //     }
+            //     if (!tempMenu.subMenus) {
+            //         continue;
+            //     }
+            //     for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
+            //         var jMenus = tempMenu.subMenus[j];
+            //         if (jMenus.subMenus && jMenus.subMenus.length <= 0) {
+            //             tempMenu.splice(j, 1);
+            //             continue;
+            //         }
+            //     }
+            // }
+            // // 渲染
+            // $('.layui-layout-admin .layui-side').load('pages/side.html', function () {
+            //     laytpl(sideNav.innerHTML).render(config.menus, function (html) {
+            //         $('#sideNav').after(html);
+            //     });
+            //     element.render('nav');
+            //     admin.activeNav(Q.lash);
+            // });
+            var menus = admin.getTempData("menus");
+            // var menus = layui.data(config.tableName).menus;
+            console.log( menus );
             // 判断权限
-            for (var i = config.menus.length - 1; i >= 0; i--) {
-                var tempMenu = config.menus[i];
+            for (var i = menus.length - 1; i >= 0; i--) {
+                var tempMenu = menus[i];
                 if (tempMenu.auth && !admin.hasPerm(tempMenu.auth)) {
-                    config.menus.splice(i, 1);
+                    menus.splice(i, 1);
                     continue;
                 }
                 if (!tempMenu.subMenus) {
@@ -67,10 +124,10 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                 }
             }
             // 去除空的目录
-            for (var i = config.menus.length - 1; i >= 0; i--) {
-                var tempMenu = config.menus[i];
+            for (var i = menus.length - 1; i >= 0; i--) {
+                var tempMenu = menus[i];
                 if (tempMenu.subMenus && tempMenu.subMenus.length <= 0) {
-                    config.menus.splice(i, 1);
+                    menus.splice(i, 1);
                     continue;
                 }
                 if (!tempMenu.subMenus) {
@@ -86,17 +143,18 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             }
             // 渲染
             $('.layui-layout-admin .layui-side').load('pages/side.html', function () {
-                laytpl(sideNav.innerHTML).render(config.menus, function (html) {
+                laytpl(sideNav.innerHTML).render(menus, function (html) {
                     $('#sideNav').after(html);
                 });
                 element.render('nav');
                 admin.activeNav(Q.lash);
             });
+
         },
         // 路由注册
         initRouter: function () {
-            // index.regRouter(admin.getTempData("menus"));
-            index.regRouter(config.menus);
+            index.regRouter(admin.getTempData("menus"));
+            // index.regRouter(config.menus);
             Q.init({
                 index: 'user'
             });
@@ -194,6 +252,10 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         getMenus: function () {
             admin.req('api-user/menus/current', {}, function (data) {
                 admin.putTempData("menus",data);
+                layui.data(config.tableName, {
+                    key: 'menus',
+                    value: data
+                });
             }, 'GET');
         },
         // 页面元素绑定事件监听
