@@ -252,10 +252,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         getMenus: function () {
             admin.req('api-user/menus/current', {}, function (data) {
                 admin.putTempData("menus",data);
-                layui.data(config.tableName, {
-                    key: 'menus',
-                    value: data
-                });
             }, 'GET');
         },
         // 页面元素绑定事件监听
