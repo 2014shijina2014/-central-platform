@@ -36,22 +36,22 @@ layui.define(function (exports) {
                 name: '用户管理',
                 url: '#!user',  // 这里url不能带斜杠，因为是用递归循环进行关键字注册，带斜杠会被q.js理解为其他注册模式
                 path: 'system/user.html',
-                auth: 'back:permission:save'
+                auth: 'back:user:query'
             }, {
                 name: '角色管理',
                 url: '#!role',
                 path: 'system/role.html',
-                auth: 'back:role:save'
+                auth: 'back:role:query'
             },  {
                 name: '菜单管理',
                 url: '#!menus',
                 path: 'system/menus.html',
-                auth: 'back:menu:save'
+                auth: 'back:menu:query'
             }, {
                 name: '权限管理',
                 url: '#!permissions',
                 path: 'system/permissions.html',
-                // auth: 'get:/authorities'
+                auth: 'back:permission:query'
             }, {
                 name: '我的信息',
                 url: '#!myInfo',
