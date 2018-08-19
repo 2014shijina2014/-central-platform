@@ -147,6 +147,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     element.render('nav');
                     admin.activeNav(Q.lash);
                 });
+
+
             }, 'GET');
         },
         // 路由注册

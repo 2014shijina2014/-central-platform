@@ -160,6 +160,8 @@ layui.define(['config', 'layer'], function (exports) {
             param.error = function (xhr) {
                 param.success({code: xhr.status, msg: xhr.statusText});
             };
+            //发送同步ajax请求
+            param.async = false;
             console.log(param);
             $.ajax(param);
         },
