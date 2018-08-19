@@ -151,9 +151,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         },
         // 路由注册
         initRouter: function () {
-            admin.req('api-user/menus/current', {}, function (data) {
-                index.regRouter(data);
-            }, 'GET');
+
+            index.regRouter(admin.getTempData("menus"));
             // index.regRouter(config.menus);
             Q.init({
                 index: 'user'

@@ -82,8 +82,6 @@
         // 获取当前用户信息
         index.getUser(function (user) {
             console.log(user);
-            index.getMenus();
-
             $('.layui-layout-admin .layui-header').vm(user);
             index.initLeftNav();
             element.render('nav');
