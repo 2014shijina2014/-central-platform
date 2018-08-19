@@ -24,7 +24,7 @@ public class SysMenu implements Serializable {
 	private Integer isMenu;
 
 
-	private List<SysMenu> child;
+	private List<SysMenu> subMenus;
 
 	private Long roleId;
 	private Set<Long> menuIds;

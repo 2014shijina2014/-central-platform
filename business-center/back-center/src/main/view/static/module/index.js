@@ -37,6 +37,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
     var index = {
         // 渲染左侧菜单栏
         initLeftNav: function () {
+            // var menus = admin.getTempData("menus");
+            // console.log( menus )
             // 判断权限
             for (var i = config.menus.length - 1; i >= 0; i--) {
                 var tempMenu = config.menus[i];
@@ -93,6 +95,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         },
         // 路由注册
         initRouter: function () {
+            // index.regRouter(admin.getTempData("menus"));
             index.regRouter(config.menus);
             Q.init({
                 index: 'user'
@@ -185,6 +188,12 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     location.replace('login.html');
                     return ;
                 }
+            }, 'GET');
+        },
+        //获取菜单
+        getMenus: function () {
+            admin.req('api-user/menus/current', {}, function (data) {
+                admin.putTempData("menus",data);
             }, 'GET');
         },
         // 页面元素绑定事件监听

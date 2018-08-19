@@ -28,7 +28,8 @@ layui.define(function (exports) {
         },
         // 导航菜单，最多支持三级，因为还有判断权限，所以渲染左侧菜单很复杂，无法做到递归，你需要更多极请联系我添加，添加可以无限添加，只是无法做到递归
         // 左部菜单
-        menus: [ {
+        menus:
+            [ {
             name: '系统管理',
             icon: 'layui-icon-set',
             url: 'javascript:;',
@@ -68,8 +69,7 @@ layui.define(function (exports) {
                 //自定义一个字段 携带参数
             }
             ]
-        }
-        ],
+        }],
         // 当前登录的用户
         getUser: function () {
             var u = layui.data(config.tableName).login_user;
@@ -83,10 +83,6 @@ layui.define(function (exports) {
                 key: 'login_user',
                 value: JSON.stringify(user)
             });
-        },
-        //获取菜单
-        getMenus: function () {
-
         }
     };
     exports('config', config);

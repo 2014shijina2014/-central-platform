@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.central.model.common.PageResult;
 import com.central.model.common.Result;
 import com.central.model.user.*;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
@@ -41,20 +42,46 @@ public class SysMenuController {
 		List<SysMenu> menus = menuService
 				.findByRoles(roles.parallelStream().map(SysRole::getId).collect(Collectors.toSet()));
 
-		List<SysMenu> firstLevelMenus = menus.stream().filter(m -> m.getParentId().equals(0L))
-				.collect(Collectors.toList());
-		firstLevelMenus.forEach(m -> {
-			setChild(m, menus);
-		});
 
-		return firstLevelMenus;
+		List<SysMenu> sysMenus = TreeBuilder(menus);
+
+//		List<SysMenu> firstLevelMenus = menus.stream().filter(m -> m.getParentId().equals(0L))
+//				.collect(Collectors.toList());
+//		firstLevelMenus.forEach(m -> {
+//			setChild(m, menus);
+//		});
+
+		return sysMenus;
+	}
+
+	/**
+	 * 两层循环实现建树
+	 * @param sysMenus
+	 * @return
+	 */
+	public static List<SysMenu> TreeBuilder(List<SysMenu> sysMenus){
+		List<SysMenu> menus = new ArrayList<SysMenu>();
+		for (SysMenu sysMenu : sysMenus){
+			if (ObjectUtils.equals(-1L,sysMenu.getParentId())){
+				menus.add(sysMenu);
+			}
+			for (SysMenu menu :sysMenus){
+				if (menu.getParentId().equals(sysMenu.getId())){
+					if (sysMenu.getSubMenus() == null){
+						sysMenu.setSubMenus(new ArrayList<>());
+					}
+					sysMenu.getSubMenus().add(menu);
+				}
+			}
+		}
+		return menus;
 	}
 
 	private void setChild(SysMenu menu, List<SysMenu> menus) {
 		List<SysMenu> child = menus.stream().filter(m -> m.getParentId().equals(menu.getId()))
 				.collect(Collectors.toList());
 		if (!CollectionUtils.isEmpty(child)) {
-			menu.setChild(child);
+			menu.setSubMenus(child);
 			// 递归设置子元素，多级菜单支持
 			child.parallelStream().forEach(c -> {
 				setChild(c, menus);
@@ -89,7 +116,7 @@ public class SysMenuController {
 				list.add(menu);
 
 				List<SysMenu> child = new ArrayList<>();
-				menu.setChild(child);
+				menu.setSubMenus(child);
 				setMenuTree(menu.getId(), all, child);
 			}
 		});
