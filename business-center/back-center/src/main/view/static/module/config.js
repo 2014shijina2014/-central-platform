@@ -36,17 +36,17 @@ layui.define(function (exports) {
                 name: '用户管理',
                 url: '#!user',  // 这里url不能带斜杠，因为是用递归循环进行关键字注册，带斜杠会被q.js理解为其他注册模式
                 path: 'system/user.html',
-                // auth: 'post:/user/query'
+                auth: 'back:permission:save'
             }, {
                 name: '角色管理',
                 url: '#!role',
                 path: 'system/role.html',
-                // auth: 'get:/role'
+                auth: 'back:role:save'
             },  {
                 name: '菜单管理',
                 url: '#!menus',
                 path: 'system/menus.html',
-                // auth: 'get:/authorities'
+                auth: 'back:menu:save'
             }, {
                 name: '权限管理',
                 url: '#!permissions',
@@ -61,7 +61,6 @@ layui.define(function (exports) {
                 name: 'API文档',
                 url: '#!api',
                 path: 'http://127.0.0.1:9200/swagger-ui.html'
-                // auth: 'get:/loginRecord'
             }, {
                 name: '监控中心',
                 url: '#!monitor',

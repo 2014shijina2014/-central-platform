@@ -176,6 +176,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                 layer.closeAll('loading');
                 if (200 == data.resp_code) {
                     config.putUser(data.user);
+                    admin.putTempData("permissions",data.permissions);
                     success(data.user);
                 } else {
                     layer.msg('获取用户失败', {icon: 2});

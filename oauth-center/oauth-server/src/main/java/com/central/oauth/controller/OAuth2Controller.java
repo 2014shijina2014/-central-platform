@@ -1,13 +1,15 @@
 package com.central.oauth.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.central.model.user.SysPermission;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -357,9 +359,24 @@ public class OAuth2Controller {
 		Map<String, Object> userInfo = new HashMap<>();
 		userInfo.put("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		logger.debug("认证详细信息:" + SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-		userInfo.put("authorities", AuthorityUtils
-				.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+
+
+
+		List<SysPermission>  permissions = new ArrayList<>();
+
+		new ArrayList(SecurityContextHolder.getContext().getAuthentication().getAuthorities()).forEach(o -> {
+				SysPermission sysPermission = new SysPermission();
+				sysPermission.setPermission(o.toString());
+				permissions.add(sysPermission);
+			}
+		);
+//		userInfo.put("authorities", AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities()) );
+		userInfo.put("permissions", permissions);
+
 		userInfo.put("resp_code","200");
+
+		logger.info("返回信息:{}",userInfo);
+
 		return userInfo;
 	}
 	 

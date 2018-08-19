@@ -165,14 +165,22 @@ layui.define(['config', 'layer'], function (exports) {
         },
         // 判断是否有权限
         hasPerm: function (auth) {
-            var user = config.getUser();
-            if (user.authorities) {
-                for (var i = 0; i < user.authorities.length; i++) {
-                    if (auth == user.authorities[i].authority) {
+            var permissions = admin.getTempData("permissions");
+            if (permissions){
+                for (var i = 0; i < permissions.length; i++) {
+                    if (auth == permissions[i].permission) {
                         return true;
                     }
                 }
             }
+            // var user = config.getUser();
+            // if (user.authorities) {
+            //     for (var i = 0; i < user.authorities.length; i++) {
+            //         if (auth == user.authorities[i].authority) {
+            //             return true;
+            //         }
+            //     }
+            // }
             return false;
         },
         // 窗口大小改变监听
