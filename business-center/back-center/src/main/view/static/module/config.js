@@ -83,6 +83,10 @@ layui.define(function (exports) {
                 key: 'login_user',
                 value: JSON.stringify(user)
             });
+        },
+        //获取菜单
+        getMenus: function () {
+
         }
     };
     exports('config', config);

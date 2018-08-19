@@ -127,9 +127,7 @@ public class SysUserController {
         if (StringUtils.isBlank(sysUser.getNewPassword())) {
             throw new IllegalArgumentException("新密码不能为空");
         }
-
-        SysUser user = SysUserUtil.getLoginAppUser();
-        return appUserService.updatePassword(user.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
+        return appUserService.updatePassword(sysUser.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
     }
 
     /**
