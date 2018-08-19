@@ -37,9 +37,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
     var index = {
         // 渲染左侧菜单栏
         initLeftNav: function () {
-            // var menus = admin.getTempData("menus");
-            // // var menus = layui.data(config.tableName).menus;
-            // console.log( menus );
             // // 判断权限
             // for (var i = config.menus.length - 1; i >= 0; i--) {
             //     var tempMenu = config.menus[i];
@@ -93,72 +90,74 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             //     element.render('nav');
             //     admin.activeNav(Q.lash);
             // });
-            var menus = admin.getTempData("menus");
-            // var menus = layui.data(config.tableName).menus;
-            console.log( menus );
-            // 判断权限
-            for (var i = menus.length - 1; i >= 0; i--) {
-                var tempMenu = menus[i];
-                if (tempMenu.auth && !admin.hasPerm(tempMenu.auth)) {
-                    menus.splice(i, 1);
-                    continue;
-                }
-                if (!tempMenu.subMenus) {
-                    continue;
-                }
-                for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
-                    var jMenus = tempMenu.subMenus[j];
-                    if (jMenus.auth && !admin.hasPerm(jMenus.auth)) {
-                        tempMenu.subMenus.splice(j, 1);
+
+            admin.req('api-user/menus/current', {}, function (data) {
+                admin.putTempData("menus",data);
+                var menus = data;
+                // 判断权限
+                for (var i = menus.length - 1; i >= 0; i--) {
+                    var tempMenu = menus[i];
+                    if (tempMenu.auth && !admin.hasPerm(tempMenu.auth)) {
+                        menus.splice(i, 1);
                         continue;
                     }
-                    if (!jMenus.subMenus) {
+                    if (!tempMenu.subMenus) {
                         continue;
                     }
-                    for (var k = jMenus.subMenus.length - 1; k >= 0; k--) {
-                        if (jMenus.subMenus[k].auth && !admin.hasPerm(jMenus.subMenus[k].auth)) {
-                            jMenus.subMenus.splice(k, 1);
+                    for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
+                        var jMenus = tempMenu.subMenus[j];
+                        if (jMenus.auth && !admin.hasPerm(jMenus.auth)) {
+                            tempMenu.subMenus.splice(j, 1);
+                            continue;
+                        }
+                        if (!jMenus.subMenus) {
+                            continue;
+                        }
+                        for (var k = jMenus.subMenus.length - 1; k >= 0; k--) {
+                            if (jMenus.subMenus[k].auth && !admin.hasPerm(jMenus.subMenus[k].auth)) {
+                                jMenus.subMenus.splice(k, 1);
+                                continue;
+                            }
+                        }
+                    }
+                }
+                // 去除空的目录
+                for (var i = menus.length - 1; i >= 0; i--) {
+                    var tempMenu = menus[i];
+                    if (tempMenu.subMenus && tempMenu.subMenus.length <= 0) {
+                        menus.splice(i, 1);
+                        continue;
+                    }
+                    if (!tempMenu.subMenus) {
+                        continue;
+                    }
+                    for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
+                        var jMenus = tempMenu.subMenus[j];
+                        if (jMenus.subMenus && jMenus.subMenus.length <= 0) {
+                            tempMenu.splice(j, 1);
                             continue;
                         }
                     }
                 }
-            }
-            // 去除空的目录
-            for (var i = menus.length - 1; i >= 0; i--) {
-                var tempMenu = menus[i];
-                if (tempMenu.subMenus && tempMenu.subMenus.length <= 0) {
-                    menus.splice(i, 1);
-                    continue;
-                }
-                if (!tempMenu.subMenus) {
-                    continue;
-                }
-                for (var j = tempMenu.subMenus.length - 1; j >= 0; j--) {
-                    var jMenus = tempMenu.subMenus[j];
-                    if (jMenus.subMenus && jMenus.subMenus.length <= 0) {
-                        tempMenu.splice(j, 1);
-                        continue;
-                    }
-                }
-            }
-            // 渲染
-            $('.layui-layout-admin .layui-side').load('pages/side.html', function () {
-                laytpl(sideNav.innerHTML).render(menus, function (html) {
-                    $('#sideNav').after(html);
+                // 渲染
+                $('.layui-layout-admin .layui-side').load('pages/side.html', function () {
+                    laytpl(sideNav.innerHTML).render(menus, function (html) {
+                        $('#sideNav').after(html);
+                    });
+                    element.render('nav');
+                    admin.activeNav(Q.lash);
                 });
-                element.render('nav');
-                admin.activeNav(Q.lash);
-            });
-
+            }, 'GET');
         },
         // 路由注册
         initRouter: function () {
-            index.regRouter(admin.getTempData("menus"));
+            admin.req('api-user/menus/current', {}, function (data) {
+                index.regRouter(data);
+            }, 'GET');
             // index.regRouter(config.menus);
             Q.init({
                 index: 'user'
             });
-
         },
         // 使用递归循环注册
         regRouter: function (menus) {
