@@ -48,6 +48,7 @@
             cols: [[
                 {type: 'numbers'},
                 {field: 'id', sort: true, title: '编号'},
+                {field: 'name', sort: true, title: '流媒体名称'},
                 {field: 'size', sort: true, title: '文件大小(B)'},
                 {field: 'contentType', sort: true, title: '媒体类型'},
                 {field: 'source', sort: true, title: 'OSS运营商'},
@@ -98,81 +99,12 @@
         };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // 搜索按钮点击事件
+        $('#files-btn-search').click(function () {
+            var key = $('#files-edit-search').val();
+            table.reload('files-table', {where: {searchKey: key}});
+        });
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </script>

@@ -14,6 +14,11 @@
 			<if test="endTime != null and endTime != ''">
 				and DATE(t.createTime) &lt;= #{endTime}
 			</if>
+
+            <if test="searchKey != null and searchKey != ''">
+                and t.name like concat('%', #{searchKey}, '%')
+            </if>
+
 		</where>
 	</sql>
 
