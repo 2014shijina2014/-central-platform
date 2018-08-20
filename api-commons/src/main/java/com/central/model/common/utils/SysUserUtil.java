@@ -1,13 +1,11 @@
 package com.central.model.common.utils;
 
-import java.util.Map;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import com.alibaba.fastjson.JSONObject;
 import com.central.model.user.LoginAppUser;
 
 
@@ -34,6 +32,11 @@ public class SysUserUtil {
 				UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
 			
 				return (LoginAppUser) authenticationToken.getPrincipal();
+			}else if (authentication instanceof PreAuthenticatedAuthenticationToken ){
+				//刷新token方式
+				PreAuthenticatedAuthenticationToken authenticationToken = (PreAuthenticatedAuthenticationToken) authentication;
+				return (LoginAppUser) authenticationToken.getPrincipal();
+				
 			}
 		}
 
