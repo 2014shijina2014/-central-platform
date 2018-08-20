@@ -20,12 +20,29 @@ public interface SysPermissionService {
 	 */
 	Set<SysPermission> findByRoleIds(Set<Long> roleIds);
 
+	/**
+	 * 保存权限
+	 * @param sysPermission
+	 */
 	void save(SysPermission sysPermission);
 
+	/**
+	 * 修改权限
+	 * @param sysPermission
+	 */
 	void update(SysPermission sysPermission);
 
+	/**
+	 * 删除权限
+	 * @param id
+	 */
 	void delete(Long id);
 
+	/**
+	 * 权限列表
+	 * @param params
+	 * @return
+	 */
 	PageResult<SysPermission> findPermissions(Map<String, Object> params);
 
 	/**
