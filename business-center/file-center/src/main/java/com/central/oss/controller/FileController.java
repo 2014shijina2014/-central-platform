@@ -40,7 +40,6 @@ public class FileController {
 	 * 文件上传
 	 * 根据fileType选择上传方式
 	 * @param file
-	 * @param FileType
 	 * @return
 	 * @throws Exception
 	 */
@@ -55,7 +54,6 @@ public class FileController {
 	/**
 	 * layui富文本文件自定义上传
 	 * @param file
-	 * @param fileType
 	 * @return
 	 * @throws Exception
 	 */
