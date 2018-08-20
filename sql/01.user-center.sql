@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS `user-center` DEFAULT CHARACTER SET = utf8mb4;
 Use `user-center`;
 
 
+
 #
 # Structure for table "sys_menu"
 #
@@ -20,13 +21,13 @@ CREATE TABLE `sys_menu` (
   `updateTime` datetime NOT NULL,
   `isMenu` int(11) DEFAULT NULL COMMENT '是否菜单 1 是 2 不是',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 #
 # Data for table "sys_menu"
 #
 
-INSERT INTO `sys_menu` VALUES (1,-1,'用户中心','javascript:;',NULL,'layui-icon-set',0,'2018-08-16 17:03:04','2018-08-20 10:20:42',1),(2,1,'用户管理','#!user','system/user.html','',2,'2017-11-17 16:56:59','2018-08-20 10:03:26',1),(3,1,'角色管理','#!role','system/role.html','',3,'2017-11-17 16:56:59','2018-08-20 10:03:35',1),(4,1,'菜单管理','#!menus','system/menus.html','',4,'2017-11-17 16:56:59','2018-08-20 10:03:40',1),(5,1,'权限管理','#!permissions','system/permissions.html','',5,'2018-08-19 22:12:49','2018-08-20 10:03:46',1),(6,-1,'监控中心','#!monitor','http://127.0.0.1:9001/#/wallboard','',8,'2017-11-17 16:56:59','2018-08-20 10:43:13',1),(7,-1,'swagger文档','#!swagger','http://127.0.0.1:9200/swagger-ui.html','',7,'2017-11-17 16:56:59','2018-08-20 10:43:05',1);
+INSERT INTO `sys_menu` VALUES (1,-1,'用户中心','javascript:;',NULL,'layui-icon-set',0,'2018-08-16 17:03:04','2018-08-20 10:20:42',1),(2,1,'用户管理','#!user','system/user.html','',2,'2017-11-17 16:56:59','2018-08-20 10:03:26',1),(3,1,'角色管理','#!role','system/role.html','',3,'2017-11-17 16:56:59','2018-08-20 10:03:35',1),(4,1,'菜单管理','#!menus','system/menus.html','',4,'2017-11-17 16:56:59','2018-08-20 10:03:40',1),(5,1,'权限管理','#!permissions','system/permissions.html','',5,'2018-08-19 22:12:49','2018-08-20 10:03:46',1),(7,-1,'注册中心','#!register','http://127.0.0.1:1111','',7,'2018-08-20 11:50:29','2018-08-20 11:50:29',1),(8,-1,'监控中心','#!monitor','http://127.0.0.1:9001/#/wallboard','',8,'2017-11-17 16:56:59','2018-08-20 10:43:13',1),(9,-1,'swagger文档','#!swagger','http://127.0.0.1:9200/swagger-ui.html','',9,'2017-11-17 16:56:59','2018-08-20 10:43:05',1);
 
 #
 # Structure for table "sys_permission"
@@ -85,7 +86,7 @@ CREATE TABLE `sys_role_menu` (
 # Data for table "sys_role_menu"
 #
 
-INSERT INTO `sys_role_menu` VALUES (1,-1),(1,0),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7);
+INSERT INTO `sys_role_menu` VALUES (1,-1),(1,0),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9);
 
 #
 # Structure for table "sys_role_permission"
