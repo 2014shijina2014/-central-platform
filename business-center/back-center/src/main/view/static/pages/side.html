@@ -5,7 +5,7 @@
             {{#  layui.each(d, function(index, item){ }}
             {{# if(!item.hidden){ }}
             <li class="layui-nav-item">
-                <a href="{{item.url}}"><i class="layui-icon {{item.icon}}"></i>&emsp;<cite>{{ item.name }}</cite></a>
+                <a href="{{item.url}}"><i class="layui-icon {{item.css}}"></i>&emsp;<cite>{{ item.name }}</cite></a>
                 {{# if(item.subMenus&&item.subMenus.length>0){ }}
                 <dl class="layui-nav-child">
                     {{# layui.each(item.subMenus, function(index, subItem){ }}
