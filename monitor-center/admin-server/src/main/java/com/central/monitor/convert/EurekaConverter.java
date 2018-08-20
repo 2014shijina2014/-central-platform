@@ -19,6 +19,12 @@ import de.codecentric.boot.admin.server.cloud.discovery.DefaultServiceInstanceCo
 import de.codecentric.boot.admin.server.cloud.discovery.ServiceInstanceConverter;
 import de.codecentric.boot.admin.server.domain.values.Registration;
 
+
+/**
+ * @author 作者 owen E-mail: 624191343@qq.com
+ * @version 创建时间：2017年11月24日 下午5:34:47 类说明
+ * 偷梁换柱 将swagger api 注册到监控中心
+ */
 public class EurekaConverter implements ServiceInstanceConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceInstanceConverter.class);
     private static final String KEY_MANAGEMENT_PORT = "management.port";

@@ -13,12 +13,31 @@ import com.central.sms.model.Sms;
  */
 public interface SmsService {
 
+	/**
+	 * 保存短信
+	 * @param sms
+	 * @param params
+	 */
 	void save(Sms sms, Map<String, String> params);
 
+	/**
+	 * 修改短信
+	 * @param sms
+	 */
 	void update(Sms sms);
 
+	/**
+	 * 查询短信
+	 * @param id
+	 * @return
+	 */
 	Sms findById(Long id);
 
+	/**
+	 * 短信列表
+	 * @param params
+	 * @return
+	 */
 	PageResult<Sms> findSms(Map<String, Object> params);
 
 	/**

@@ -13,14 +13,14 @@ public class Util {
 	private static Random RANDOM = new Random();
 
 	/**
-	 * 生成n位随机数值字符串
+	 * 生成length位随机数值字符串
 	 * 
-	 * @param n
+	 * @param length
 	 * @return
 	 */
-	public static String randomCode(int n) {
+	public static String randomCode(int length) {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < length; i++) {
 			builder.append(NUMBERS[RANDOM.nextInt(NUMBERS.length)]);
 		}
 

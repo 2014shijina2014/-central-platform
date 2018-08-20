@@ -1,7 +1,7 @@
-# 导出 user-center 的数据库结构
+﻿# 导出 user-center 的数据库结构
 CREATE DATABASE IF NOT EXISTS `user-center` DEFAULT CHARACTER SET = utf8mb4;
 Use `user-center`;
- 
+
 
 #
 # Structure for table "sys_menu"
@@ -18,14 +18,15 @@ CREATE TABLE `sys_menu` (
   `sort` int(11) NOT NULL,
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
+  `isMenu` int(11) DEFAULT NULL COMMENT '是否菜单 1 是 2 不是',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 
 #
 # Data for table "sys_menu"
 #
 
-INSERT INTO `sys_menu` VALUES (1,0,'用户中心','javascript:;',NULL,'fa-gears',1,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(2,1,'菜单','#!menu','system/menu.html','fa-windows',2,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(3,1,'角色','#!role','system/role.html','fa-cubes',3,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(4,1,'权限','#!permissions','system/permissions.html','fa-align-justify',4,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(5,0,'用户管理','javascript:;',NULL,'fa-user',4,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(6,5,'用户查询','#!user','system/user.html','fa-user',4,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(7,0,'文件查询','#!file','system/file.html','fa-folder-open',5,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(8,0,'邮件管理','#!mail','system/mail.html','fa-envelope',6,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(9,0,'注册中心','#!register','http://127.0.0.1','fa-institution',7,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(10,0,'监控中心','#!monitor','http://127.0.0.1:9001/#/wallboard','fa-spinner',8,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(11,0,'swagger文档','#!swagger','http://127.0.0.1:9200/swagger-ui.html','fa-file-pdf-o',8,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(13,0,'日志查询','#!log','system/log.html','fa-reorder',10,'2017-11-17 16:56:59','2017-11-17 16:56:59'),(14,0,'短信历史查询','#!sms','system/sms.html','fa-reorder',11,'2017-11-17 16:56:59','2017-11-17 16:56:59');
+INSERT INTO `sys_menu` VALUES (1,-1,'用户中心','javascript:;',NULL,'layui-icon-set',0,'2018-08-16 17:03:04','2018-08-20 10:20:42',1),(2,1,'用户管理','#!user','system/user.html','',2,'2017-11-17 16:56:59','2018-08-20 10:03:26',1),(3,1,'角色管理','#!role','system/role.html','',3,'2017-11-17 16:56:59','2018-08-20 10:03:35',1),(4,1,'菜单管理','#!menus','system/menus.html','',4,'2017-11-17 16:56:59','2018-08-20 10:03:40',1),(5,1,'权限管理','#!permissions','system/permissions.html','',5,'2018-08-19 22:12:49','2018-08-20 10:03:46',1),(6,-1,'监控中心','#!monitor','http://127.0.0.1:9001/#/wallboard','',8,'2017-11-17 16:56:59','2018-08-20 10:43:13',1),(7,-1,'swagger文档','#!swagger','http://127.0.0.1:9200/swagger-ui.html','',7,'2017-11-17 16:56:59','2018-08-20 10:43:05',1);
 
 #
 # Structure for table "sys_permission"
@@ -84,6 +85,7 @@ CREATE TABLE `sys_role_menu` (
 # Data for table "sys_role_menu"
 #
 
+INSERT INTO `sys_role_menu` VALUES (1,-1),(1,0),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7);
 
 #
 # Structure for table "sys_role_permission"
@@ -116,7 +118,7 @@ CREATE TABLE `sys_role_user` (
 # Data for table "sys_role_user"
 #
 
-INSERT INTO `sys_role_user` VALUES (7,1),(8,1),(8,2);
+INSERT INTO `sys_role_user` VALUES (1,1),(1,2);
 
 #
 # Structure for table "sys_user"
@@ -143,4 +145,4 @@ CREATE TABLE `sys_user` (
 # Data for table "sys_user"
 #
 
-INSERT INTO `sys_user` VALUES (1,'admin','$2a$10$BD8FQRSJpg9DfU97Ct0jlea7WeFfHZjTDk/iNKSIaRkYchxzTM2au','管理员','','',1,1,'BACKEND','2017-11-17 16:56:59','2017-11-17 16:56:59'),(2,'owen','$2a$10$BD8FQRSJpg9DfU97Ct0jlea7WeFfHZjTDk/iNKSIaRkYchxzTM2au','欧文',NULL,NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(3,'user','$2a$10$fBP0JTEvo553CrngJFRthODuykCLfgcIe8HiRmQEuv0/XkOrD4IXC','体验用户',NULL,NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(4,'test','$2a$10$mKL47TyAli2Q1VP5UR3ZjOGLOQ0aIKA64yJGDceSiOX.QHnY2gvVG','测试账户',NULL,NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(5,'nancy','$2a$10$cVhKfRxUHeBD.UgZ8F5lzu23USgWqZu0S.rMehjYT87rtBjbRwSvS','Nancy',NULL,NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(6,'beckham','$2a$10$w0QW4oJL6dgeubBb/LwT9.dcueqoccpnu/jxDpXODkP8dgkhO1Cu2','贝克汉姆',NULL,NULL,1,1,'APP','2017-11-17 16:56:59','2018-08-09 22:45:01'),(7,'werwerwerw','$2a$10$ZrB.mw1LLifZM9pN1zAdkeFW3qv2mYS.84kYAF2Cpc31uKFKYUHtq','werwer',NULL,'18579068166',0,1,'APP','2018-08-14 11:02:31','2018-08-14 11:02:31'),(8,'aasfasdf','$2a$10$NVHmrW.84haZNH4Qd0oHkOKEOBHEXRWlmKzsGOzzdY0GnN3OWrFcC','aasfasdf',NULL,'18579068166',0,1,'APP','2018-08-14 11:03:21','2018-08-14 11:03:21');
+INSERT INTO `sys_user` VALUES (1,'admin','$2a$10$aqI3ScbMZtCqgs0HOjbWMexhOiPuoR9PNiBomSVQypdBVHk5sZmIW','管理员','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg','',1,1,'BACKEND','2017-11-17 16:56:59','2018-08-20 10:41:50'),(2,'owen','$2a$10$BD8FQRSJpg9DfU97Ct0jlea7WeFfHZjTDk/iNKSIaRkYchxzTM2au','欧文','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg',NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(3,'user','$2a$10$fBP0JTEvo553CrngJFRthODuykCLfgcIe8HiRmQEuv0/XkOrD4IXC','体验用户','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg',NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(4,'test','$2a$10$mKL47TyAli2Q1VP5UR3ZjOGLOQ0aIKA64yJGDceSiOX.QHnY2gvVG','测试账户','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg',NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(5,'nancy','$2a$10$cVhKfRxUHeBD.UgZ8F5lzu23USgWqZu0S.rMehjYT87rtBjbRwSvS','Nancy','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg',NULL,1,1,'APP','2017-11-17 16:56:59','2017-11-17 16:56:59'),(6,'beckham','$2a$10$w0QW4oJL6dgeubBb/LwT9.dcueqoccpnu/jxDpXODkP8dgkhO1Cu2','贝克汉姆','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg',NULL,1,1,'APP','2017-11-17 16:56:59','2018-08-09 22:45:01'),(7,'werwerwerw','$2a$10$ZrB.mw1LLifZM9pN1zAdkeFW3qv2mYS.84kYAF2Cpc31uKFKYUHtq','werwer','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg','18579068166',0,1,'APP','2018-08-14 11:02:31','2018-08-14 11:02:31'),(8,'aasfasdf','$2a$10$NVHmrW.84haZNH4Qd0oHkOKEOBHEXRWlmKzsGOzzdY0GnN3OWrFcC','aasfasdf','http://payo7kq4i.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180819191900.jpg','18579068166',0,1,'APP','2018-08-14 11:03:21','2018-08-14 11:03:21');
