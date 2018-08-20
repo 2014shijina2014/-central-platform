@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.central.model.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,12 +81,19 @@ public class FileController {
 	@LogAnnotation(module = "")
 	@PreAuthorize("hasAuthority('file:del')") 
 	@DeleteMapping("/files/{id}")
-	public void delete(@PathVariable String id) {
-		FileInfo fileInfo = fileDao.getById(id);
-		if (fileInfo != null) {
-			FileService fileService = fileServiceFactory.getFileService(fileInfo.getSource());
-			fileService.delete(fileInfo);
+	public Result delete(@PathVariable String id) {
+
+		try{
+			FileInfo fileInfo = fileDao.getById(id);
+			if (fileInfo != null) {
+				FileService fileService = fileServiceFactory.getFileService(fileInfo.getSource());
+				fileService.delete(fileInfo);
+			}
+			return Result.succeed("操作成功");
+		}catch (Exception ex){
+			return Result.failed("操作失败");
 		}
+
 	}
 
 	@Autowired
