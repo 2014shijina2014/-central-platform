@@ -13,7 +13,14 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +29,7 @@ import com.central.model.common.PageResult;
 import com.central.model.common.Result;
 import com.central.model.common.utils.PageUtil;
 import com.central.model.common.utils.PhoneUtil;
+import com.central.model.common.utils.SysUserUtil;
 import com.central.model.user.LoginAppUser;
 import com.central.model.user.SysPermission;
 import com.central.model.user.SysRole;
@@ -35,251 +43,296 @@ import com.central.user.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-* @author 作者 owen E-mail: 624191343@qq.com
-* @version 创建时间：2017年11月12日 上午22:57:51
+ * @author 作者 owen E-mail: 624191343@qq.com
+ * @version 创建时间：2017年11月12日 上午22:57:51
  */
 @Slf4j
 @Service
 public class SysUserServiceImpl implements SysUserService {
 
-    @Autowired
-    private SysUserDao sysUserDao;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private SysPermissionService sysPermissionService;
-    @Autowired
-    private SysUserRoleDao userRoleDao;
- 
+	@Autowired
+	private SysUserDao sysUserDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private SysPermissionService sysPermissionService;
+	@Autowired
+	private SysUserRoleDao userRoleDao;
 
-    @Transactional
-    @Override
-    public void addSysUser(SysUser sysUser) {
-        String username = sysUser.getUsername();
-        if (StringUtils.isBlank(username)) {
-            throw new IllegalArgumentException("用户名不能为空");
-        }
+	@Autowired(required = false)
+	private TokenStore redisTokenStore;
 
-        if (PhoneUtil.checkPhone(username)) {// 防止用手机号直接当用户名，手机号要发短信验证
-            throw new IllegalArgumentException("用户名要包含英文字符");
-        }
+	@Transactional
+	@Override
+	public void addSysUser(SysUser sysUser) {
+		String username = sysUser.getUsername();
+		if (StringUtils.isBlank(username)) {
+			throw new IllegalArgumentException("用户名不能为空");
+		}
 
-        if (username.contains("@")) {// 防止用邮箱直接当用户名，邮箱也要发送验证（暂未开发）
-            throw new IllegalArgumentException("用户名不能包含@");
-        }
+		if (PhoneUtil.checkPhone(username)) {// 防止用手机号直接当用户名，手机号要发短信验证
+			throw new IllegalArgumentException("用户名要包含英文字符");
+		}
 
-        if (username.contains("|")) {
-            throw new IllegalArgumentException("用户名不能包含|字符");
-        }
+		if (username.contains("@")) {// 防止用邮箱直接当用户名，邮箱也要发送验证（暂未开发）
+			throw new IllegalArgumentException("用户名不能包含@");
+		}
 
-        if (StringUtils.isBlank(sysUser.getPassword())) {
-            throw new IllegalArgumentException("密码不能为空");
-        }
+		if (username.contains("|")) {
+			throw new IllegalArgumentException("用户名不能包含|字符");
+		}
 
-        if (StringUtils.isBlank(sysUser.getNickname())) {
-        	sysUser.setNickname(username);
-        }
+		if (StringUtils.isBlank(sysUser.getPassword())) {
+			throw new IllegalArgumentException("密码不能为空");
+		}
 
-        if (StringUtils.isBlank(sysUser.getType())) {
-        	sysUser.setType(UserType.APP.name());
-        }
+		if (StringUtils.isBlank(sysUser.getNickname())) {
+			sysUser.setNickname(username);
+		}
 
-        SysUser persistenceUser = sysUserDao.findByUsername(sysUser.getUsername());
-        if (persistenceUser!=null && persistenceUser.getUsername() != null) {
-            throw new IllegalArgumentException("用户名已存在");
-        }
+		if (StringUtils.isBlank(sysUser.getType())) {
+			sysUser.setType(UserType.APP.name());
+		}
 
-        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
-        sysUser.setEnabled(Boolean.TRUE);
-        sysUser.setCreateTime(new Date());
-        sysUser.setUpdateTime(sysUser.getCreateTime());
+		SysUser persistenceUser = sysUserDao.findByUsername(sysUser.getUsername());
+		if (persistenceUser != null && persistenceUser.getUsername() != null) {
+			throw new IllegalArgumentException("用户名已存在");
+		}
 
-        sysUserDao.save(sysUser);
-        log.info("添加用户：{}", sysUser);
-    }
+		sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+		sysUser.setEnabled(Boolean.TRUE);
+		sysUser.setCreateTime(new Date());
+		sysUser.setUpdateTime(sysUser.getCreateTime());
 
-    @Transactional
-    @Override
-    public void updateSysUser(SysUser sysUser) {
-    	sysUser.setUpdateTime(new Date());
+		sysUserDao.save(sysUser);
+		log.info("添加用户：{}", sysUser);
+	}
 
-    	sysUserDao.update(sysUser);
-        log.info("修改用户：{}", sysUser);
-    }
+	@Transactional
+	@Override
+	public void updateSysUser(SysUser sysUser) {
+		sysUser.setUpdateTime(new Date());
 
-    @Transactional
-    @Override
-    public LoginAppUser findByUsername(String username) {
-        SysUser sysUser = sysUserDao.findUserByUsername(username);
-        if (sysUser != null) {
-            LoginAppUser loginAppUser = new LoginAppUser();
-            BeanUtils.copyProperties(sysUser, loginAppUser);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            Set<SysRole> sysRoles = userRoleDao.findRolesByUserId(sysUser.getId());
-            loginAppUser.setSysRoles(sysRoles);// 设置角色
+		if (authentication instanceof OAuth2Authentication) {
+			OAuth2Authentication oAuth2Auth = (OAuth2Authentication) authentication;
+			authentication = oAuth2Auth.getUserAuthentication();
 
-            if (!CollectionUtils.isEmpty(sysRoles)) {
-                Set<Long> roleIds = sysRoles.parallelStream().map(r -> r.getId()).collect(Collectors.toSet());
-                Set<SysPermission> sysPermissions = sysPermissionService.findByRoleIds(roleIds);
-                if (!CollectionUtils.isEmpty(sysPermissions)) {
-                    Set<String> permissions = sysPermissions.parallelStream().map(p -> p.getPermission())
-                            .collect(Collectors.toSet());
+			OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) oAuth2Auth.getDetails();
 
-                    loginAppUser.setPermissions(permissions);// 设置权限集合
-                }
+			LoginAppUser user = SysUserUtil.getLoginAppUser();
 
-            }
+			if (user != null) {
 
-            return loginAppUser;
-        }
+				if (user.getId() == sysUser.getId()) {
 
-        return null;
-    }
+					OAuth2AccessToken token = redisTokenStore.readAccessToken(details.getTokenValue());
 
-    @Override
-    public SysUser findById(Long id) {
-        return sysUserDao.findById(id);
-    }
+					if (token != null) {
 
-    /**
-     * 给用户设置角色
-     */
-    @Transactional
-    @Override
-    public void setRoleToUser(Long id, Set<Long> roleIds) {
-        SysUser sysUser = sysUserDao.findById(id);
-        if (sysUser == null) {
-            throw new IllegalArgumentException("用户不存在");
-        }
+						if (StringUtils.isBlank(sysUser.getHeadImgUrl())) {
+							user.setHeadImgUrl(sysUser.getHeadImgUrl());
+						}
 
-        userRoleDao.deleteUserRole(id, null);
-        if (!CollectionUtils.isEmpty(roleIds)) {
-            roleIds.forEach(roleId -> {
-                userRoleDao.saveUserRoles(id, roleId);
-            });
-        }
+						if (StringUtils.isBlank(sysUser.getNewPassword())) {
+							user.setPassword(sysUser.getNewPassword());
+						}
 
-        log.info("修改用户：{}的角色，{}", sysUser.getUsername(), roleIds);
-    }
+						if (StringUtils.isBlank(sysUser.getNewPassword())) {
+							user.setPassword(sysUser.getNewPassword());
+						}
+						
+						UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(user,
+		                        null, user.getAuthorities());
+						
+						
+						OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Auth.getOAuth2Request(), userAuthentication);
+						oAuth2Authentication.setAuthenticated(true);
+						redisTokenStore.storeAccessToken(token, oAuth2Authentication);
 
-    @Transactional
-    @Override
-    public Result updatePassword(Long id, String oldPassword, String newPassword) {
-        SysUser sysUser = sysUserDao.findById(id);
-        if (StringUtils.isNoneBlank(oldPassword)) {
-            if (!passwordEncoder.matches(oldPassword, sysUser.getPassword())) {
-               return Result.failed("旧密码错误");
-            }
-        }
+					}
 
-        SysUser user = new SysUser();
-        user.setId(id);
-        user.setPassword(passwordEncoder.encode(newPassword));
+				}
 
-        updateSysUser(user);
-        log.info("修改密码：{}", user);
-        return Result.succeed("修改成功");
-    }
+			}
+		}
 
-    @Override
-    public PageResult<SysUser> findUsers(Map<String, Object> params) {
-        int total = sysUserDao.count(params);
-        List<SysUser> list = Collections.emptyList();
-        if (total > 0) {
-            PageUtil.pageParamConver(params, true);
-            list = sysUserDao.findList(params);
+		sysUserDao.update(sysUser);
+		log.info("修改用户：{}", sysUser);
+	}
 
-            List<Long> userIds = list.stream().map(SysUser::getId).collect(Collectors.toList());
+	@Transactional
+	@Override
+	public LoginAppUser findByUsername(String username) {
+		SysUser sysUser = sysUserDao.findUserByUsername(username);
+		if (sysUser != null) {
+			LoginAppUser loginAppUser = new LoginAppUser();
+			BeanUtils.copyProperties(sysUser, loginAppUser);
 
-            List<SysRole> sysRoles = userRoleDao.findRolesByUserIds(userIds);
+			Set<SysRole> sysRoles = userRoleDao.findRolesByUserId(sysUser.getId());
+			loginAppUser.setSysRoles(sysRoles);// 设置角色
 
-            list.forEach( u -> {
-                u.setRoles( sysRoles.stream().filter(r-> !ObjectUtils.notEqual(u.getId(),r.getUserId()) ).collect(Collectors.toList()) );
-            } );
-        }
-        return  PageResult.<SysUser>builder().data(list).code(0).count(total).build() ;
-    }
+			if (!CollectionUtils.isEmpty(sysRoles)) {
+				Set<Long> roleIds = sysRoles.parallelStream().map(r -> r.getId()).collect(Collectors.toSet());
+				Set<SysPermission> sysPermissions = sysPermissionService.findByRoleIds(roleIds);
+				if (!CollectionUtils.isEmpty(sysPermissions)) {
+					Set<String> permissions = sysPermissions.parallelStream().map(p -> p.getPermission())
+							.collect(Collectors.toSet());
 
-    @Override
-    public Set<SysRole> findRolesByUserId(Long userId) {
-        return userRoleDao.findRolesByUserId(userId);
-    }
+					loginAppUser.setPermissions(permissions);// 设置权限集合
+				}
 
-    
+			}
 
-    @Override
-    public Result updateEnabled(Map<String, Object> params) {
-        Long id = MapUtils.getLong(params, "id");
-        Boolean enabled = MapUtils.getBoolean(params,"enabled");
+			return loginAppUser;
+		}
 
-        SysUser appUser = sysUserDao.findById(id);
-        if (appUser == null) {
-            throw new IllegalArgumentException("用户不存在");
-        }
-        appUser.setEnabled(enabled);
-        appUser.setUpdateTime(new Date());
+		return null;
+	}
 
-        int i = sysUserDao.update(appUser);
-        log.info("修改用户：{}", appUser);
+	@Override
+	public SysUser findById(Long id) {
+		return sysUserDao.findById(id);
+	}
 
-        return i>0?Result.succeed(appUser,"更新成功"):Result.failed("更新失败");
-    }
+	/**
+	 * 给用户设置角色
+	 */
+	@Transactional
+	@Override
+	public void setRoleToUser(Long id, Set<Long> roleIds) {
+		SysUser sysUser = sysUserDao.findById(id);
+		if (sysUser == null) {
+			throw new IllegalArgumentException("用户不存在");
+		}
 
-    @Transactional
-    @Override
-    public Result saveOrUpdate(SysUser sysUser) {
-        String username = sysUser.getUsername();
-        if (StringUtils.isBlank(username)) {
-            throw new IllegalArgumentException("用户名不能为空");
-        }
+		userRoleDao.deleteUserRole(id, null);
+		if (!CollectionUtils.isEmpty(roleIds)) {
+			roleIds.forEach(roleId -> {
+				userRoleDao.saveUserRoles(id, roleId);
+			});
+		}
 
-        if (PhoneUtil.checkPhone(username)) {// 防止用手机号直接当用户名，手机号要发短信验证
-            throw new IllegalArgumentException("用户名要包含英文字符");
-        }
+		log.info("修改用户：{}的角色，{}", sysUser.getUsername(), roleIds);
+	}
 
-        if (username.contains("@")) {// 防止用邮箱直接当用户名，邮箱也要发送验证（暂未开发）
-            throw new IllegalArgumentException("用户名不能包含@");
-        }
+	@Transactional
+	@Override
+	public Result updatePassword(Long id, String oldPassword, String newPassword) {
+		SysUser sysUser = sysUserDao.findById(id);
+		if (StringUtils.isNoneBlank(oldPassword)) {
+			if (!passwordEncoder.matches(oldPassword, sysUser.getPassword())) {
+				return Result.failed("旧密码错误");
+			}
+		}
 
-        if (username.contains("|")) {
-            throw new IllegalArgumentException("用户名不能包含|字符");
-        }
+		SysUser user = new SysUser();
+		user.setId(id);
+		user.setPassword(passwordEncoder.encode(newPassword));
 
-        if (StringUtils.isBlank(sysUser.getNickname())) {
-            sysUser.setNickname(username);
-        }
+		updateSysUser(user);
+		log.info("修改密码：{}", user);
+		return Result.succeed("修改成功");
+	}
 
-        if (StringUtils.isBlank(sysUser.getType())) {
-            sysUser.setType(UserType.APP.name());
-        }
+	@Override
+	public PageResult<SysUser> findUsers(Map<String, Object> params) {
+		int total = sysUserDao.count(params);
+		List<SysUser> list = Collections.emptyList();
+		if (total > 0) {
+			PageUtil.pageParamConver(params, true);
+			list = sysUserDao.findList(params);
 
+			List<Long> userIds = list.stream().map(SysUser::getId).collect(Collectors.toList());
 
-        sysUser.setPassword(passwordEncoder.encode("123456"));
-        sysUser.setEnabled(Boolean.TRUE);
-        sysUser.setCreateTime(new Date());
+			List<SysRole> sysRoles = userRoleDao.findRolesByUserIds(userIds);
 
-        int i = 0;
+			list.forEach(u -> {
+				u.setRoles(sysRoles.stream().filter(r -> !ObjectUtils.notEqual(u.getId(), r.getUserId()))
+						.collect(Collectors.toList()));
+			});
+		}
+		return PageResult.<SysUser>builder().data(list).code(0).count(total).build();
+	}
 
-        if (sysUser.getId()==null){
-        	 SysUser persistenceUser = sysUserDao.findByUsername(sysUser.getUsername());
-             if (persistenceUser!=null && persistenceUser.getUsername() != null) {
-                 throw new IllegalArgumentException("用户名已存在");
-             }
-            sysUser.setUpdateTime(sysUser.getCreateTime());
-            i = sysUserDao.save(sysUser);
-         }else{
-            sysUser.setUpdateTime(new Date());
-            i = sysUserDao.update(sysUser);
-        }
+	@Override
+	public Set<SysRole> findRolesByUserId(Long userId) {
+		return userRoleDao.findRolesByUserId(userId);
+	}
 
-        userRoleDao.deleteUserRole(sysUser.getId(), null);
-        List roleIds = Arrays.asList(sysUser.getRoleId().split(","));
-        if (!CollectionUtils.isEmpty(roleIds)) {
-            roleIds.forEach(roleId -> {
-                userRoleDao.saveUserRoles(sysUser.getId(), Long.parseLong( roleId.toString() ) );
-            });
-        }
+	@Override
+	public Result updateEnabled(Map<String, Object> params) {
+		Long id = MapUtils.getLong(params, "id");
+		Boolean enabled = MapUtils.getBoolean(params, "enabled");
 
-        return i>0?Result.succeed(sysUser,"操作成功"):Result.failed("操作失败");
-    }
+		SysUser appUser = sysUserDao.findById(id);
+		if (appUser == null) {
+			throw new IllegalArgumentException("用户不存在");
+		}
+		appUser.setEnabled(enabled);
+		appUser.setUpdateTime(new Date());
+
+		int i = sysUserDao.update(appUser);
+		log.info("修改用户：{}", appUser);
+
+		return i > 0 ? Result.succeed(appUser, "更新成功") : Result.failed("更新失败");
+	}
+
+	@Transactional
+	@Override
+	public Result saveOrUpdate(SysUser sysUser) {
+		String username = sysUser.getUsername();
+		if (StringUtils.isBlank(username)) {
+			throw new IllegalArgumentException("用户名不能为空");
+		}
+
+		if (PhoneUtil.checkPhone(username)) {// 防止用手机号直接当用户名，手机号要发短信验证
+			throw new IllegalArgumentException("用户名要包含英文字符");
+		}
+
+		if (username.contains("@")) {// 防止用邮箱直接当用户名，邮箱也要发送验证（暂未开发）
+			throw new IllegalArgumentException("用户名不能包含@");
+		}
+
+		if (username.contains("|")) {
+			throw new IllegalArgumentException("用户名不能包含|字符");
+		}
+
+		if (StringUtils.isBlank(sysUser.getNickname())) {
+			sysUser.setNickname(username);
+		}
+
+		if (StringUtils.isBlank(sysUser.getType())) {
+			sysUser.setType(UserType.APP.name());
+		}
+
+		sysUser.setPassword(passwordEncoder.encode("123456"));
+		sysUser.setEnabled(Boolean.TRUE);
+		sysUser.setCreateTime(new Date());
+
+		int i = 0;
+
+		if (sysUser.getId() == null) {
+			SysUser persistenceUser = sysUserDao.findByUsername(sysUser.getUsername());
+			if (persistenceUser != null && persistenceUser.getUsername() != null) {
+				throw new IllegalArgumentException("用户名已存在");
+			}
+			sysUser.setUpdateTime(sysUser.getCreateTime());
+			i = sysUserDao.save(sysUser);
+		} else {
+			sysUser.setUpdateTime(new Date());
+			i = sysUserDao.update(sysUser);
+		}
+
+		userRoleDao.deleteUserRole(sysUser.getId(), null);
+		List roleIds = Arrays.asList(sysUser.getRoleId().split(","));
+		if (!CollectionUtils.isEmpty(roleIds)) {
+			roleIds.forEach(roleId -> {
+				userRoleDao.saveUserRoles(sysUser.getId(), Long.parseLong(roleId.toString()));
+			});
+		}
+
+		return i > 0 ? Result.succeed(sysUser, "操作成功") : Result.failed("操作失败");
+	}
 }
