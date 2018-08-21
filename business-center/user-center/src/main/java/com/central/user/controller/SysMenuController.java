@@ -210,6 +210,7 @@ public class SysMenuController {
 			}
 		});
 	}
+
 	@PreAuthorize("hasAuthority('back:menu:query')")
 	@GetMapping("/{id}")
 	public SysMenu findById(@PathVariable Long id) {
