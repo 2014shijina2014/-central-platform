@@ -68,7 +68,9 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter  {
 						PathSelectors.regex("/oauth/get.*").apply(input)    ||
 						PathSelectors.regex("/oauth/userinfo.*").apply(input)     || 
 						PathSelectors.regex("/oauth/remove.*").apply(input) || 
-						PathSelectors.regex("/oauth/refresh/token.*").apply(input)
+						PathSelectors.regex("/oauth/refresh/token.*").apply(input)||
+						PathSelectors.regex("/oauth/token/list.*").apply(input)
+						
 						
 						
 						

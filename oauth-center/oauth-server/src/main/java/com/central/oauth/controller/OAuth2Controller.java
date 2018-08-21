@@ -1,28 +1,30 @@
 package com.central.oauth.controller;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.central.model.user.SysPermission;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -35,12 +37,14 @@ import org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.central.annotation.log.LogAnnotation;
+import com.central.model.user.LoginAppUser;
+import com.central.model.user.SysPermission;
 import com.central.server.oauth2.client.RedisClientDetailsService;
 import com.central.utils.SpringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,6 +71,10 @@ public class OAuth2Controller {
 
 	@Autowired
 	private TokenStore tokenStore;
+	
+	@Autowired
+	private RedisTemplate<String,Object> redisTemplate ;
+	
 
 	@ApiOperation(value = "用户名密码获取token")
 	@PostMapping("/oauth/user/token")
@@ -378,6 +386,62 @@ public class OAuth2Controller {
 		logger.info("返回信息:{}",userInfo);
 
 		return userInfo;
+	}
+	
+	@ApiOperation(value = "token列表")
+	@PostMapping("/oauth/token/list")
+	public List<HashMap<String, String>> getUserTokenInfo(){
+		List<HashMap<String, String>> list = new ArrayList<>();
+		
+		
+		Set<String> keys = redisTemplate.keys("auth:" + "*") ;
+		
+		
+		for(Iterator<String> it = keys.iterator();it.hasNext();){
+			String key = it.next();
+			
+			String accessToken = StringUtils.substringAfter(key, "auth:"); 
+			
+			
+			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
+			HashMap<String, String> map = new HashMap<String, String>();
+			 
+			map.put("token_type", token.getTokenType());
+			map.put("token_value", token.getValue());
+			map.put("expires_in", token.getExpiresIn()+"");
+			
+			
+			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
+			Authentication authentication = oAuth2Auth.getUserAuthentication();
+
+			
+			if (authentication instanceof UsernamePasswordAuthenticationToken) {
+				UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
+			
+				if(authenticationToken.getPrincipal() instanceof LoginAppUser ){
+					LoginAppUser user = (LoginAppUser) authenticationToken.getPrincipal();
+					
+					map.put("user_id", user.getId()+"");
+					map.put("user_name", user.getUsername()+"");
+					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
+				}
+				
+				
+			}else if (authentication instanceof PreAuthenticatedAuthenticationToken ){
+				//刷新token方式
+				PreAuthenticatedAuthenticationToken authenticationToken = (PreAuthenticatedAuthenticationToken) authentication;
+				if(authenticationToken.getPrincipal() instanceof LoginAppUser ){
+					LoginAppUser user = (LoginAppUser) authenticationToken.getPrincipal();
+					map.put("user_id", user.getId()+"");
+					map.put("user_name", user.getUsername()+"");
+					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
+				}
+				
+			}
+			list.add(map);
+			
+		}
+		return list ;
 	}
 	 
 }
