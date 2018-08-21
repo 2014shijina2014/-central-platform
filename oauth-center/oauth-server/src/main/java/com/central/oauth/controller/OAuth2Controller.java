@@ -13,13 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.central.model.common.PageResult;
-import com.central.model.user.SysMenu;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -392,42 +397,40 @@ public class OAuth2Controller {
 	
 	@ApiOperation(value = "token列表")
 	@PostMapping("/oauth/token/list")
-	public PageResult<HashMap<String, String>> getUserTokenInfo(){
+	public PageResult<HashMap<String, String>> getUserTokenInfo(@RequestParam Map<String, Object> params) throws Exception {
 		List<HashMap<String, String>> list = new ArrayList<>();
-		
-		
+
 		Set<String> keys = redisTemplate.keys("auth:" + "*") ;
-		
-		
-		for(Iterator<String> it = keys.iterator();it.hasNext();){
-			String key = it.next();
-			
-			String accessToken = StringUtils.substringAfter(key, "auth:"); 
-			
-			
+		//根据分页参数获取对应数据
+		List<String> pages = findKeysForPage("auth:" + "*", MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"));
+
+		for (String page: pages) {
+			String key = page;
+
+			String accessToken = StringUtils.substringAfter(key, "auth:");
+
 			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
 			HashMap<String, String> map = new HashMap<String, String>();
-			 
+
 			map.put("token_type", token.getTokenType());
 			map.put("token_value", token.getValue());
 			map.put("expires_in", token.getExpiresIn()+"");
-			
-			
+
 			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
 			Authentication authentication = oAuth2Auth.getUserAuthentication();
 
-			
+
 			if (authentication instanceof UsernamePasswordAuthenticationToken) {
 				UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
-			
+
 				if(authenticationToken.getPrincipal() instanceof LoginAppUser ){
 					LoginAppUser user = (LoginAppUser) authenticationToken.getPrincipal();
 					map.put("user_id", user.getId()+"");
 					map.put("user_name", user.getUsername()+"");
 					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
 				}
-				
-				
+
+
 			}else if (authentication instanceof PreAuthenticatedAuthenticationToken ){
 				//刷新token方式
 				PreAuthenticatedAuthenticationToken authenticationToken = (PreAuthenticatedAuthenticationToken) authentication;
@@ -437,15 +440,53 @@ public class OAuth2Controller {
 					map.put("user_name", user.getUsername()+"");
 					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
 				}
-				
+
 			}
 			list.add(map);
-			
-		}
-//		return list ;
 
-		return PageResult.<HashMap<String, String>>builder().data(list).code(0).count((long)list.size()).build() ;
+		}
+
+		return PageResult.<HashMap<String, String>>builder().data(list).code(0).count((long) keys.size()).build() ;
 
 	}
-	 
+
+	public List<String> findKeysForPage(String patternKey, int pageNum, int pageSize) {
+		ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
+		RedisConnectionFactory factory = redisTemplate.getConnectionFactory();
+		RedisConnection rc = factory.getConnection();
+		Cursor<byte[]> cursor = rc.scan(options);
+		List<String> result = new ArrayList<String>(pageSize);
+		int tmpIndex = 0;
+		int startIndex = (pageNum - 1) * pageSize;
+		int end = pageNum * pageSize;
+		while (cursor.hasNext()) {
+			if (tmpIndex >= startIndex && tmpIndex < end) {
+				result.add(new String(cursor.next()));
+				tmpIndex++;
+				continue;
+			}
+
+			// 获取到满足条件的数据后,就可以退出了
+			if(tmpIndex >=end) {
+				break;
+			}
+
+			tmpIndex++;
+			cursor.next();
+		}
+
+		try {
+			// cursor.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			RedisConnectionUtils.releaseConnection(rc, factory);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }
