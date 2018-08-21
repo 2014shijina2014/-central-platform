@@ -127,7 +127,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 			list = sysRoleDao.findList(params);
 		}
-		return PageResult.<SysRole>builder().data(list).code(0).count(total).build()  ;
+		return PageResult.<SysRole>builder().data(list).code(0).count((long)total).build()  ;
 	}
 
 	@Override

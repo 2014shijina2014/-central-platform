@@ -81,7 +81,7 @@ public class SysPermissionServiceImpl implements SysPermissionService {
 			list = sysPermissionDao.findList(params);
 
 		}
-		return PageResult.<SysPermission>builder().data(list).code(0).count(total).build()  ;
+		return PageResult.<SysPermission>builder().data(list).code(0).count((long)total).build()  ;
 	}
 
 	@Override

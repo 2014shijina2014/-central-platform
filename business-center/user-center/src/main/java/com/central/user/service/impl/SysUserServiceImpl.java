@@ -253,7 +253,7 @@ public class SysUserServiceImpl implements SysUserService {
 						.collect(Collectors.toList()));
 			});
 		}
-		return PageResult.<SysUser>builder().data(list).code(0).count(total).build();
+		return PageResult.<SysUser>builder().data(list).code(0).count((long)total).build();
 	}
 
 	@Override
