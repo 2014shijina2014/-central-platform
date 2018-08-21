@@ -11,6 +11,7 @@ target/
 # eclipse ignore
 .settings/
 .classpath
+.factorypath
 target/
 bin/
 open-cxf-service/

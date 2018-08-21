@@ -1,12 +1,19 @@
 package com.central.oss.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.central.model.common.PageResult;
 import com.central.oss.dao.FileDao;
 import com.central.oss.model.FileInfo;
 import com.central.oss.model.FileType;
 import com.central.oss.service.FileService;
 import com.central.oss.utils.FileUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -72,4 +79,18 @@ public abstract class AbstractFileService implements FileService {
 	 * @return
 	 */
 	protected abstract boolean deleteFile(FileInfo fileInfo);
+	
+	@Override
+	public FileInfo getById(String id){
+		return getFileDao().getById(id);
+	}
+	
+	public PageResult<FileInfo> findList(Map<String, Object> params){
+		//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+
+        List<FileInfo> list = getFileDao().findList(params);
+        PageInfo<FileInfo> pageInfo = new PageInfo<>(list);
+		return PageResult.<FileInfo>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build();
+	}
 }
