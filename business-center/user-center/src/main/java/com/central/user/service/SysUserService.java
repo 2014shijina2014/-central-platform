@@ -1,8 +1,10 @@
 package com.central.user.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.central.easypoi.user.SysUserExcel;
 import com.central.model.common.PageResult;
 import com.central.model.common.Result;
 import com.central.model.user.LoginAppUser;
@@ -79,5 +81,13 @@ public interface SysUserService {
 	 * @return
 	 */
 	Result saveOrUpdate(SysUser sysUser);
+
+	/**
+	 * 查询全部用户
+	 * @param params
+	 * @return
+	 */
+	List<SysUserExcel> findAllUsers(Map<String, Object> params);
+
 
 }

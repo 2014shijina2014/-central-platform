@@ -1,9 +1,16 @@
 package com.central.user.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import com.central.easypoi.user.SysUserExcel;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +35,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 作者 owen E-mail: 624191343@qq.com
@@ -217,6 +227,43 @@ public class SysUserController {
     public Result saveOrUpdate(@RequestBody SysUser sysUser) {
         return  appUserService.saveOrUpdate(sysUser);
     }
+
+    /**
+     * 导出数据
+     * @return
+     */
+    @PostMapping("/users/exportUser")
+    @PreAuthorize("hasAuthority('back:user:exportUser')")
+    public Result exportUser(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        List<SysUserExcel> result = appUserService.findAllUsers(params);
+
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-disposition", "attachment;filename=myExcel.xls");
+        OutputStream ouputStream = null;
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("测试用户导出","用户"),
+                SysUserExcel.class, result );
+        try {
+            ouputStream = response.getOutputStream();
+            workbook.write(ouputStream);
+        } catch (Exception e) {
+            throw new RuntimeException("系统异常");
+        } finally {
+            try {
+                ouputStream.flush();
+                ouputStream.close();
+            } catch (Exception e) {
+                throw new RuntimeException("系统异常");
+            }
+        }
+
+        return Result.succeed("成功");
+    }
+
+
+
+
+
+
 
 
 }

@@ -1,13 +1,9 @@
 package com.central.user.service.impl;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.central.easypoi.user.SysUserExcel;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -342,5 +338,18 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 
 		return i > 0 ? Result.succeed(sysUser, "操作成功") : Result.failed("操作失败");
+	}
+
+	@Override
+	public List<SysUserExcel> findAllUsers(Map<String, Object> params) {
+		List<SysUserExcel> sysUserExcels = new ArrayList<>();
+		List<SysUser> list = sysUserDao.findList(params);
+
+		for (SysUser sysUser : list){
+			SysUserExcel sysUserExcel = new SysUserExcel();
+			BeanUtils.copyProperties(sysUser,sysUserExcel);
+			sysUserExcels.add(sysUserExcel);
+		}
+		return sysUserExcels;
 	}
 }

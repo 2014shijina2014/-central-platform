@@ -19,6 +19,7 @@
             <input id="user-search-value" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
             <button id="user-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
             <button id="user-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+            <button id="user-btn-export" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>导出</button>
         </div>
 
         <table class="layui-table" id="user-table" lay-filter="user-table"></table>
@@ -126,6 +127,19 @@
             var key = $('#user-search-key').val();
             var value = $('#user-search-value').val();
             table.reload('user-table', {where: {searchKey: key, searchValue: value}});
+        });
+
+
+        // 导出
+        $('#user-btn-export').click(function () {
+            admin.req('api-user/users/exportUser', {}, function (data) {
+                layer.closeAll('loading');
+                if (data.resp_code == 0) {
+                    layer.msg(data.resp_msg, {icon: 1});
+                } else {
+                    layer.msg("请求失败", {icon: 2});
+                }
+            }, 'POST');
         });
 
         // 修改user状态

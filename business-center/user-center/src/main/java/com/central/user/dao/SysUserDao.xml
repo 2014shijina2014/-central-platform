@@ -77,6 +77,9 @@
 		select * from sys_user t
 		<include refid="where" />
 		order by t.id desc
-		limit #{page},#{limit}
+		<if test="page != null and page != '' and limit!='' and limit !=null ">
+			limit #{page},#{limit}
+		</if>
+
 	</select>
 </mapper>
