@@ -31,6 +31,6 @@
 		select * from file_info t
 		<include refid="where" />
 		order by t.createTime desc
-		limit #{page}, #{limit}
 	</select>
+	<!--limit #{page}, #{limit}-->
 </mapper>

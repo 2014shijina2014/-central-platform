@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.central.model.common.Result;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -107,13 +110,22 @@ public class FileController {
 	@PreAuthorize("hasAuthority('file:query')")
 	@GetMapping("/files")
 	public PageResult<FileInfo> findFiles(@RequestParam Map<String, Object> params) {
-		int total = fileDao.count(params);
-		List<FileInfo> list = Collections.emptyList();
-		if (total > 0) {
-			PageUtil.pageParamConver(params, true);
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
 
-			list = fileDao.findList(params);
-		}
-		return PageResult.<FileInfo>builder().data(list).code(0).count(total).build();
+        List<FileInfo> list = fileDao.findList(params);
+        PageInfo<FileInfo> pageInfo = new PageInfo<>(list);
+		return PageResult.<FileInfo>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build();
+
+
+        //		int total = fileDao.count(params);
+//		List<FileInfo> list = Collections.emptyList();
+//		if (total > 0) {
+//			PageUtil.pageParamConver(params, true);
+//
+//			list = fileDao.findList(params);
+//		}
+//		return PageResult.<FileInfo>builder().data(list).code(0).count(total).build();
+
 	}
 }

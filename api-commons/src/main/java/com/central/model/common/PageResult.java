@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class PageResult<T> implements Serializable {
 
 	private static final long serialVersionUID = -275582248840137389L;
-	private int count;
+	private Long count;
 	private int code;
 	private List<T> data;
 }
