@@ -115,7 +115,7 @@ public class SmsServiceImpl implements SmsService {
 
 			list = smsDao.findList(params);
 		}
-		return  PageResult.<Sms>builder().data(list).code(0).count(total).build();
+		return  PageResult.<Sms>builder().data(list).code(0).count((long)total).build();
 	}
 
 }
