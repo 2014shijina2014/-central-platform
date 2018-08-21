@@ -24,5 +24,6 @@
 			open="(" separator="," close=")">
 			#{roleId}
 		</foreach>
+		ORDER BY sort ASC
 	</select>
 </mapper>
