@@ -12,6 +12,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.central.model.common.PageResult;
+import com.central.model.user.SysMenu;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -390,7 +392,7 @@ public class OAuth2Controller {
 	
 	@ApiOperation(value = "token列表")
 	@PostMapping("/oauth/token/list")
-	public List<HashMap<String, String>> getUserTokenInfo(){
+	public PageResult<HashMap<String, String>> getUserTokenInfo(){
 		List<HashMap<String, String>> list = new ArrayList<>();
 		
 		
@@ -420,7 +422,6 @@ public class OAuth2Controller {
 			
 				if(authenticationToken.getPrincipal() instanceof LoginAppUser ){
 					LoginAppUser user = (LoginAppUser) authenticationToken.getPrincipal();
-					
 					map.put("user_id", user.getId()+"");
 					map.put("user_name", user.getUsername()+"");
 					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
@@ -441,7 +442,10 @@ public class OAuth2Controller {
 			list.add(map);
 			
 		}
-		return list ;
+//		return list ;
+
+		return PageResult.<HashMap<String, String>>builder().data(list).code(0).count((long)list.size()).build() ;
+
 	}
 	 
 }
