@@ -87,7 +87,7 @@ public class FileController {
 	public Result delete(@PathVariable String id) {
 
 		try{
-			FileInfo fileInfo = fileDao.getById(id);
+			FileInfo fileInfo = fileServiceFactory.getFileService(FileType.QINIU.toString()).getById(id);
 			if (fileInfo != null) {
 				FileService fileService = fileServiceFactory.getFileService(fileInfo.getSource());
 				fileService.delete(fileInfo);
@@ -98,10 +98,7 @@ public class FileController {
 		}
 
 	}
-
-	@Autowired
-	private FileDao fileDao;
-
+ 
 	/**
 	 * 文件查询
 	 * @param params
@@ -110,22 +107,8 @@ public class FileController {
 	@PreAuthorize("hasAuthority('file:query')")
 	@GetMapping("/files")
 	public PageResult<FileInfo> findFiles(@RequestParam Map<String, Object> params) {
-        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-        PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
-
-        List<FileInfo> list = fileDao.findList(params);
-        PageInfo<FileInfo> pageInfo = new PageInfo<>(list);
-		return PageResult.<FileInfo>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build();
-
-
-        //		int total = fileDao.count(params);
-//		List<FileInfo> list = Collections.emptyList();
-//		if (total > 0) {
-//			PageUtil.pageParamConver(params, true);
-//
-//			list = fileDao.findList(params);
-//		}
-//		return PageResult.<FileInfo>builder().data(list).code(0).count(total).build();
+        
+		return  fileServiceFactory.getFileService(FileType.QINIU.toString()).findList(params);
 
 	}
 }

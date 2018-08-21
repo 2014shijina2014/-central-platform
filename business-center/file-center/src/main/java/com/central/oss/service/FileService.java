@@ -1,7 +1,11 @@
 package com.central.oss.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.central.model.common.PageResult;
 import com.central.oss.model.FileInfo;
 
 /**
@@ -14,5 +18,9 @@ public interface FileService {
 	FileInfo upload(MultipartFile file ) throws Exception;
 
 	void delete(FileInfo fileInfo);
+	
+	FileInfo getById(String id);
+	
+	PageResult<FileInfo>  findList(Map<String, Object> params);
 
 }
