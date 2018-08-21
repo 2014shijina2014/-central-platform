@@ -13,8 +13,6 @@
 	<module>user-center</module>
   	<!-- 文件中心 -->
 	<module>file-center</module>
-	<!-- 短信中心	-->
-	<module>sms-center</module>
 	<!-- 后台中心 -->
 	<module>back-center</module>
 
