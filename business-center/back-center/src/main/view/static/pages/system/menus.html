@@ -102,6 +102,7 @@
 
             if (data){
                 data.isMenu = data.isMenu.toString();
+                data.hidden = data.hidden.toString();
             }
             var title = data ? '修改菜单' : '添加菜单';
             admin.putTempData('t_menus', data);
