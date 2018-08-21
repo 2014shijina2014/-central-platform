@@ -125,28 +125,35 @@ public class SysUserServiceImpl implements SysUserService {
 
 			if (user != null) {
 
-				if (user.getId() == sysUser.getId()) {
+				if ( !ObjectUtils.notEqual(user.getId(),sysUser.getId()) ) {
 
 					OAuth2AccessToken token = redisTokenStore.readAccessToken(details.getTokenValue());
 
 					if (token != null) {
 
-						if (StringUtils.isBlank(sysUser.getHeadImgUrl())) {
+						if (!StringUtils.isBlank(sysUser.getHeadImgUrl())) {
 							user.setHeadImgUrl(sysUser.getHeadImgUrl());
 						}
 
-						if (StringUtils.isBlank(sysUser.getNewPassword())) {
+						if (!StringUtils.isBlank(sysUser.getNewPassword())) {
 							user.setPassword(sysUser.getNewPassword());
 						}
 
-						if (StringUtils.isBlank(sysUser.getNewPassword())) {
+						if (!StringUtils.isBlank(sysUser.getNewPassword())) {
 							user.setPassword(sysUser.getNewPassword());
 						}
-						
+
+						if (!StringUtils.isBlank(sysUser.getNickname())) {
+							user.setNickname(sysUser.getNickname());
+						}
+
+						if (sysUser.getSex() != null) {
+							user.setSex(sysUser.getSex());
+						}
+
 						UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(user,
 		                        null, user.getAuthorities());
-						
-						
+
 						OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Auth.getOAuth2Request(), userAuthentication);
 						oAuth2Authentication.setAuthenticated(true);
 						redisTokenStore.storeAccessToken(token, oAuth2Authentication);

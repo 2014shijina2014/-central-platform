@@ -3,8 +3,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">账号</label>
         <div class="layui-input-block">
-            <input name="username" placeholder="请输入账号" type="text" class="layui-input" maxlength="20"
-                   lay-verify="required" required/>
+            <input name="username" placeholder="请输入账号" type="text" class="layui-input layui-disabled" maxlength="20"
+                   lay-verify="required" disabled="disabled" required/>
         </div>
     </div>
     <div class="layui-form-item">
@@ -75,6 +75,7 @@
                 if (data.resp_code == 0) {
                     layer.closeAll('loading');
                     $(".layui-nav-img").attr("src",$("[name=headImgUrl]").val());
+                    layer.msg("操作成功", {icon: 1});
 
                     form.val('user-form',data.datas);
                     // admin.req('api-auth/oauth/refresh/token?access_token='+config.getToken().access_token, {}, function (data) {
@@ -83,7 +84,6 @@
                     //         config.putToken(data);
                     //         admin.refresh();
                     //     }
-                    //     layer.msg("操作成功", {icon: 1});
                     // }, 'POST');
                 } else {
                     layer.msg(data.resp_msg, {icon: 2});
