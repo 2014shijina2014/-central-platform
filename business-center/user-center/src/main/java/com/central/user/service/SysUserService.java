@@ -25,7 +25,7 @@ public interface SysUserService {
 	 * 修改用户
 	 * @param sysUser
 	 */
-	void updateSysUser(SysUser sysUser);
+	SysUser updateSysUser(SysUser sysUser);
 
 	/**
 	 * 获取UserDetails对象

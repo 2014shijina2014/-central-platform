@@ -110,7 +110,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Transactional
 	@Override
-	public void updateSysUser(SysUser sysUser) {
+	public SysUser updateSysUser(SysUser sysUser) {
 		sysUser.setUpdateTime(new Date());
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -160,6 +160,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 		sysUserDao.update(sysUser);
 		log.info("修改用户：{}", sysUser);
+		return sysUser;
 	}
 
 	@Transactional

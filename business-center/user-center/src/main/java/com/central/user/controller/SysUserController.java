@@ -109,9 +109,9 @@ public class SysUserController {
 //        SysUser user = SysUserUtil.getLoginAppUser();
 //        sysUser.setId(user.getId());
 
-        appUserService.updateSysUser(sysUser);
+        SysUser user = appUserService.updateSysUser(sysUser);
 
-        return Result.succeed("操作成功");
+        return Result.succeed(user,"操作成功");
     }
 
     /**
