@@ -234,7 +234,7 @@ public class SysUserController {
      */
     @PostMapping("/users/exportUser")
     @PreAuthorize("hasAuthority('back:user:exportUser')")
-    public Result exportUser(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+    public void exportUser(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
         List<SysUserExcel> result = appUserService.findAllUsers(params);
 
         response.setContentType("application/vnd.ms-excel");
@@ -255,8 +255,6 @@ public class SysUserController {
                 throw new RuntimeException("系统异常");
             }
         }
-
-        return Result.succeed("成功");
     }
 
 

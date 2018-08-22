@@ -29,7 +29,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         String username = PropertiesUtil.getString("xxl.job.login.username");
         String password = PropertiesUtil.getString("xxl.job.login.password");
 
-        // login token
+        // login attestation
         String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
 		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
 
@@ -40,7 +40,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 	public static boolean login(HttpServletResponse response, String username, String password, boolean ifRemember){
 
-    	// login token
+    	// login attestation
 		String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
 		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
 

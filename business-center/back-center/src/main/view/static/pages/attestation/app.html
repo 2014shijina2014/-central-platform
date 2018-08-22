@@ -1,0 +1,24 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">应用管理</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!home_console">首页</a>
+          <a><cite>应用管理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+        搜索：<input id="app-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+        <button id="app-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+        </div>
+
+        <!-- 数据表格 -->
+        <table class="layui-table" id="app-table" lay-filter="app-table"></table>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="app-table-bar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+</script>

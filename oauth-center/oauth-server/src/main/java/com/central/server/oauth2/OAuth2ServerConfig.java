@@ -168,11 +168,11 @@ public class OAuth2ServerConfig {
 		public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 
 			security.tokenKeyAccess("permitAll()") /// url:/oauth/token_key,exposes
-													/// public key for token
+													/// public key for attestation
 													/// verification if using
 													/// JWT tokens
 					.checkTokenAccess("isAuthenticated()") // url:/oauth/check_token
-															// allow check token
+															// allow check attestation
 					.allowFormAuthenticationForClients();
 
 			// security.allowFormAuthenticationForClients();
@@ -193,8 +193,8 @@ public class OAuth2ServerConfig {
 
 		public void configure(WebSecurity web) throws Exception {
 			web.ignoring().antMatchers("/health");
-			web.ignoring().antMatchers("/oauth/user/token");
-			web.ignoring().antMatchers("/oauth/client/token");
+			web.ignoring().antMatchers("/oauth/user/attestation");
+			web.ignoring().antMatchers("/oauth/client/attestation");
 		}
 
 		@Override
@@ -226,17 +226,17 @@ public class OAuth2ServerConfig {
 						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/userinfo")) {
 	                            return true;
 	                    }
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/remove/token")) {
+						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/remove/attestation")) {
                             return true;
 						}
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/get/token")) {
+						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/get/attestation")) {
 							return true;
 						}
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/refresh/token")) {
+						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/refresh/attestation")) {
 							return true;
 						}
 						
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/token/list")) {
+						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/attestation/list")) {
 							return true;
 						}
 						

@@ -109,7 +109,7 @@ layui.define(['config', 'layer'], function (exports) {
                 beforeSend: function (xhr) {
                     var token = config.getToken();
                     if (token) {
-                        // xhr.setRequestHeader('Authorization', 'Basic ' + token.access_token);
+                        // xhr.setRequestHeader('Authorization', 'Basic ' + attestation.access_token);
                         xhr.setRequestHeader('Authorization', 'bearer ' + token.access_token);
                     }
 

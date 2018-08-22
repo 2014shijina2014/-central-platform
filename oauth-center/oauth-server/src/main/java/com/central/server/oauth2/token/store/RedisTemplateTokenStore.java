@@ -160,7 +160,7 @@ public class RedisTemplateTokenStore implements TokenStore {
 
 	public void removeAccessToken(String tokenValue) {
 		OAuth2AccessToken removed = (OAuth2AccessToken) redisTemplate.opsForValue().get(ACCESS+tokenValue);
-		// Don't remove the refresh token - it's up to the caller to do that
+		// Don't remove the refresh attestation - it's up to the caller to do that
 		OAuth2Authentication authentication = (OAuth2Authentication) this.redisTemplate.opsForValue().get(AUTH+tokenValue);
 		
 		
@@ -174,7 +174,7 @@ public class RedisTemplateTokenStore implements TokenStore {
 		
 			String clientId = authentication.getOAuth2Request().getClientId();
 			
-//			redisTemplate.opsForList().rightPush("UNAME_TO_ACCESS:"+getApprovalKey(authentication), token) ;
+//			redisTemplate.opsForList().rightPush("UNAME_TO_ACCESS:"+getApprovalKey(authentication), attestation) ;
 			redisTemplate.opsForList().leftPop(UNAME_TO_ACCESS+getApprovalKey(clientId, authentication.getName()));
 			
 			redisTemplate.opsForList().leftPop(CLIENT_ID_TO_ACCESS+clientId);

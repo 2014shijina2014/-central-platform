@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,14 +123,21 @@ public class SysRoleServiceImpl implements SysRoleService {
 
 	@Override
 	public PageResult<SysRole> findRoles(Map<String, Object> params) {
-		int total = sysRoleDao.count(params);
+		//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+		PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+		List<SysRole> list =  sysRoleDao.findList(params);
+		PageInfo<SysRole> pageInfo = new PageInfo(list);
+
+		return PageResult.<SysRole>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build()  ;
+
+		/*int total = sysRoleDao.count(params);
 		List<SysRole> list = Collections.emptyList();
 		if (total > 0) {
 			PageUtil.pageParamConver(params, false);
 
 			list = sysRoleDao.findList(params);
 		}
-		return PageResult.<SysRole>builder().data(list).code(0).count((long)total).build()  ;
+		return PageResult.<SysRole>builder().data(list).code(0).count((long)total).build()  ;*/
 	}
 
 	@Override
