@@ -152,8 +152,9 @@
 		<module>monitor-center</module>
 		<!--任务中心-->
 		<module>job-center</module>
-		<!-- 业务 -->
+		<!-- 业务中心 -->
 		<module>business-center</module>
+		<!-- 压测 -->
 		<module>tuning-center</module>
 		
 	</modules>
