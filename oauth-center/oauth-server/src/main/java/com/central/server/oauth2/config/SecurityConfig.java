@@ -22,7 +22,7 @@ import com.central.model.properties.PermitUrlProperties;
 
 /**
  * spring security配置
- * 
+ *
  * @author owen 624191343@qq.com
  * @version 创建时间：2017年11月12日 上午22:57:51 2017年10月16日
  *          在WebSecurityConfigurerAdapter不拦截oauth要开放的资源
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private OauthLogoutHandler oauthLogoutHandler;
 	@Autowired
 	private PermitUrlProperties permitUrlProperties ;
-	
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
@@ -62,12 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// 忽略登录界面
 		web.ignoring().antMatchers("/login.html");
 		web.ignoring().antMatchers("/hello.html");
-		web.ignoring().antMatchers("/oauth/user/attestation");
-		web.ignoring().antMatchers("/oauth/client/attestation");
+		web.ignoring().antMatchers("/oauth/user/token");
+		web.ignoring().antMatchers("/oauth/client/token");
 	}
 	/**
 	 * 认证管理
-	 * 
+	 *
 	 * @return 认证管理对象
 	 * @throws Exception
 	 *             认证异常信息
@@ -110,7 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/**
 	 * 全局用户信息
-	 * 
+	 *
 	 * @param auth
 	 *            认证管理
 	 * @throws Exception

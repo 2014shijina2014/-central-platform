@@ -29,9 +29,9 @@
 //        logger.debug("得到头信息中的Authorization: " + httpServletRequest.getHeader("Authorization"));
 //        
 ////        String header = httpServletRequest.getHeader("Authorization") ;
-////        String attestation = StringUtils.substringAfter(header, "bearer ") ;
-////        
-////        Claims claims =  Jwts.parser().setSigningKey("neusoft".getBytes("UTF-8")).parseClaimsJws(attestation).getBody() ;
+////        String token = StringUtils.substringAfter(header, "bearer ") ;
+////
+////        Claims claims =  Jwts.parser().setSigningKey("neusoft".getBytes("UTF-8")).parseClaimsJws(token).getBody() ;
 ////
 ////        logger.debug("claims: " + claims);
 //        

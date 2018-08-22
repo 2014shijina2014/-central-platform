@@ -71,4 +71,4 @@ CREATE TABLE `sys_services` (
 # Data for table "sys_services"
 #
 
-INSERT INTO `sys_services` VALUES (71,0,'授权服务','','/auth',1,'',1),(72,71,'用户授权token','','/auth/user/attestation',1,'',100),(73,71,'应用申请token','','/auth/client/attestation',1,'',100),(74,0,'测试微服务','','/client',1,'',100),(75,74,'hello接口','','/client/hello',1,'',100);
+INSERT INTO `sys_services` VALUES (71,0,'授权服务','','/auth',1,'',1),(72,71,'用户授权token','','/auth/user/token',1,'',100),(73,71,'应用申请token','','/auth/client/token',1,'',100),(74,0,'测试微服务','','/client',1,'',100),(75,74,'hello接口','','/client/hello',1,'',100);

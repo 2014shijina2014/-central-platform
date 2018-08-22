@@ -25,22 +25,22 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 	public static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
 	public static final String LOGIN_IDENTITY_TOKEN;
-    static {
-        String username = PropertiesUtil.getString("xxl.job.login.username");
-        String password = PropertiesUtil.getString("xxl.job.login.password");
+	static {
+		String username = PropertiesUtil.getString("xxl.job.login.username");
+		String password = PropertiesUtil.getString("xxl.job.login.password");
 
-        // login attestation
-        String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
+		// login token
+		String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
 		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
 
 		LOGIN_IDENTITY_TOKEN = tokenTmp;
-    }
+	}
 
 
 
 	public static boolean login(HttpServletResponse response, String username, String password, boolean ifRemember){
 
-    	// login attestation
+		// login token
 		String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
 		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
 
@@ -67,11 +67,11 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
+
 		if (!(handler instanceof HandlerMethod)) {
 			return super.preHandle(request, response, handler);
 		}
-		
+
 		if (!ifLogin(request)) {
 			HandlerMethod method = (HandlerMethod)handler;
 			PermessionLimit permission = method.getMethodAnnotation(PermessionLimit.class);
@@ -81,8 +81,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 				return false;
 			}
 		}
-		
+
 		return super.preHandle(request, response, handler);
 	}
-	
+
 }

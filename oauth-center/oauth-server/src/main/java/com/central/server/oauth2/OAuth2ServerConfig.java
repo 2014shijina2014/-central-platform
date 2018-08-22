@@ -168,11 +168,11 @@ public class OAuth2ServerConfig {
 		public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 
 			security.tokenKeyAccess("permitAll()") /// url:/oauth/token_key,exposes
-													/// public key for attestation
-													/// verification if using
-													/// JWT tokens
+					/// public key for token
+					/// verification if using
+					/// JWT tokens
 					.checkTokenAccess("isAuthenticated()") // url:/oauth/check_token
-															// allow check attestation
+					// allow check token
 					.allowFormAuthenticationForClients();
 
 			// security.allowFormAuthenticationForClients();
@@ -193,62 +193,62 @@ public class OAuth2ServerConfig {
 
 		public void configure(WebSecurity web) throws Exception {
 			web.ignoring().antMatchers("/health");
-			web.ignoring().antMatchers("/oauth/user/attestation");
-			web.ignoring().antMatchers("/oauth/client/attestation");
+			web.ignoring().antMatchers("/oauth/user/token");
+			web.ignoring().antMatchers("/oauth/client/token");
 		}
 
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			http.requestMatcher(
-				/**
-				 * 判断来源请求是否包含oauth2授权信息
-				*/	
-				new RequestMatcher() {
-					private AntPathMatcher antPathMatcher = new AntPathMatcher();
-					@Override
-					public boolean matches(HttpServletRequest request) {
-						// 请求参数中包含access_token参数
-						if (request.getParameter(OAuth2AccessToken.ACCESS_TOKEN) != null) {
-							return true;
-						}
-	
-						// 头部的Authorization值以Bearer开头
-						String auth = request.getHeader("Authorization");
-						if (auth != null) {
-							if (auth.startsWith(OAuth2AccessToken.BEARER_TYPE)) {
+					/**
+					 * 判断来源请求是否包含oauth2授权信息
+					 */
+					new RequestMatcher() {
+						private AntPathMatcher antPathMatcher = new AntPathMatcher();
+						@Override
+						public boolean matches(HttpServletRequest request) {
+							// 请求参数中包含access_token参数
+							if (request.getParameter(OAuth2AccessToken.ACCESS_TOKEN) != null) {
 								return true;
 							}
+
+							// 头部的Authorization值以Bearer开头
+							String auth = request.getHeader("Authorization");
+							if (auth != null) {
+								if (auth.startsWith(OAuth2AccessToken.BEARER_TYPE)) {
+									return true;
+								}
+							}
+
+
+							String url = request.getRequestURI() ;
+
+							if (antPathMatcher.match(request.getRequestURI(),  "/oauth/userinfo")) {
+								return true;
+							}
+							if (antPathMatcher.match(request.getRequestURI(),  "/oauth/remove/token")) {
+								return true;
+							}
+							if (antPathMatcher.match(request.getRequestURI(),  "/oauth/get/token")) {
+								return true;
+							}
+							if (antPathMatcher.match(request.getRequestURI(),  "/oauth/refresh/token")) {
+								return true;
+							}
+
+							if (antPathMatcher.match(request.getRequestURI(),  "/oauth/token/list")) {
+								return true;
+							}
+
+							if (antPathMatcher.match("/clients/**",  request.getRequestURI())) {
+								return true;
+							}
+
+
+
+							return false;
 						}
-						
-						
-						String url = request.getRequestURI() ;
-						
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/userinfo")) {
-	                            return true;
-	                    }
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/remove/attestation")) {
-                            return true;
-						}
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/get/attestation")) {
-							return true;
-						}
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/refresh/attestation")) {
-							return true;
-						}
-						
-						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/attestation/list")) {
-							return true;
-						}
-						
-						if (antPathMatcher.match("/clients/**",  request.getRequestURI())) {
-							return true;
-						}
-						
-						
-						
-						return false;
-				}
-			}
+					}
 
 			).authorizeRequests().antMatchers(permitUrlProperties.getOauth_urls()).permitAll().anyRequest()
 					.authenticated();

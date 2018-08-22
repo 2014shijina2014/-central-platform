@@ -260,7 +260,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             $('#btnLogout').click(function () {
                 layer.confirm('确定退出登录？', function () {
                     //通过认证中心 tuic
-                    admin.req('api-auth/oauth/remove/attestation?access_token='+config.getToken().access_token, {}, function (data) {
+                    admin.req('api-auth/oauth/remove/token?access_token='+config.getToken().access_token, {}, function (data) {
                             config.removeToken();
                             location.replace('login.html');
                     }, 'POST');

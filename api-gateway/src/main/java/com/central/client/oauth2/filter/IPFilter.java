@@ -111,11 +111,11 @@ public class IPFilter extends OncePerRequestFilter implements InitializingBean {
 	}
 
 	/**
-	 * Extract the OAuth bearer attestation from a header.
+	 * Extract the OAuth bearer token from a header.
 	 * 
 	 * @param request
 	 *            The request.
-	 * @return The attestation, or null if no OAuth authorization header was supplied.
+	 * @return The token, or null if no OAuth authorization header was supplied.
 	 */
 	protected String extractHeaderToken(HttpServletRequest request) {
 		Enumeration<String> headers = request.getHeaders("Authorization");

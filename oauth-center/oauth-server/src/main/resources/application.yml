@@ -102,8 +102,8 @@ security:
         type: redis
 
 permit:
-  http_urls:  /oauth/user/attestation , /oauth/client/attestation , /login  ,  /user/login ,/oauth/authorize , /doc.html ,/user/logout
-  oauth_urls: /oauth/user/attestation , /oauth/client/attestation  ,/oauth/authorize ,/user/logout
+  http_urls:  /oauth/user/token , /oauth/client/token , /login  ,  /user/login ,/oauth/authorize , /doc.html ,/user/logout
+  oauth_urls: /oauth/user/token , /oauth/client/token  ,/oauth/authorize ,/user/logout
 
 #设置最大超时时间
 ribbon:  
