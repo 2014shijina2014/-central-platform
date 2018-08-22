@@ -44,6 +44,10 @@
                 and autoapprove = #{params.autoapprove}
             </if>
 
+            <if test="params.searchKey != null and params.searchKey != ''">
+                and client_id like concat('%', #{params.searchKey}, '%')
+            </if>
+
         </where>
     </sql>
 

@@ -20,8 +20,8 @@
 
 <!-- 表格操作列 -->
 <script type="text/html" id="app-table-bar">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 
@@ -54,21 +54,37 @@
             ]]
         });
 
+        // 工具条点击事件
+        table.on('tool(app-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'del') { // 删除
+                doDelete(obj);
+            }else if (layEvent === 'edit'){ //修改
+
+            }
+        });
 
 
+        // 删除
+        var doDelete = function (obj) {
+            layer.confirm('确定要删除吗？', function (i) {
+                layer.close(i);
+                layer.load(2);
+                admin.req('api-auth/clients/' + obj.data.id, {}, function (data) {
+                    layer.closeAll('loading');
+                    layer.msg('成功', {icon: 1});
+                    obj.del();
+                }, 'DELETE');
+            });
+        };
 
-
-
-
-
-
-
-
-
-
-
-
-
+        // 搜索按钮点击事件
+        $('#app-btn-search').click(function () {
+            var key = $('#app-edit-search').val();
+            table.reload('app-table', {where: {searchKey: key}});
+        });
 
     });
 </script>
