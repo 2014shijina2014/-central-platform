@@ -4,11 +4,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +44,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     @Transactional
@@ -111,16 +121,23 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public PageResult<Client> listRoles(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		int total = clientDao.count(params);
-		List<Client> list = Collections.emptyList();
 
-		if (total > 0) {
-			PageUtil.pageParamConver(params, false);
-			list = clientDao.findList(params);
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+        List<Client> list = clientDao.findList(params);
+        PageInfo<Client> pageInfo = new PageInfo<>(list);
+        return PageResult.<Client>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build()  ;
 
-		}
-		return PageResult.<Client>builder().data(list).code(0).count((long)total).build()  ;
+//		// TODO Auto-generated method stub
+//		int total = clientDao.count(params);
+//		List<Client> list = Collections.emptyList();
+//
+//		if (total > 0) {
+//			PageUtil.pageParamConver(params, false);
+//			list = clientDao.findList(params);
+//
+//		}
+//		return PageResult.<Client>builder().data(list).code(0).count((long)total).build()  ;
 	}
 
 }

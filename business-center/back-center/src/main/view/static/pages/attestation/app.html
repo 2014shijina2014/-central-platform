@@ -10,6 +10,7 @@
         <div class="layui-form toolbar">
         搜索：<input id="app-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
         <button id="app-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+        <button id="app-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
         </div>
 
         <!-- 数据表格 -->
@@ -25,7 +26,6 @@
 
 
 <script>
-
     layui.use(['form', 'table', 'util', 'config', 'admin'],function () {
         var form = layui.form;
         var table = layui.table;
@@ -47,12 +47,28 @@
             cols: [[
                 {type: 'numbers'},
                 {field: 'clientId',width:180, sort: true, title: '应用标识'},
-                {field: 'user_name',  sort: true, title: '应用密钥'},
-                {field: 'token_type', sort: true, title: '类型'},
-                {field: 'token_value', sort: true, title: 'token'},
-                {align: 'center', width:80, toolbar: '#token-table-bar', title: '操作'}
+                {field: 'clientSecretStr', width:180, sort: true, title: '应用密钥'},
+                {field: 'webServerRedirectUri',sort: true, title: '回调地址'},
+                {field: 'authorizedGrantTypes', sort: true, title: 'oauth授权方式'},
+                {align: 'center',width:250, toolbar: '#app-table-bar', title: '操作'}
             ]]
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     });
 </script>

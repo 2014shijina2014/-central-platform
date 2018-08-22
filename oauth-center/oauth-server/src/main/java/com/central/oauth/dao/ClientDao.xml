@@ -55,12 +55,13 @@
     <select id="findList" resultType="com.central.oauth.model.Client">
         select id id , client_id clientId , resource_ids resourceIds ,
         client_secret clientSecret ,
+        client_secret_str clientSecretStr ,
         web_server_redirect_uri
         webServerRedirectUri from oauth_client_details t
         <include refid="where"/>
-        <if test="params.page != null and params.page != ''  and params.limit != null and params.limit != '' ">
-			limit #{params.page},#{params.limit}
-		</if>
+        <!--<if test="params.page != null and params.page != ''  and params.limit != null and params.limit != '' ">-->
+			<!--limit #{params.page},#{params.limit}-->
+		<!--</if>-->
     </select>
 
 

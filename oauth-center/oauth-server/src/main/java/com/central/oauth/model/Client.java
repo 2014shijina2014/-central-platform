@@ -14,6 +14,7 @@ public class Client implements Serializable{
    private String clientId;
    private String resourceIds = "";
    private String clientSecret;
+   private String clientSecretStr;
    private String scope = "all";
    private String authorizedGrantTypes = "authorization_code,password,refresh_token,client_credentials";
    private String webServerRedirectUri;
