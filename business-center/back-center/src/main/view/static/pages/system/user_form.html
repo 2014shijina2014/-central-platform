@@ -91,7 +91,7 @@
                     layer.msg(data.resp_msg, {icon: 1});
                     admin.finishPopupCenter();
                 } else {
-                    layer.msg("提交失败", {icon: 2});
+                    layer.msg(data.resp_msg, {icon: 2});
                 }
             }, $('#user-form').attr('method'));
             return false;

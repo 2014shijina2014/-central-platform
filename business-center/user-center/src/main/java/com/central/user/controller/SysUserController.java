@@ -9,6 +9,7 @@ import java.util.Set;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.central.easypoi.user.SysUserExcel;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,6 @@ public class SysUserController {
     public Result updateMe(@RequestBody SysUser sysUser) {
 //        SysUser user = SysUserUtil.getLoginAppUser();
 //        sysUser.setId(user.getId());
-
         SysUser user = appUserService.updateSysUser(sysUser);
 
         return Result.succeed(user,"操作成功");
@@ -194,6 +194,11 @@ public class SysUserController {
         if (StringUtils.isBlank(sysUser.getNewPassword())) {
             throw new IllegalArgumentException("新密码不能为空");
         }
+
+        if (sysUser.getId() == 1L){
+            return Result.failed("超级管理员不给予修改");
+        }
+
         return appUserService.updatePassword(sysUser.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
     }
 
@@ -211,6 +216,10 @@ public class SysUserController {
     })
     @PreAuthorize("hasAuthority('user:get/users/updateEnabled')")
     public Result updateEnabled(@RequestParam Map<String, Object> params){
+        Long id = MapUtils.getLong(params, "id");
+        if (id == 1L){
+            return Result.failed("超级管理员不给予修改");
+        }
         return appUserService.updateEnabled(params);
     }
 
@@ -222,6 +231,9 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('user:post/users/{id}/resetPassword')")
     @PostMapping(value = "/users/{id}/resetPassword")
     public Result resetPassword(@PathVariable Long id) {
+        if (id == 1L){
+            return Result.failed("超级管理员不给予修改");
+        }
         appUserService.updatePassword(id, null, "123456");
         return Result.succeed(null,"重置成功");
     }
@@ -235,6 +247,9 @@ public class SysUserController {
     @PostMapping("/users/saveOrUpdate")
     @PreAuthorize("hasAuthority('user:post/users/saveOrUpdate')")
     public Result saveOrUpdate(@RequestBody SysUser sysUser) {
+        if (sysUser.getId() == 1L){
+            return Result.failed("超级管理员不给予修改");
+        }
         return  appUserService.saveOrUpdate(sysUser);
     }
 
