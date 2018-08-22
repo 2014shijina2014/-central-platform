@@ -143,6 +143,10 @@ public class SysUserServiceImpl implements SysUserService {
 							user.setNickname(sysUser.getNickname());
 						}
 
+						if (!StringUtils.isBlank(sysUser.getPhone())){
+							user.setPhone(sysUser.getPhone());
+						}
+
 						if (sysUser.getSex() != null) {
 							user.setSex(sysUser.getSex());
 						}

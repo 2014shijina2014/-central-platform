@@ -247,9 +247,6 @@ public class SysUserController {
     @PostMapping("/users/saveOrUpdate")
     @PreAuthorize("hasAuthority('user:post/users/saveOrUpdate')")
     public Result saveOrUpdate(@RequestBody SysUser sysUser) {
-        if (sysUser.getId() == 1L){
-            return Result.failed("超级管理员不给予修改");
-        }
         return  appUserService.saveOrUpdate(sysUser);
     }
 
