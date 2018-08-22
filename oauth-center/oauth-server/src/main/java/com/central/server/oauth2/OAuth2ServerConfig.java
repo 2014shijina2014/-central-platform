@@ -236,6 +236,13 @@ public class OAuth2ServerConfig {
 							return true;
 						}
 						
+						if (antPathMatcher.match(request.getRequestURI(),  "/oauth/token/list")) {
+							return true;
+						}
+						
+						if (antPathMatcher.match("/clients/**",  request.getRequestURI())) {
+							return true;
+						}
 						
 						
 						

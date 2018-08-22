@@ -29,7 +29,7 @@ import com.central.model.properties.PermitUrlProperties;
  */
 @Configuration
 //@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties(PermitUrlProperties.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

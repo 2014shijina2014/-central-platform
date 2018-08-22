@@ -411,26 +411,32 @@ public class OAuth2Controller {
 
 			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
 			HashMap<String, String> map = new HashMap<String, String>();
-
+			 
+			
+			 
+			
 			map.put("token_type", token.getTokenType());
 			map.put("token_value", token.getValue());
 			map.put("expires_in", token.getExpiresIn()+"");
-
+			
+			
 			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
 			Authentication authentication = oAuth2Auth.getUserAuthentication();
 
-
+			map.put("client_id", oAuth2Auth.getOAuth2Request().getClientId());
+			map.put("grant_type", oAuth2Auth.getOAuth2Request().getGrantType());
+			
 			if (authentication instanceof UsernamePasswordAuthenticationToken) {
 				UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
-
+			
 				if(authenticationToken.getPrincipal() instanceof LoginAppUser ){
 					LoginAppUser user = (LoginAppUser) authenticationToken.getPrincipal();
 					map.put("user_id", user.getId()+"");
 					map.put("user_name", user.getUsername()+"");
 					map.put("user_head_imgurl", user.getHeadImgUrl()+"");
 				}
-
-
+				
+				
 			}else if (authentication instanceof PreAuthenticatedAuthenticationToken ){
 				//刷新token方式
 				PreAuthenticatedAuthenticationToken authenticationToken = (PreAuthenticatedAuthenticationToken) authentication;
