@@ -19,7 +19,7 @@
             <input id="user-search-value" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
             <button id="user-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
             <button id="user-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
-            <button id="user-btn-export" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>导出</button>
+            <button id="user-btn-export" class="layui-btn icon-btn"><i class="layui-icon">&#xe601;</i>导出</button>
         </div>
 
         <table class="layui-table" id="user-table" lay-filter="user-table"></table>
@@ -132,14 +132,19 @@
 
         // 导出
         $('#user-btn-export').click(function () {
-            admin.req('api-user/users/exportUser', {}, function (data) {
-                layer.closeAll('loading');
-                if (data.resp_code == 0) {
-                    layer.msg(data.resp_msg, {icon: 1});
-                } else {
-                    layer.msg("请求失败", {icon: 2});
+            var url = config.base_server + 'api-user/users/exportUser?access_token='+config.getToken().access_token;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.responseType = "blob";
+            xhr.setRequestHeader("client_type", "DESKTOP_WEB");
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    var blob = this.response;
+                    var objecturl = URL.createObjectURL(blob);
+                    window.location.href = objecturl;
                 }
-            }, 'POST');
+            }
+            xhr.send();
         });
 
         // 修改user状态
