@@ -26,56 +26,6 @@ public class SysMenuController {
 	@Autowired
 	private SysMenuService menuService;
 
-	/**
-	 * 当前登录用户的菜单
-	 * @return
-	 */
-	@GetMapping("/current")
-	@ApiOperation(value = "查询当前用户菜单")
-	public List<SysMenu> findMyMenu() {
-		LoginAppUser loginAppUser = SysUserUtil.getLoginAppUser();
-		Set<SysRole> roles = loginAppUser.getSysRoles();
-		if (CollectionUtils.isEmpty(roles)) {
-			return Collections.emptyList();
-		}
-
-		List<SysMenu> menus = menuService
-				.findByRoles(roles.parallelStream().map(SysRole::getId).collect(Collectors.toSet()));
-
-
-		List<SysMenu> sysMenus = TreeBuilder(menus);
-
-//		List<SysMenu> firstLevelMenus = menus.stream().filter(m -> m.getParentId().equals(0L))
-//				.collect(Collectors.toList());
-//		firstLevelMenus.forEach(m -> {
-//			setChild(m, menus);
-//		});
-
-		return sysMenus;
-	}
-
-	/**
-	 * 两层循环实现建树
-	 * @param sysMenus
-	 * @return
-	 */
-	public static List<SysMenu> TreeBuilder(List<SysMenu> sysMenus){
-		List<SysMenu> menus = new ArrayList<SysMenu>();
-		for (SysMenu sysMenu : sysMenus){
-			if (ObjectUtils.equals(-1L,sysMenu.getParentId())){
-				menus.add(sysMenu);
-			}
-			for (SysMenu menu :sysMenus){
-				if (menu.getParentId().equals(sysMenu.getId())){
-					if (sysMenu.getSubMenus() == null){
-						sysMenu.setSubMenus(new ArrayList<>());
-					}
-					sysMenu.getSubMenus().add(menu);
-				}
-			}
-		}
-		return menus;
-	}
 
 	private void setChild(SysMenu menu, List<SysMenu> menus) {
 		List<SysMenu> child = menus.stream().filter(m -> m.getParentId().equals(menu.getId()))
@@ -91,7 +41,7 @@ public class SysMenuController {
 
 	/**
 	 * 菜单树ztree
-	 * 
+	 *
 	 * @return
 	 */
 	@PreAuthorize("hasAnyAuthority('back:menu:granted','back:menu:query')")
@@ -162,24 +112,7 @@ public class SysMenuController {
 		return menu;
 	}
 
-	/**
-	 * 删除菜单
-	 * @param id
-	 */
-	@PreAuthorize("hasAuthority('back:menu:delete')")
-	@ApiOperation(value = "删除菜单")
-	@DeleteMapping("/{id}")
-	public Result delete(@PathVariable Long id) {
 
-		try {
-			menuService.delete(id);
-			return Result.succeed("操作成功");
-		}catch (Exception ex){
-			ex.printStackTrace();
-			return Result.failed("操作失败");
-		}
-
-	}
 
 	/**
 	 * 查询所有菜单
@@ -217,8 +150,27 @@ public class SysMenuController {
 		return menuService.findById(id);
 	}
 
+	// <!--  -->
+	/**
+	 * 删除菜单
+	 * @param id
+	 */
+	@PreAuthorize("hasAuthority('menu:delete/menus/{id}')")
+	@ApiOperation(value = "删除菜单")
+	@DeleteMapping("/{id}")
+	public Result delete(@PathVariable Long id) {
 
-	@PreAuthorize("hasAuthority('back:menu:findMenusByRoleId')")
+		try {
+			menuService.delete(id);
+			return Result.succeed("操作成功");
+		}catch (Exception ex){
+			ex.printStackTrace();
+			return Result.failed("操作失败");
+		}
+
+	}
+
+	@PreAuthorize("hasAuthority('menu:get/menus/{roleId}/menus')")
 	@ApiOperation(value = "根据roleId获取对应的菜单")
 	@GetMapping("/{roleId}/menus")
 	public List<Map<String, Object>> findMenusByRoleId(@PathVariable Long roleId) {
@@ -247,7 +199,7 @@ public class SysMenuController {
 	/**
 	 * 给角色分配菜单
 	 */
-	@PreAuthorize("hasAuthority('back:menu:granted')")
+	@PreAuthorize("hasAuthority('menu:post/menus/granted')")
 	@ApiOperation(value = "角色分配菜单")
 	@PostMapping("/granted")
 	public Result setMenuToRole(@RequestBody SysMenu sysMenu) {
@@ -258,7 +210,7 @@ public class SysMenuController {
 	}
 
 
-	@PreAuthorize("hasAuthority('back:menu:query')")
+	@PreAuthorize("hasAuthority('menu:get/menus/findAlls')")
 	@ApiOperation(value = "查询所有菜单")
 	@GetMapping("/findAlls")
 	public PageResult<SysMenu> findAlls() {
@@ -269,7 +221,7 @@ public class SysMenuController {
 
 	@ApiOperation(value = "获取菜单以及顶级菜单")
 	@GetMapping("/findOnes")
-	@PreAuthorize("hasAuthority('back:menu:findOnes')")
+	@PreAuthorize("hasAuthority('menu:get/menus/findOnes')")
 	public PageResult<SysMenu> findOnes(){
 		List<SysMenu> list = menuService.findOnes();
 		return PageResult.<SysMenu>builder().data(list).code(0).count((long)list.size()).build() ;
@@ -280,7 +232,7 @@ public class SysMenuController {
 	 * @param menu
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:menu:saveOrUpdate')")
+	@PreAuthorize("hasAuthority('menu:post/menus/saveOrUpdate')")
 	@ApiOperation(value = "新增菜单")
 	@PostMapping("saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysMenu menu) {
@@ -299,6 +251,50 @@ public class SysMenuController {
 
 	}
 
+	/**
+	 * 当前登录用户的菜单
+	 * @return
+	 */
+	@PreAuthorize("hasAuthority('menu:get/menus/current')")
+	@GetMapping("/current")
+	@ApiOperation(value = "查询当前用户菜单")
+	public List<SysMenu> findMyMenu() {
+		LoginAppUser loginAppUser = SysUserUtil.getLoginAppUser();
+		Set<SysRole> roles = loginAppUser.getSysRoles();
+		if (CollectionUtils.isEmpty(roles)) {
+			return Collections.emptyList();
+		}
 
+		List<SysMenu> menus = menuService
+				.findByRoles(roles.parallelStream().map(SysRole::getId).collect(Collectors.toSet()));
+
+
+		List<SysMenu> sysMenus = TreeBuilder(menus);
+
+		return sysMenus;
+	}
+
+	/**
+	 * 两层循环实现建树
+	 * @param sysMenus
+	 * @return
+	 */
+	public static List<SysMenu> TreeBuilder(List<SysMenu> sysMenus){
+		List<SysMenu> menus = new ArrayList<SysMenu>();
+		for (SysMenu sysMenu : sysMenus){
+			if (ObjectUtils.equals(-1L,sysMenu.getParentId())){
+				menus.add(sysMenu);
+			}
+			for (SysMenu menu :sysMenus){
+				if (menu.getParentId().equals(sysMenu.getId())){
+					if (sysMenu.getSubMenus() == null){
+						sysMenu.setSubMenus(new ArrayList<>());
+					}
+					sysMenu.getSubMenus().add(menu);
+				}
+			}
+		}
+		return menus;
+	}
 
 }

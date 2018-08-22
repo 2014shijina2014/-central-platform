@@ -64,26 +64,7 @@ public class SysRoleController {
 		return sysRole;
 	}
 
-	/**
-	 * 后台管理删除角色
-	 * delete /role/1
-	 * @param id
-	 */
-	@PreAuthorize("hasAuthority('back:role:delete')")
-	@ApiOperation(value = "后台管理删除角色")
-	@DeleteMapping("/roles/{id}")
-	public Result deleteRole(@PathVariable Long id) {
-		try {
-			if (id == 1L){
-				return Result.failed("管理员不可以删除");
-			}
-			sysRoleService.deleteRole(id);
-			return Result.succeed("操作成功");
-		}catch (Exception e){
-			e.printStackTrace();
-			return Result.failed("操作失败");
-		}
-	}
+
 
 	/**
 	 * 后台管理修改角色
@@ -146,12 +127,13 @@ public class SysRoleController {
 		return sysRoleService.findById(id);
 	}
 
+//	<!-- -->
 	/**
 	 * 后台管理查询角色
 	 * @param params
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:role:query')")
+	@PreAuthorize("hasAuthority('role:get/roles')")
 	@ApiOperation(value = "后台管理查询角色")
 	@GetMapping("/roles")
 	public PageResult<SysRole> findRoles(@RequestParam Map<String, Object> params) {
@@ -163,10 +145,31 @@ public class SysRoleController {
 	 * @param sysRole
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:role:saveOrUpdate')")
+	@PreAuthorize("hasAuthority('role:post/roles/saveOrUpdate')")
 	@PostMapping("/roles/saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysRole sysRole) {
 		return sysRoleService.saveOrUpdate(sysRole);
+	}
+
+	/**
+	 * 后台管理删除角色
+	 * delete /role/1
+	 * @param id
+	 */
+	@PreAuthorize("hasAuthority('role:delete/roles/{id}')")
+	@ApiOperation(value = "后台管理删除角色")
+	@DeleteMapping("/roles/{id}")
+	public Result deleteRole(@PathVariable Long id) {
+		try {
+			if (id == 1L){
+				return Result.failed("管理员不可以删除");
+			}
+			sysRoleService.deleteRole(id);
+			return Result.succeed("操作成功");
+		}catch (Exception e){
+			e.printStackTrace();
+			return Result.failed("操作失败");
+		}
 	}
 
 }

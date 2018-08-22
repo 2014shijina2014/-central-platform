@@ -124,7 +124,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Override
 	public PageResult<SysRole> findRoles(Map<String, Object> params) {
 		//设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-		PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+		if (MapUtils.getInteger(params, "page")!=null && MapUtils.getInteger(params, "limit")!=null)
+			PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
 		List<SysRole> list =  sysRoleDao.findList(params);
 		PageInfo<SysRole> pageInfo = new PageInfo(list);
 

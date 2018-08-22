@@ -94,12 +94,13 @@ public class SysPermissionController {
 		return sysPermission;
 	}
 
+//	<!-- -->
 	/**
 	 * 删除权限标识
 	 * 参考 /permissions/1
 	 * @param id
 	 */
-	@PreAuthorize("hasAuthority('back:permission:delete')")
+	@PreAuthorize("hasAuthority('permission:delete/permissions/{id}')")
 	@ApiOperation(value = "后台管理删除权限标识")
 	@DeleteMapping("/permissions/{id}")
 	public Result delete(@PathVariable Long id) {
@@ -114,12 +115,13 @@ public class SysPermissionController {
 
 	}
 
+
 	/**
 	 * 查询所有的权限标识
 	 * 参考 ?start=0&length=10
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:permission:query')")
+	@PreAuthorize("hasAuthority('permission:get/permissions')")
 	@ApiOperation(value = "后台管理查询所有的权限标识")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "分页起始位置", required = true, dataType = "Integer"),
@@ -135,7 +137,7 @@ public class SysPermissionController {
 	 * @param sysPermission
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:permissions:saveOrUpdate')")
+	@PreAuthorize("hasAuthority('permission:post/permissions/saveOrUpdate')")
 	@PostMapping("/permissions/saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysPermission sysPermission) {
 		try{
@@ -150,7 +152,7 @@ public class SysPermissionController {
 		}
 	}
 
-	@PreAuthorize("hasAuthority('back:permissions:findAuthByRoleId')")
+	@PreAuthorize("hasAuthority('permission:get/permissions/{roleId}/permissions')")
 	@ApiOperation(value = "根据roleId获取对应的权限")
 	@GetMapping("/permissions/{roleId}/permissions")
 	public List<Map<String, Object>> findAuthByRoleId(@PathVariable Long roleId) {
@@ -179,8 +181,8 @@ public class SysPermissionController {
 	/**
 	 * 给角色分配权限
 	 */
-	@PreAuthorize("hasAuthority('back:permissions:granted')")
-	@ApiOperation(value = "角色分配菜单")
+	@PreAuthorize("hasAuthority('permission:post/permissions/granted')")
+	@ApiOperation(value = "角色分配权限")
 	@PostMapping("/permissions/granted")
 	public Result setAuthToRole(@RequestBody SysPermission sysPermission) {
 		System.out.println(sysPermission);

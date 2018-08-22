@@ -71,23 +71,7 @@ public class SysUserController {
         return appUserService.findByUsername(username);
     }
 
-    /**
-     * 用户查询
-     * http://192.168.3.2:7000/users?access_token=3b45d059-601b-4c63-85f9-9d77128ee94d&start=0&length=10
-     * @param params
-     * @return
-     */
-    @PreAuthorize("hasAuthority('back:user:query')")
-    @ApiOperation(value = "用户查询列表")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "分页起始位置", required = true, dataType = "Integer"),
-        @ApiImplicitParam(name = "limit",value = "分页结束位置", required = true, dataType = "Integer")
-    })
-    @GetMapping("/users")
-//  searchKey=username, searchValue=as
-    public PageResult<SysUser> findUsers(@RequestParam Map<String, Object> params) {
-        return appUserService.findUsers(params);
-    }
+
 
     @PreAuthorize("hasAuthority('back:user:query')")
     @GetMapping("/users/{id}")
@@ -108,37 +92,9 @@ public class SysUserController {
         return sysUser;
     }
 
-    /**
-     * 修改自己的个人信息
-     *
-     * @param sysUser
-     * @return
-     */
-    @PutMapping("/users/me")
-    public Result updateMe(@RequestBody SysUser sysUser) {
-//        SysUser user = SysUserUtil.getLoginAppUser();
-//        sysUser.setId(user.getId());
 
-        SysUser user = appUserService.updateSysUser(sysUser);
 
-        return Result.succeed(user,"操作成功");
-    }
 
-    /**
-     * 修改密码
-     *
-     * @param sysUser
-     */
-    @PutMapping(value = "/users/password")
-    public Result updatePassword(@RequestBody SysUser sysUser) {
-        if (StringUtils.isBlank(sysUser.getOldPassword())) {
-            throw new IllegalArgumentException("旧密码不能为空");
-        }
-        if (StringUtils.isBlank(sysUser.getNewPassword())) {
-            throw new IllegalArgumentException("新密码不能为空");
-        }
-        return appUserService.updatePassword(sysUser.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
-    }
 
     /**
      * 管理后台，给用户重置密码
@@ -188,6 +144,59 @@ public class SysUserController {
     }
 
 
+//    <!-- -->
+    /**
+     * 用户查询
+     * http://192.168.3.2:7000/users?access_token=3b45d059-601b-4c63-85f9-9d77128ee94d&start=0&length=10
+     * @param params
+     * @return
+     */
+    @PreAuthorize("hasAuthority('user:get/users')")
+    @ApiOperation(value = "用户查询列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "分页起始位置", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "分页结束位置", required = true, dataType = "Integer")
+    })
+    @GetMapping("/users")
+//  searchKey=username, searchValue=as
+    public PageResult<SysUser> findUsers(@RequestParam Map<String, Object> params) {
+        return appUserService.findUsers(params);
+    }
+
+    /**
+     * 修改自己的个人信息
+     *
+     * @param sysUser
+     * @return
+     */
+    @PutMapping("/users/me")
+    @PreAuthorize("hasAuthority('user:put//users/me')")
+    public Result updateMe(@RequestBody SysUser sysUser) {
+//        SysUser user = SysUserUtil.getLoginAppUser();
+//        sysUser.setId(user.getId());
+
+        SysUser user = appUserService.updateSysUser(sysUser);
+
+        return Result.succeed(user,"操作成功");
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param sysUser
+     */
+    @PutMapping(value = "/users/password")
+    @PreAuthorize("hasAuthority('user:put/users/password')")
+    public Result updatePassword(@RequestBody SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getOldPassword())) {
+            throw new IllegalArgumentException("旧密码不能为空");
+        }
+        if (StringUtils.isBlank(sysUser.getNewPassword())) {
+            throw new IllegalArgumentException("新密码不能为空");
+        }
+        return appUserService.updatePassword(sysUser.getId(), sysUser.getOldPassword(), sysUser.getNewPassword());
+    }
+
     /**
      *  修改用户状态
      * @param params
@@ -200,6 +209,7 @@ public class SysUserController {
             @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "enabled",value = "是否启用", required = true, dataType = "Boolean")
     })
+    @PreAuthorize("hasAuthority('user:get/users/updateEnabled')")
     public Result updateEnabled(@RequestParam Map<String, Object> params){
         return appUserService.updateEnabled(params);
     }
@@ -209,7 +219,7 @@ public class SysUserController {
      * @param id
      * @author gitgeek
      */
-    @PreAuthorize("hasAuthority('back:user:password')")
+    @PreAuthorize("hasAuthority('user:post/users/{id}/resetPassword')")
     @PostMapping(value = "/users/{id}/resetPassword")
     public Result resetPassword(@PathVariable Long id) {
         appUserService.updatePassword(id, null, "123456");
@@ -223,7 +233,7 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/users/saveOrUpdate")
-    @PreAuthorize("hasAuthority('back:user:saveOrUpdate')")
+    @PreAuthorize("hasAuthority('user:post/users/saveOrUpdate')")
     public Result saveOrUpdate(@RequestBody SysUser sysUser) {
         return  appUserService.saveOrUpdate(sysUser);
     }
@@ -233,14 +243,14 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/users/exportUser")
-    @PreAuthorize("hasAuthority('back:user:exportUser')")
+    @PreAuthorize("hasAuthority('user:post/users/exportUser')")
     public void exportUser(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
         List<SysUserExcel> result = appUserService.findAllUsers(params);
 
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-disposition", "attachment;filename=myExcel.xls");
         OutputStream ouputStream = null;
-        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("测试用户导出","用户"),
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("用户导出","用户"),
                 SysUserExcel.class, result );
         try {
             ouputStream = response.getOutputStream();
@@ -256,12 +266,4 @@ public class SysUserController {
             }
         }
     }
-
-
-
-
-
-
-
-
 }
