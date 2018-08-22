@@ -1,15 +1,5 @@
 server:
   port: 9200
-#  tomcat: 
-#    accept-count: 1024
-#    max-threads: 1024
-#    max-connections: 2000
-  undertow:
-    io-threads: 16
-    worker-threads: 256
-    buffer-size: 1024
-    buffers-per-region: 1024
-    direct-buffers: true 
 
 
 spring:
@@ -127,30 +117,18 @@ hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 90000
 
 #设置最大容错超时时间
 hystrix:
-  threadpool:
-    default:
-      coreSize: 100
-      maximumSize: 5000
-      allowMaximumSizeToDivergeFromCoreSize: true
-      maxQueueSize: -1
   command:
     default:
-      circuitBreaker:
-        foreOpen: false
       execution:
         timeout:
-          enabled: true
+          enabled: false    #设置熔断的超时时间开启 false关闭熔断功能，true开启熔断功能
         isolation:
           thread:
-            timeoutInMilliseconds: 16000          
+            timeoutInMilliseconds: 90000     
         
 
  
 zuul:
-  ribbon-isolation-strategy: thread       # 提高吞吐量
-  threadPool:
-    useSeparateThreadPools: true
-    threadPoolKeyPrefix: api-gateway
   include:
     debug:
       header: true
