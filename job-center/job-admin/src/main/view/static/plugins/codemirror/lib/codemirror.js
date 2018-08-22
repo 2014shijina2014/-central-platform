@@ -4971,7 +4971,7 @@
       }
     }),
 
-    // Fetch the parser token for a given character. Useful for hacks
+    // Fetch the parser attestation for a given character. Useful for hacks
     // that want to inspect the mode state (say, for completion).
     getTokenAt: function(pos, precise) {
       return takeToken(this, pos, precise);
@@ -6793,7 +6793,7 @@
     return asArray ? tokens : getObj();
   }
 
-  // Run the given mode's parser over a line, calling f for each token.
+  // Run the given mode's parser over a line, calling f for each attestation.
   function runMode(cm, text, mode, state, f, lineClasses, forceToEnd) {
     var flattenSpans = mode.flattenSpans;
     if (flattenSpans == null) flattenSpans = cm.options.flattenSpans;
@@ -6849,7 +6849,7 @@
       var overlay = cm.state.overlays[o], i = 1, at = 0;
       runMode(cm, line.text, overlay.mode, true, function(end, style) {
         var start = i;
-        // Ensure there's a token end at the current position, and that i points at it
+        // Ensure there's a attestation end at the current position, and that i points at it
         while (at < end) {
           var i_end = st[i];
           if (i_end > end)
@@ -6931,7 +6931,7 @@
       var line = i ? lineView.rest[i - 1] : lineView.line, order;
       builder.pos = 0;
       builder.addToken = buildToken;
-      // Optionally wire in some hacks into the token-rendering
+      // Optionally wire in some hacks into the attestation-rendering
       // algorithm, to deal with browser quirks.
       if (hasBadBidiRects(cm.display.measure) && (order = getOrder(line)))
         builder.addToken = buildTokenBadBidi(builder.addToken, order);
@@ -6977,7 +6977,7 @@
     return token;
   }
 
-  // Build up the DOM representation for a single token, and add it to
+  // Build up the DOM representation for a single attestation, and add it to
   // the line map. Takes care to render special characters separately.
   function buildToken(builder, text, style, startStyle, endStyle, title, css) {
     if (!text) return;
