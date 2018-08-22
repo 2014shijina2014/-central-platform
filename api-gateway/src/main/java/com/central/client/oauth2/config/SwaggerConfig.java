@@ -3,6 +3,7 @@ package com.central.client.oauth2.config;
 import org.springframework.context.annotation.Configuration;
 
 import com.didispace.swagger.butler.EnableSwaggerButler;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author 作者 owen E-mail: 624191343@qq.com

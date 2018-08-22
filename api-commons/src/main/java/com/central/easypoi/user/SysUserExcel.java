@@ -30,6 +30,7 @@ public class SysUserExcel implements Serializable {
     @Excel(name = "用户昵称", height = 20, width = 30, isImportField = "true_st")
     private String nickname;
 
+//    @Excel(name = "用户头像", type = 2 ,width = 40 , height = 20,imageType = 1)
     private String headImgUrl;
 
     @Excel(name = "手机号码", height = 20, width = 30, isImportField = "true_st")
