@@ -17,7 +17,7 @@ import com.central.oauth.model.Client;
 public interface ClientDao {
 
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) values(#{clientId}, #{resourceIds}, #{clientSecret}, #{scope}, #{authorizedGrantTypes}, #{webServerRedirectUri}, #{authorities}, #{accessTokenValidity}, #{refreshTokenValidity}, #{additionalInformation}, #{autoapprove})")
+    @Insert("insert into oauth_client_details(client_id, resource_ids, client_secret,client_secret_str, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) values(#{clientId}, #{resourceIds}, #{clientSecret},#{clientSecretStr}, #{scope}, #{authorizedGrantTypes}, #{webServerRedirectUri}, #{authorities}, #{accessTokenValidity}, #{refreshTokenValidity}, #{additionalInformation}, #{autoapprove})")
     int save(Client client);
 
     int count(@Param("params") Map<String, Object> params);
@@ -30,7 +30,7 @@ public interface ClientDao {
     @Select("select * from oauth_client_details t where t.client_id = #{clientId}")
     Client getClient(String clientId);
 
-    @Update("update oauth_client_details t set t.client_secret = #{clientSecret}  where t.id = #{id}")
+    @Update("update oauth_client_details t set t.client_secret = #{clientSecret},t.client_secret_str = #{clientSecretStr}  where t.id = #{id}")
     int update(Client client);
 
     @Select("select * from sys_role r inner join sys_role_user ru on r.id = ru.roleId where ru.userId = #{userId}")

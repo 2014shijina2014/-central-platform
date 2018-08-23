@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import com.central.model.common.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.MapUtils;
@@ -54,13 +55,28 @@ public class IClientServiceImpl implements IClientService {
     public void saveClient(ClientDto clientDto) {
         Client client = clientDto;
         List<Long> permissionIds = clientDto.getPermissionIds();
-        permissionIds.remove(0L);
 
         if (client.getId() != null) {// 修改
             updateClient(client, permissionIds);
         } else {// 新增
             saveClient(client, permissionIds);
         }
+    }
+
+    @Override
+    public Result saveOrUpdate(ClientDto clientDto) {
+        clientDto.setClientSecret(passwordEncoder.encode(clientDto.getClientSecretStr()));
+
+        if (clientDto.getId() != null) {// 修改
+            clientDao.update(clientDto);
+        } else {// 新增
+            Client r = clientDao.getClient(clientDto.getClientId());
+            if (r != null) {
+                return Result.failed(clientDto.getClientId()+"已存在");
+            }
+            clientDao.save(clientDto);
+        }
+        return Result.succeed("操作成功");
     }
 
     private void saveClient(Client client, List<Long> permissionIds) {
@@ -113,7 +129,6 @@ public class IClientServiceImpl implements IClientService {
     @Override
     @Transactional
     public void deleteClient(Long id) {
-        clientDao.deleteClientPermission(id);
         clientDao.delete(id);
 
         log.debug("删除应用id:{}", id);

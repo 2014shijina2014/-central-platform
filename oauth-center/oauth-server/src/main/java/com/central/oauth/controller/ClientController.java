@@ -3,6 +3,7 @@ package com.central.oauth.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.central.model.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.central.model.common.PageResult;
-import com.central.oauth.dao.ClientDao;
 import com.central.oauth.dto.ClientDto;
 import com.central.oauth.model.Client;
 import com.central.oauth.service.IClientService;
@@ -77,5 +77,12 @@ public class ClientController {
     @PreAuthorize("hasAuthority('sys:role:del')")
     public void delete(@PathVariable Long id) {
     	iClientService.deleteClient(id);
+    }
+
+    @PostMapping("/saveOrUpdate")
+    @ApiOperation(value = "保存或者修改应用")
+    @PreAuthorize("hasAuthority('sys:role:saveOrUpdate')")
+    public Result saveOrUpdate(@RequestBody ClientDto clientDto){
+        return  iClientService.saveOrUpdate(clientDto);
     }
 }
