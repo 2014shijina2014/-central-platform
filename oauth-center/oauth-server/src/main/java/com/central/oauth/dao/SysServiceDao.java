@@ -18,8 +18,8 @@ import java.util.List;
 @Mapper
 public interface SysServiceDao {
 
-    @Insert("insert into sys_service(parentId, name, url, path, css, sort, createTime, updateTime) "
-            + "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime})")
+    @Insert("insert into sys_service(parentId, name, url, path, css, sort, createTime, updateTime,isMenu) "
+            + "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime},#{isMenu})")
     int save(SysService service);
 
     int update(SysService service);
