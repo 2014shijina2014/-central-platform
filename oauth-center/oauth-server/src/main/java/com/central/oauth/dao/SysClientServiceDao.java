@@ -23,7 +23,7 @@ public interface SysClientServiceDao {
     @Insert("insert into sys_client_service(clientId, serviceId) values(#{clientId}, #{serviceId})")
     int save(@Param("clientId") Long clientId, @Param("serviceId") Long serviceId);
 
-    int delete(@Param("clientId") Long roleId, @Param("serviceId") Long menuId);
+    int delete(@Param("clientId") Long clientId, @Param("serviceId") Long serviceId);
 
     @Select("select t.serviceId from sys_client_service t where t.clientId = #{clientId}")
     Set<Long> findServiceIdsByClientId(Long clientId);

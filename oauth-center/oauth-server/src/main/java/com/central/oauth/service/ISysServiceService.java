@@ -29,16 +29,16 @@ public interface ISysServiceService {
 	/**
 	 * 客户端分配服务
 	 * @param clientId
-	 * @param menuIds
+	 * @param serviceIds
 	 */
-	void setMenuToClient(Long clientId, Set<Long> menuIds);
+	void setMenuToClient(Long clientId, Set<Long> serviceIds);
 
 	/**
 	 * 客户端服务列表
-	 * @param roleIds
+	 * @param clientIds
 	 * @return
 	 */
-	List<SysService> findByClient(Set<Long> roleIds);
+	List<SysService> findByClient(Set<Long> clientIds);
 
 	/**
 	 * 服务列表
@@ -51,14 +51,14 @@ public interface ISysServiceService {
 	 * @param id
 	 * @return
 	 */
-	SysMenu findById(Long id);
+	SysService findById(Long id);
 
 	/**
 	 * 角色ID获取服务
-	 * @param roleId
+	 * @param clientId
 	 * @return
 	 */
-	Set<Long> findClientIdsByRoleId(Long roleId);
+	Set<Long> findServiceIdsByClientId(Long clientId);
 
 	/**
 	 * 一级服务

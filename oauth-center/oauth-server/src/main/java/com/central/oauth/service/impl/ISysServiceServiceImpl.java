@@ -1,13 +1,17 @@
 package com.central.oauth.service.impl;
 
 import com.central.model.user.SysMenu;
+import com.central.oauth.dao.SysClientServiceDao;
 import com.central.oauth.dao.SysServiceDao;
 import com.central.oauth.model.SysService;
 import com.central.oauth.service.ISysServiceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -21,11 +25,15 @@ import java.util.Set;
 
 @Slf4j
 @Service
+@Transactional
 public class ISysServiceServiceImpl implements ISysServiceService {
 
 
     @Autowired
     private SysServiceDao sysServiceDao;
+
+    @Autowired
+    private SysClientServiceDao sysClientServiceDao;
 
 
     /**
@@ -35,7 +43,11 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      */
     @Override
     public void save(SysService service) {
+        service.setCreateTime(new Date());
+        service.setUpdateTime(new Date());
 
+        sysServiceDao.save(service);
+        log.info("添加服务：{}", service);
     }
 
     /**
@@ -45,7 +57,11 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      */
     @Override
     public void update(SysService service) {
+        service.setUpdateTime(new Date());
 
+        sysServiceDao.update(service);
+
+        log.info("更新服务：{}", service);
     }
 
     /**
@@ -55,29 +71,41 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      */
     @Override
     public void delete(Long id) {
+        SysService sysService = sysServiceDao.findById(id);
 
+        sysServiceDao.deleteByParentId(sysService.getParentId());
+        sysServiceDao.delete(id);
+        log.info("删除服务:{}",sysService);
     }
 
     /**
      * 客户端分配服务
      *
      * @param clientId
-     * @param menuIds
+     * @param serviceIds
      */
     @Override
-    public void setMenuToClient(Long clientId, Set<Long> menuIds) {
+    public void setMenuToClient(Long clientId, Set<Long> serviceIds) {
+        sysClientServiceDao.delete(clientId,null);
+
+        if (!CollectionUtils.isEmpty(serviceIds)){
+            serviceIds.forEach(serviceId -> {
+                sysClientServiceDao.save(clientId,serviceId);
+            });
+
+        }
 
     }
 
     /**
      * 客户端服务列表
      *
-     * @param roleIds
+     * @param clientIds
      * @return
      */
     @Override
-    public List<SysService> findByClient(Set<Long> roleIds) {
-        return null;
+    public List<SysService> findByClient(Set<Long> clientIds) {
+        return sysClientServiceDao.findServicesBySlientIds(clientIds);
     }
 
     /**
@@ -87,7 +115,7 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      */
     @Override
     public List<SysService> findAll() {
-        return null;
+        return sysServiceDao.findAll();
     }
 
     /**
@@ -97,19 +125,19 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      * @return
      */
     @Override
-    public SysMenu findById(Long id) {
-        return null;
+    public SysService findById(Long id) {
+        return sysServiceDao.findById(id);
     }
 
     /**
      * 角色ID获取服务
      *
-     * @param roleId
+     * @param clientId
      * @return
      */
     @Override
-    public Set<Long> findClientIdsByRoleId(Long roleId) {
-        return null;
+    public Set<Long> findServiceIdsByClientId(Long clientId) {
+        return sysClientServiceDao.findServiceIdsByClientId(clientId);
     }
 
     /**
@@ -119,6 +147,7 @@ public class ISysServiceServiceImpl implements ISysServiceService {
      */
     @Override
     public List<SysService> findOnes() {
-        return null;
+        return sysServiceDao.findOnes();
     }
+
 }
