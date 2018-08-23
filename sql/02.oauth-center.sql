@@ -1,14 +1,23 @@
-# 导出 oauth-center 的数据库结构
-CREATE DATABASE IF NOT EXISTS `oauth-center` DEFAULT CHARACTER SET = utf8mb4;
-Use `oauth-center`;
- 
+/*
+Navicat MySQL Data Transfer
 
+Source Server         : 47.94.252.160
+Source Server Version : 50722
+Source Host           : 47.94.252.160:3306
+Source Database       : oauth-center
 
+Target Server Type    : MYSQL
+Target Server Version : 50722
+File Encoding         : 65001
 
-#
-# Structure for table "oauth_client_details"
-#
+Date: 2018-08-23 17:13:40
+*/
 
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for oauth_client_details
+-- ----------------------------
 DROP TABLE IF EXISTS `oauth_client_details`;
 CREATE TABLE `oauth_client_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -27,48 +36,61 @@ CREATE TABLE `oauth_client_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-#
-# Data for table "oauth_client_details"
-#
+-- ----------------------------
+-- Records of oauth_client_details
+-- ----------------------------
+INSERT INTO `oauth_client_details` VALUES ('1', 'app', null, '$2a$10$i3F515wEDiB4Gvj9ym9Prui0dasRttEUQ9ink4Wpgb4zEDCAlV8zO', 'app', 'app', 'password,refresh_token', null, null, '180000', null, '{}', 'true');
+INSERT INTO `oauth_client_details` VALUES ('2', 'mobile', 'mobile,test', '$2a$10$ULxRssv/4NWOc388lZFbyus3IFfsbcpG/BZOq4TRxDhsx5HHIR7Jm', 'mobile', 'all', 'password,refresh_token', null, null, '180000', null, '{}', 'true');
+INSERT INTO `oauth_client_details` VALUES ('4', 'webApp', null, '$2a$10$06msMGYRH8nrm4iVnKFNKOoddB8wOwymVhbUzw/d3ZixD7Nq8ot72', 'webApp', 'app', 'authorization_code,password,refresh_token,client_credentials', null, null, '180000', null, '{}', 'true');
+INSERT INTO `oauth_client_details` VALUES ('5', 'beck', '', '$2a$10$56LGyH.2wOFNNp3ScUkspOMdyRnenYhnWEnfI0itIFfsXsd5ZhKh.', 'beck', 'all', 'authorization_code,password,refresh_token,client_credentials', 'http://www.baidu.com', '', '180000', null, '{}', 'true');
+INSERT INTO `oauth_client_details` VALUES ('6', 'owen', null, '$2a$10$a1ZEXiZQr604LN.wVxet.etPm6RvDs.HIaXP48J2HKRaEnZORTVwe', 'owen', 'app', 'authorization_code,password,refresh_token,client_credentials', 'http://127.0.0.1:9997/clientOne/login', null, '180000', null, '{}', 'true');
 
-INSERT INTO `oauth_client_details` VALUES (1,'app',NULL,'$2a$10$i3F515wEDiB4Gvj9ym9Prui0dasRttEUQ9ink4Wpgb4zEDCAlV8zO','app','app','password,refresh_token',NULL,NULL,180000,NULL,'{}','true'),(2,'mobile','mobile,test','$2a$10$ULxRssv/4NWOc388lZFbyus3IFfsbcpG/BZOq4TRxDhsx5HHIR7Jm','mobile','all','password,refresh_token',NULL,NULL,180000,NULL,'{}','true'),(3,'test','test','$2a$10$dETnZPnzikOSdBS0wGqdqeDR4Av.V15/aUcW3qCMifNT/dRRJH4Wq','test','test','password,refresh_token',NULL,NULL,180000,NULL,'{}','true'),(4,'webApp',NULL,'$2a$10$06msMGYRH8nrm4iVnKFNKOoddB8wOwymVhbUzw/d3ZixD7Nq8ot72','webApp','app','authorization_code,password,refresh_token,client_credentials',NULL,NULL,180000,NULL,'{}','true'),(5,'beck','','$2a$10$56LGyH.2wOFNNp3ScUkspOMdyRnenYhnWEnfI0itIFfsXsd5ZhKh.','beck','all','authorization_code,password,refresh_token,client_credentials','http://www.baidu.com','',180000,NULL,'{}','true'),(6,'owen',NULL,'$2a$10$a1ZEXiZQr604LN.wVxet.etPm6RvDs.HIaXP48J2HKRaEnZORTVwe','owen','app','authorization_code,password,refresh_token,client_credentials','http://127.0.0.1:9997/clientOne/login',NULL,180000,NULL,'{}','true');
-
-#
-# Structure for table "sys_client_permission"
-#
-
-DROP TABLE IF EXISTS `sys_client_permission`;
-CREATE TABLE `sys_client_permission` (
+-- ----------------------------
+-- Table structure for sys_client_service
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_client_service`;
+CREATE TABLE `sys_client_service` (
   `clientId` int(11) NOT NULL COMMENT '应用标识',
-  `permissionId` int(11) NOT NULL COMMENT '服务权限标识',
-  PRIMARY KEY (`clientId`,`permissionId`)
+  `serviceId` int(11) NOT NULL COMMENT '服务权限标识',
+  PRIMARY KEY (`clientId`,`serviceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-#
-# Data for table "sys_client_permission"
-#
+-- ----------------------------
+-- Records of sys_client_service
+-- ----------------------------
 
-INSERT INTO `sys_client_permission` VALUES (1,71),(1,72),(1,73),(1,74),(1,75),(2,71),(2,72),(2,73),(2,74),(2,75),(3,71),(3,72),(3,73),(3,74),(3,75),(4,71),(4,72),(4,73),(4,74),(4,75),(5,71),(5,72),(5,73),(5,74),(5,75);
-
-#
-# Structure for table "sys_services"
-#
-
-DROP TABLE IF EXISTS `sys_services`;
-CREATE TABLE `sys_services` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '服务ID',
-  `parentId` int(11) NOT NULL COMMENT '父服务ID',
-  `name` varchar(50) NOT NULL COMMENT '服务名称',
-  `css` varchar(30) DEFAULT NULL COMMENT 'css',
-  `href` varchar(1000) DEFAULT NULL COMMENT '服务地址',
-  `type` tinyint(1) NOT NULL,
-  `permission` varchar(50) DEFAULT NULL COMMENT '服务权限标识符',
-  `sort` int(11) NOT NULL COMMENT '排序',
+-- ----------------------------
+-- Table structure for sys_service
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_service`;
+CREATE TABLE `sys_service` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parentId` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `url` varchar(1024) DEFAULT NULL,
+  `path` varchar(1024) DEFAULT NULL,
+  `css` varchar(32) DEFAULT NULL,
+  `sort` int(11) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  `isMenu` int(11) DEFAULT NULL COMMENT '是否菜单 1 是 2 不是',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
 
-#
-# Data for table "sys_services"
-#
-
-INSERT INTO `sys_services` VALUES (71,0,'授权服务','','/auth',1,'',1),(72,71,'用户授权token','','/auth/user/token',1,'',100),(73,71,'应用申请token','','/auth/client/token',1,'',100),(74,0,'测试微服务','','/client',1,'',100),(75,74,'hello接口','','/client/hello',1,'',100);
+-- ----------------------------
+-- Records of sys_service
+-- ----------------------------
+INSERT INTO `sys_service` VALUES ('1', '-1', '用户中心', 'javascript:;', null, 'layui-icon-set', '0', '2017-11-17 16:56:59', '2018-08-20 10:20:42', '1');
+INSERT INTO `sys_service` VALUES ('2', '1', '用户管理', '#!user', 'system/user.html', '', '2', '2017-11-17 16:56:59', '2018-08-20 10:03:26', '1');
+INSERT INTO `sys_service` VALUES ('3', '1', '角色管理', '#!role', 'system/role.html', '', '3', '2017-11-17 16:56:59', '2018-08-20 10:03:35', '1');
+INSERT INTO `sys_service` VALUES ('4', '1', '菜单管理', '#!menus', 'system/menus.html', '', '4', '2017-11-17 16:56:59', '2018-08-20 10:03:40', '1');
+INSERT INTO `sys_service` VALUES ('5', '1', '权限管理', '#!permissions', 'system/permissions.html', '', '5', '2017-11-17 16:56:59', '2018-08-20 10:03:46', '1');
+INSERT INTO `sys_service` VALUES ('7', '-1', '注册中心', '#!register', 'http://127.0.0.1:1111', 'layui-icon-engine', '7', '2017-11-17 16:56:59', '2018-08-20 11:50:29', '1');
+INSERT INTO `sys_service` VALUES ('8', '-1', '监控中心', '#!monitor', 'http://127.0.0.1:9001/#/wallboard', 'layui-icon-util\r\n', '8', '2017-11-17 16:56:59', '2018-08-20 10:43:13', '1');
+INSERT INTO `sys_service` VALUES ('9', '-1', '文件中心', '#!files', 'files/files.html', 'layui-icon-file', '10', '2017-11-17 16:56:59', '2018-08-21 11:57:04', '1');
+INSERT INTO `sys_service` VALUES ('10', '-1', '文档中心', '#!swagger', 'http://127.0.0.1:9200/swagger-ui.html', 'layui-icon-app', '9', '2017-11-17 16:56:59', '2018-08-22 17:58:13', '1');
+INSERT INTO `sys_service` VALUES ('11', '1', '我的信息', '#!myInfo', 'system/myInfo.html', '', '10', '2017-11-17 16:56:59', '2018-08-21 11:56:12', '1');
+INSERT INTO `sys_service` VALUES ('12', '-1', '认证中心', 'javascript:;', '', 'layui-icon-set', '1', '2017-11-17 16:56:59', '2018-08-21 12:48:13', '1');
+INSERT INTO `sys_service` VALUES ('13', '12', 'token管理', '#!token', 'attestation/token.html', null, '10', '2017-11-17 16:56:59', '2018-08-16 17:03:04', '1');
+INSERT INTO `sys_service` VALUES ('35', '12', '应用管理', '#!app', 'attestation/app.html', '', '11', '2018-08-23 12:17:52', '2018-08-23 12:17:52', '1');
+INSERT INTO `sys_service` VALUES ('36', '12', '服务管理', '#!services', 'attestation/services.html', '', '10', '2018-08-23 16:42:22', '2018-08-23 16:42:22', '2');

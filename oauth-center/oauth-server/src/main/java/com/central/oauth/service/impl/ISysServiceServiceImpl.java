@@ -1,6 +1,5 @@
 package com.central.oauth.service.impl;
 
-import com.central.model.user.SysMenu;
 import com.central.oauth.dao.SysClientServiceDao;
 import com.central.oauth.dao.SysServiceDao;
 import com.central.oauth.model.SysService;
@@ -73,7 +72,7 @@ public class ISysServiceServiceImpl implements ISysServiceService {
     public void delete(Long id) {
         SysService sysService = sysServiceDao.findById(id);
 
-        sysServiceDao.deleteByParentId(sysService.getParentId());
+        sysServiceDao.deleteByParentId(sysService.getId());
         sysServiceDao.delete(id);
         log.info("删除服务:{}",sysService);
     }

@@ -244,7 +244,9 @@ public class OAuth2ServerConfig {
 								return true;
 							}
 
-
+							if (antPathMatcher.match("/services/**",  request.getRequestURI())) {
+								return true;
+							}
 
 							return false;
 						}
