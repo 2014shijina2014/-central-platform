@@ -121,7 +121,7 @@
                 showMenuDialog(obj.data.id);
             }else if (obj.event === 'auth') {  // 权限管理
                 // showAuthDialog(obj.data.id);
-                showEditModel(obj.data);
+                showAuthDialogByData(obj.data);
             }
         });
 
@@ -224,8 +224,8 @@
         }
 
 
-        //显示表单弹窗
-        var showEditModel = function (data) {
+        //权限管理
+        var showAuthDialogByData = function (data) {
             admin.putTempData('t_role', data);
             var title = '添加权限';
             admin.popupCenter({
