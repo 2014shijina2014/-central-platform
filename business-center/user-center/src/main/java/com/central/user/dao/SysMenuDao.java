@@ -16,8 +16,8 @@ import com.central.model.user.SysMenu;
 @Mapper
 public interface SysMenuDao {
 
-	@Insert("insert into sys_menu(parentId, name, url, path, css, sort, createTime, updateTime,isMenu) "
-			+ "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime},#{isMenu})")
+	@Insert("insert into sys_menu(parentId, name, url, path, css, sort, createTime, updateTime,isMenu,hidden) "
+			+ "values (#{parentId}, #{name}, #{url} , #{path} , #{css}, #{sort}, #{createTime}, #{updateTime},#{isMenu},#{hidden})")
 	int save(SysMenu menu);
 
 	int update(SysMenu menu);
