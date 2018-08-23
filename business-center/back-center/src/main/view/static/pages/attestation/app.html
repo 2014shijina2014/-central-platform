@@ -136,8 +136,9 @@
                     $('#app-form')[0].reset();
                     $('#app-form').attr('method', 'POST');
                     if (data) {
-                        // $("input[name='code']").attr('disabled',true);
+                        $("input[name='clientId']").attr('disabled',true);
                         $("input[name='clientId']").attr('class',"layui-input layui-disabled");
+                        $("input[name='webServerRedirectUri']").attr('disabled',true);
                         $("input[name='webServerRedirectUri']").attr('class',"layui-input layui-disabled");
                         form.val('app-form', data);
                         $('#app-form').attr('method', 'POST');
