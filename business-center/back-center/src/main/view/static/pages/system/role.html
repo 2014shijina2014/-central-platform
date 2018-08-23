@@ -120,7 +120,8 @@
             } else if (obj.event === 'menu') {  // 菜单管理
                 showMenuDialog(obj.data.id);
             }else if (obj.event === 'auth') {  // 权限管理
-                showAuthDialog(obj.data.id);
+                // showAuthDialog(obj.data.id);
+                showEditModel(obj.data);
             }
         });
 
@@ -221,6 +222,21 @@
                 }
             });
         }
+
+
+        //显示表单弹窗
+        var showEditModel = function (data) {
+            admin.putTempData('t_role', data);
+            var title = '添加权限';
+            admin.popupCenter({
+                title: title,
+                path: 'pages/system/role_form.html',
+                finish: function () {
+                    table.reload('role-table', {});
+                }
+            });
+        };
+
 
         // 权限管理
         var showAuthDialog = function (roleId) {
