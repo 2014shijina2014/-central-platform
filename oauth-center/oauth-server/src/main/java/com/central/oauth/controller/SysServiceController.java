@@ -2,7 +2,7 @@ package com.central.oauth.controller;
 
 import com.central.model.common.PageResult;
 import com.central.model.common.Result;
-import com.central.model.user.SysMenu;
+import com.central.oauth.dto.ClientDto;
 import com.central.oauth.model.SysService;
 import com.central.oauth.service.ISysServiceService;
 import io.swagger.annotations.Api;
@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: [gitgeek]
@@ -89,9 +90,38 @@ public class SysServiceController {
         }
     }
 
+    @ApiOperation(value = "根据clientId获取对应的服务")
+    @GetMapping("/{clientId}/services")
+    public List<Map<String, Object>> findServicesByclientId(@PathVariable Long clientId) {
+        Set<Long> clientIds = new HashSet<Long>() {{ add(clientId); }};
+        List<SysService> clientService = iSysServiceService.findByClient(clientIds);
+        List<SysService> allService = iSysServiceService.findAll();
+        List<Map<String, Object>> authTrees = new ArrayList<>();
 
+        Map<Long,SysService> clientServiceMap = clientService.stream().collect(Collectors.toMap(SysService::getId,SysService->SysService));
 
+        for (SysService sysService: allService) {
+            Map<String, Object> authTree = new HashMap<>();
+            authTree.put("id",sysService.getId());
+            authTree.put("name",sysService.getName());
+            authTree.put("pId",sysService.getParentId());
+            authTree.put("open",true);
+            authTree.put("checked", false);
+            if (clientServiceMap.get(sysService.getId())!=null){
+                authTree.put("checked", true);
+            }
+            authTrees.add(authTree);
+        }
 
+        return  authTrees;
+    }
+
+    @PostMapping("/granted")
+    public Result setMenuToClient(@RequestBody ClientDto clientDto) {
+        iSysServiceService.setMenuToClient(clientDto.getId(), clientDto.getServiceIds());
+
+        return Result.succeed("操作成功");
+    }
 
 
 
