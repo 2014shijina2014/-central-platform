@@ -49,8 +49,8 @@
                 page: false,
                 cols: [[
                     {type: 'numbers'},
-                    {field: 'name', minWidth: 200, title: '菜单名称'},
-                    {field: 'path', title: '菜单path'},
+                    {field: 'name', minWidth: 200, title: '服务名称'},
+                    {field: 'path', title: '服务路径'},
                     {field: 'sort', width: 80, align: 'center', title: '排序号'},
                     {
                         field: 'isMenu', width: 80, align: 'center', templet: function (d) {
@@ -101,14 +101,13 @@
 
             if (data){
                 data.isMenu = data.isMenu.toString();
-                data.hidden = data.hidden.toString();
             }
-            var title = data ? '修改菜单' : '添加菜单';
-            admin.putTempData('t_menus', data);
+            var title = data ? '修改服务' : '添加服务';
+            admin.putTempData('t_services', data);
 
             admin.popupCenter({
                 title: title,
-                path: 'pages/system/menus_form.html',
+                path: 'pages/attestation/services_form.html',
                 finish: function () {
                     renderTable();
                 }
@@ -117,7 +116,7 @@
         };
 
         // 添加按钮点击事件
-        $('#menus-btn-add').click(function () {
+        $('#services-btn-add').click(function () {
             showEditModel();
         });
 

@@ -2,6 +2,7 @@ package com.central.oauth.controller;
 
 import com.central.model.common.PageResult;
 import com.central.model.common.Result;
+import com.central.model.user.SysMenu;
 import com.central.oauth.model.SysService;
 import com.central.oauth.service.ISysServiceService;
 import io.swagger.annotations.Api;
@@ -71,7 +72,22 @@ public class SysServiceController {
         return Result.succeed("操作成功");
     }
 
-
+    @PreAuthorize("hasAnyAuthority('service:post/saveOrUpdate')")
+    @ApiOperation(value = "新增服务")
+    @PostMapping("/saveOrUpdate")
+    public Result saveOrUpdate(@RequestBody SysService service) {
+        try{
+            if (service.getId() != null){
+                iSysServiceService.update(service);
+            }else {
+                iSysServiceService.save(service);
+            }
+            return Result.succeed("操作成功");
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Result.failed("操作失败");
+        }
+    }
 
 
 
