@@ -18,7 +18,7 @@ import com.central.model.common.PageResult;
 import com.central.oauth.dao.ClientDao;
 import com.central.oauth.dto.ClientDto;
 import com.central.oauth.model.Client;
-import com.central.oauth.service.ClientService;
+import com.central.oauth.service.IClientService;
 import com.google.common.collect.Maps;
 
 import io.swagger.annotations.Api;
@@ -35,49 +35,47 @@ import io.swagger.annotations.ApiOperation;
 public class ClientController {
 
     @Autowired
-    private ClientService clientService;
-    @Autowired
-    private ClientDao clientDao;
+    private IClientService iClientService;
 
     @PostMapping
     @ApiOperation(value = "保存应用")
     @PreAuthorize("hasAuthority('sys:role:add')")
     public void saveRole(@RequestBody ClientDto clientDto) {
-        clientService.saveClient(clientDto);
+    	iClientService.saveClient(clientDto);
     }
 
     @GetMapping
     @ApiOperation(value = "应用列表")
     @PreAuthorize("hasAuthority('sys:role:query')")
     public PageResult<Client> listRoles(@RequestParam Map<String, Object> params) {
-        return clientService.listRoles(params) ;
+        return iClientService.listRoles(params) ;
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id获取应用")
     @PreAuthorize("hasAuthority('sys:role:query')")
     public Client get(@PathVariable Long id) {
-        return clientDao.getById(id);
+        return iClientService.getById(id);
     }
 
     @GetMapping("/all")
     @ApiOperation(value = "所有应用")
     @PreAuthorize("hasAnyAuthority('sys:user:query','sys:role:query')")
     public List<Client> roles() {
-        return clientDao.findList(Maps.newHashMap());
+        return iClientService.findList(Maps.newHashMap());
     }
 
     @GetMapping(params = "userId")
     @ApiOperation(value = "根据用户id获取拥有的角色")
     @PreAuthorize("hasAnyAuthority('sys:user:query','sys:role:query')")
     public List<Client> roles(Long userId) {
-        return clientDao.listByUserId(userId);
+        return iClientService.listByUserId(userId);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除应用")
     @PreAuthorize("hasAuthority('sys:role:del')")
     public void delete(@PathVariable Long id) {
-        clientService.deleteClient(id);
+    	iClientService.deleteClient(id);
     }
 }

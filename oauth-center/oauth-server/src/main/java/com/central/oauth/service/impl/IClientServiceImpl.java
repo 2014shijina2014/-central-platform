@@ -27,12 +27,12 @@ import com.central.model.user.SysPermission;
 import com.central.oauth.dao.ClientDao;
 import com.central.oauth.dto.ClientDto;
 import com.central.oauth.model.Client;
-import com.central.oauth.service.ClientService;
+import com.central.oauth.service.IClientService;
 
 @Service
-public class ClientServiceImpl implements ClientService {
+public class IClientServiceImpl implements IClientService {
 
-    private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(IClientServiceImpl.class);
 
     /**
      * 缓存client的redis key，这里是hash结构存储
@@ -138,6 +138,21 @@ public class ClientServiceImpl implements ClientService {
 //
 //		}
 //		return PageResult.<Client>builder().data(list).code(0).count((long)total).build()  ;
+	}
+	public  Client getById(Long id) {
+		return clientDao.getById(id);
+	}
+
+	@Override
+	public List<Client> findList(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return clientDao.findList(params);
+	}
+
+	@Override
+	public List<Client> listByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		return clientDao.listByUserId(userId);
 	}
 
 }
