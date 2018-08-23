@@ -74,7 +74,7 @@ public class SysUserController {
 
 
 
-    @PreAuthorize("hasAuthority('back:user:query')")
+    @PreAuthorize("hasAuthority('user:get/users/{id}')")
     @GetMapping("/users/{id}")
     public SysUser findUserById(@PathVariable Long id) {
         return appUserService.findById(id);
@@ -103,7 +103,7 @@ public class SysUserController {
      * @param id
      * @param newPassword
      */
-    @PreAuthorize("hasAuthority('back:user:password')")
+    @PreAuthorize("hasAnyAuthority('user:put/users/password','user:post/users/{id}/resetPassword')")
     @PutMapping(value = "/users/{id}/password", params = {"newPassword"})
     public void resetPassword(@PathVariable Long id, String newPassword) {
         appUserService.updatePassword(id, null, newPassword);
@@ -114,7 +114,7 @@ public class SysUserController {
      *
      * @param sysUser
      */
-    @PreAuthorize("hasAuthority('back:user:update')")
+    @PreAuthorize("hasAuthority('user:put/users/me')")
     @PutMapping("/users")
     public void updateSysUser(@RequestBody SysUser sysUser) {
         appUserService.updateSysUser(sysUser);
@@ -126,7 +126,7 @@ public class SysUserController {
      * @param id
      * @param roleIds
      */
-    @PreAuthorize("hasAuthority('back:user:role:set')")
+    @PreAuthorize("hasAuthority('user:post/users/{id}/roles')")
     @PostMapping("/users/{id}/roles")
     public void setRoleToUser(@PathVariable Long id, @RequestBody Set<Long> roleIds) {
         appUserService.setRoleToUser(id, roleIds);
@@ -138,7 +138,7 @@ public class SysUserController {
      * @param
      * @return
      */
-    @PreAuthorize("hasAnyAuthority('back:user:role:set','user:role:byuid')")
+    @PreAuthorize("hasAnyAuthority('user:get/users/{id}/roles')")
     @GetMapping("/users/{id}/roles")
     public Set<SysRole> findRolesByUserId(@PathVariable Long id) {
         return appUserService.findRolesByUserId(id);
@@ -171,7 +171,7 @@ public class SysUserController {
      * @return
      */
     @PutMapping("/users/me")
-    @PreAuthorize("hasAuthority('user:put//users/me')")
+    @PreAuthorize("hasAnyAuthority('user:put/users/me','user:post/users/saveOrUpdate')")
     public Result updateMe(@RequestBody SysUser sysUser) {
 //        SysUser user = SysUserUtil.getLoginAppUser();
 //        sysUser.setId(user.getId());
@@ -214,7 +214,7 @@ public class SysUserController {
             @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "enabled",value = "是否启用", required = true, dataType = "Boolean")
     })
-    @PreAuthorize("hasAuthority('user:get/users/updateEnabled')")
+    @PreAuthorize("hasAnyAuthority('user:get/users/updateEnabled' ,'user:put/users/me')")
     public Result updateEnabled(@RequestParam Map<String, Object> params){
         Long id = MapUtils.getLong(params, "id");
         if (id == 1L){
@@ -228,7 +228,7 @@ public class SysUserController {
      * @param id
      * @author gitgeek
      */
-    @PreAuthorize("hasAuthority('user:post/users/{id}/resetPassword')")
+    @PreAuthorize("hasAuthority('user:post/users/{id}/resetPassword' )")
     @PostMapping(value = "/users/{id}/resetPassword")
     public Result resetPassword(@PathVariable Long id) {
         if (id == 1L){
@@ -245,7 +245,7 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/users/saveOrUpdate")
-    @PreAuthorize("hasAuthority('user:post/users/saveOrUpdate')")
+    @PreAuthorize("hasAnyAuthority('user:post/users/saveOrUpdate')")
     public Result saveOrUpdate(@RequestBody SysUser sysUser) {
         return  appUserService.saveOrUpdate(sysUser);
     }
@@ -278,4 +278,12 @@ public class SysUserController {
             }
         }
     }
+
+
+
+
+
+
+
+
 }

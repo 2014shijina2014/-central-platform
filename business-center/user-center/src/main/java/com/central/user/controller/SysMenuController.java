@@ -41,10 +41,10 @@ public class SysMenuController {
 
 	/**
 	 * 菜单树ztree
-	 *
+	 * 
 	 * @return
 	 */
-	@PreAuthorize("hasAnyAuthority('back:menu:granted','back:menu:query')")
+	@PreAuthorize("hasAnyAuthority('menu:post/menus/granted','menu:get/menus/{id}','menu:get/menus/all' ,'menu:get/menus/findAlls')")
 	@ApiOperation(value = "获取菜单树列表")
 	@GetMapping("/tree")
 	public List<SysMenu> findMenuTree() {
@@ -77,7 +77,7 @@ public class SysMenuController {
 	 * @param roleId
 	 * @return
 	 */
-	@PreAuthorize("hasAnyAuthority('back:menu:granted','menu:byroleid')")
+	@PreAuthorize("hasAnyAuthority('menu:post/menus/granted','menu:get/menus:roleId')")
 	@ApiOperation(value = "获取角色菜单列表")
 	@GetMapping(params = "roleId")
 	public Set<Long> findMenuIdsByRoleId(Long roleId) {
@@ -89,7 +89,7 @@ public class SysMenuController {
 	 * @param menu
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:menu:save')")
+	@PreAuthorize("hasAuthority('menu:post/menus')")
 	@ApiOperation(value = "新增菜单")
 	@PostMapping
 	public SysMenu save(@RequestBody SysMenu menu) {
@@ -103,7 +103,7 @@ public class SysMenuController {
 	 * @param menu
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:menu:update')")
+	@PreAuthorize("hasAuthority('menu:put/menus')")
 	@ApiOperation(value = "修改菜单")
 	@PutMapping
 	public SysMenu update(@RequestBody SysMenu menu) {
@@ -118,7 +118,7 @@ public class SysMenuController {
 	 * 查询所有菜单
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:menu:query')")
+	@PreAuthorize("hasAuthority('menu:get/menus/all')")
 	@ApiOperation(value = "查询所有菜单")
 	@GetMapping("/all")
 	public List<SysMenu> findAll() {
@@ -144,7 +144,7 @@ public class SysMenuController {
 		});
 	}
 
-	@PreAuthorize("hasAuthority('back:menu:query')")
+	@PreAuthorize("hasAnyAuthority('menu:get/menus/{id}','menu:get/menus/all')")
 	@GetMapping("/{id}")
 	public SysMenu findById(@PathVariable Long id) {
 		return menuService.findById(id);
@@ -232,7 +232,7 @@ public class SysMenuController {
 	 * @param menu
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('menu:post/menus/saveOrUpdate')")
+	@PreAuthorize("hasAnyAuthority('menu:post/menus','menu:put/menus')")
 	@ApiOperation(value = "新增菜单")
 	@PostMapping("saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysMenu menu) {

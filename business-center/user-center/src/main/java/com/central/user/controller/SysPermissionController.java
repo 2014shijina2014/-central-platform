@@ -53,7 +53,7 @@ public class SysPermissionController {
 	 * }
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:permission:save')")
+	@PreAuthorize("hasAuthority('permission:post/permissions')")
 	@ApiOperation(value = "后台管理添加权限")
 	@PostMapping("/permissions")
 	public SysPermission save(@RequestBody SysPermission sysPermission) {
@@ -81,7 +81,7 @@ public class SysPermissionController {
 	 * }
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:permission:update')")
+	@PreAuthorize("hasAuthority('permission:put/permissions')")
 	@ApiOperation(value = "后台管理修改权限")
 	@PutMapping("/permissions")
 	public SysPermission update(@RequestBody SysPermission sysPermission) {
@@ -94,7 +94,6 @@ public class SysPermissionController {
 		return sysPermission;
 	}
 
-//	<!-- -->
 	/**
 	 * 删除权限标识
 	 * 参考 /permissions/1
@@ -137,7 +136,7 @@ public class SysPermissionController {
 	 * @param sysPermission
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('permission:post/permissions/saveOrUpdate')")
+	@PreAuthorize("hasAnyAuthority('permission:put/permissions','permission:post/permissions')")
 	@PostMapping("/permissions/saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysPermission sysPermission) {
 		try{

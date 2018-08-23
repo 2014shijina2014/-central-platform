@@ -48,7 +48,7 @@ public class SysRoleController {
 	 * }
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:role:save')")
+	@PreAuthorize("hasAuthority('role:post/roles')")
 	@ApiOperation(value = "后台管理添加角色")
 	@PostMapping("/roles")
 	public SysRole save(@RequestBody SysRole sysRole) {
@@ -79,7 +79,7 @@ public class SysRoleController {
 	 * }
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('back:role:update')")
+	@PreAuthorize("hasAuthority('role:put/roles')")
 	@ApiOperation(value = "后台管理修改角色")
 	@PutMapping("/roles")
 	public SysRole update(@RequestBody SysRole sysRole) {
@@ -97,7 +97,7 @@ public class SysRoleController {
 	 * @param id
 	 * @param permissionIds
 	 */
-	@PreAuthorize("hasAuthority('back:role:permission:grant')")
+	@PreAuthorize("hasAuthority('role:post/roles/{id}/permissions')")
 	@ApiOperation(value = "后台管理给角色分配权限")
 	@PostMapping("/roles/{id}/permissions")
 	public void setPermissionToRole(@PathVariable Long id, @RequestBody Set<Long> permissionIds) {
@@ -108,7 +108,7 @@ public class SysRoleController {
 	 * @param id
 	 * @return
 	 */
-	@PreAuthorize("hasAnyAuthority('back:role:permission:grant','role:permission:byroleid')")
+	@PreAuthorize("hasAnyAuthority('role:get/roles/{id}/permissions','role:post/roles/{id}/permissions')")
 	@ApiOperation(value = "后台管理 获取角色的权限")
 	@GetMapping("/roles/{id}/permissions")
 	public Set<SysPermission> findPermissionsByRoleId(@PathVariable Long id) {
@@ -121,7 +121,7 @@ public class SysRoleController {
 	 * @return
 	 */
 	@ApiOperation(value = "后台管理根据角色ID获取角色")
-	@PreAuthorize("hasAuthority('back:role:query')")
+	@PreAuthorize("hasAuthority('role:get/roles/{id}')")
 	@GetMapping("/roles/{id}")
 	public SysRole findById(@PathVariable Long id) {
 		return sysRoleService.findById(id);
@@ -145,7 +145,7 @@ public class SysRoleController {
 	 * @param sysRole
 	 * @return
 	 */
-	@PreAuthorize("hasAuthority('role:post/roles/saveOrUpdate')")
+	@PreAuthorize("hasAnyAuthority('role:post/roles','role:put/roles')")
 	@PostMapping("/roles/saveOrUpdate")
 	public Result saveOrUpdate(@RequestBody SysRole sysRole) {
 		return sysRoleService.saveOrUpdate(sysRole);
