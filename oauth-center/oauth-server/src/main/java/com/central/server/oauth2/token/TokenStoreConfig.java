@@ -3,6 +3,7 @@ package com.central.server.oauth2.token;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import com.central.client.oauth2.token.store.RedisTemplateTokenStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.util.Assert;
 
-import com.central.server.oauth2.token.store.RedisTemplateTokenStore;
 
 /** 
 * @author owen 624191343@qq.com
