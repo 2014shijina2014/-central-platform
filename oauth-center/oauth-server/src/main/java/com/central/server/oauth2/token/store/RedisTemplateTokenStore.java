@@ -1,20 +1,13 @@
-package com.central.server.oauth2.token.store;
+package com.central.client.oauth2.token.store;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.DelayQueue;
-import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.ExpiringOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -23,9 +16,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.util.Assert;
-
-import com.central.annotation.log.LogAnnotation;
 
 /**
  * @author owen 624191343@qq.com
@@ -93,15 +83,38 @@ public class RedisTemplateTokenStore implements TokenStore {
 	}
 	public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
 
+		OAuth2AccessToken existingAccessToken = this.getAccessToken(authentication);
 
 		this.redisTemplate.opsForValue().set(ACCESS+ token.getValue(), token);
 		this.redisTemplate.opsForValue().set(AUTH +token.getValue(), authentication);
 		this.redisTemplate.opsForValue().set(AUTH_TO_ACCESS+authenticationKeyGenerator.extractKey(authentication), token);
+
 		if (!authentication.isClientOnly()) {
-			redisTemplate.opsForList().rightPush(UNAME_TO_ACCESS+getApprovalKey(authentication), token) ;
+			if (existingAccessToken != null) {
+				if (!existingAccessToken.isExpired()) {
+					int seconds = token.getExpiresIn();
+					redisTemplate.expire(CLIENT_ID_TO_ACCESS+authentication.getOAuth2Request().getClientId(), seconds, TimeUnit.SECONDS) ;
+				}
+			}else{
+				redisTemplate.opsForList().rightPush(UNAME_TO_ACCESS+getApprovalKey(authentication), token) ;
+			}
+
+
+
 		}
 
-		redisTemplate.opsForList().rightPush(CLIENT_ID_TO_ACCESS+authentication.getOAuth2Request().getClientId(), token) ;
+
+		if (existingAccessToken != null) {
+			if (!existingAccessToken.isExpired()) {
+				int seconds = token.getExpiresIn();
+				redisTemplate.expire(CLIENT_ID_TO_ACCESS+authentication.getOAuth2Request().getClientId(), seconds, TimeUnit.SECONDS) ;
+
+			}
+		}else{
+			redisTemplate.opsForList().rightPush(CLIENT_ID_TO_ACCESS+authentication.getOAuth2Request().getClientId(), token) ;
+		}
+
+
 
 		if (token.getExpiration() != null) {
 
