@@ -13,7 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.xxl.job.admin","com.open.capacity"})
+@ComponentScan(basePackages={"com.xxl.job.admin","com.central"})
 @PropertySource(value = "classpath:xxl-job-admin.properties")
 public class Application {
     public static void main(String[] args){
