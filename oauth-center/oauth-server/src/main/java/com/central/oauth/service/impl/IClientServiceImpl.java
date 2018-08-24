@@ -8,6 +8,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.central.model.common.Result;
+import com.central.oauth.dao.SysClientServiceDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.MapUtils;
@@ -42,6 +43,9 @@ public class IClientServiceImpl implements IClientService {
 
     @Autowired
     private ClientDao clientDao;
+
+    @Autowired
+    private SysClientServiceDao sysClientServiceDao;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -130,6 +134,8 @@ public class IClientServiceImpl implements IClientService {
     @Transactional
     public void deleteClient(Long id) {
         clientDao.delete(id);
+
+        sysClientServiceDao.delete(id,null);
 
         log.debug("删除应用id:{}", id);
     }
