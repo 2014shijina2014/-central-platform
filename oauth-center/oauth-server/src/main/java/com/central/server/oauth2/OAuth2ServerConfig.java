@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import com.central.client.oauth2.token.store.RedisTemplateTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,7 @@ import org.springframework.util.AntPathMatcher;
 import com.central.model.properties.PermitUrlProperties;
 import com.central.server.oauth2.client.RedisClientDetailsService;
 import com.central.server.oauth2.code.RedisAuthorizationCodeServices;
+import com.central.server.oauth2.token.store.RedisTemplateTokenStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**

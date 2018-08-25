@@ -33,49 +33,48 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurerAdapter  {
 
-
+	 
 	@Bean
 	public Docket createRestApi() {
-
-
+		
+		
 		ParameterBuilder tokenPar = new ParameterBuilder();
 		List<Parameter> pars = new ArrayList<>();
 		tokenPar.name("Authorization").description("令牌").
-				modelRef(new ModelRef("string")).
-				parameterType("header").required(false).build();
-
-
+		modelRef(new ModelRef("string")).
+		parameterType("header").required(false).build();
+		
+		
 		ParameterBuilder clientPar = new ParameterBuilder();
 		clientPar.name("client_id").description("应用ID").
-				modelRef(new ModelRef("string")).
-				parameterType("header").required(false).build();
-
+		modelRef(new ModelRef("string")).
+		parameterType("header").required(false).build();
+		
 		ParameterBuilder secretPar = new ParameterBuilder();
 		secretPar.name("client_secret").description("应用密钥").
-				modelRef(new ModelRef("string")).
-				parameterType("header").required(false).build();
-
+		modelRef(new ModelRef("string")).
+		parameterType("header").required(false).build();
+		
 		pars.add(tokenPar.build());
-		pars.add(clientPar.build());
-		pars.add(secretPar.build());
-
+		pars.add(clientPar.build()); 
+		pars.add(secretPar.build()); 
+		
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
 				// .apis(RequestHandlerSelectors.basePackage("com.open.capacity"))
 				.apis(RequestHandlerSelectors.any())
 				.paths( input ->
 						PathSelectors.regex("/oauth/client.*").apply(input) ||
-								PathSelectors.regex("/oauth/user.*").apply(input)   ||
-								PathSelectors.regex("/oauth/get.*").apply(input)    ||
-								PathSelectors.regex("/oauth/userinfo.*").apply(input)     ||
-								PathSelectors.regex("/oauth/remove.*").apply(input) ||
-								PathSelectors.regex("/oauth/refresh/token.*").apply(input)||
-								PathSelectors.regex("/oauth/token/list.*").apply(input)||
-								PathSelectors.regex("/clients.*").apply(input)
-
-
-
-
-				)
+						PathSelectors.regex("/oauth/user.*").apply(input)   ||
+						PathSelectors.regex("/oauth/get.*").apply(input)    ||
+						PathSelectors.regex("/oauth/userinfo.*").apply(input)     || 
+						PathSelectors.regex("/oauth/remove.*").apply(input) || 
+						PathSelectors.regex("/oauth/refresh/token.*").apply(input)||
+						PathSelectors.regex("/oauth/token/list.*").apply(input)||
+						PathSelectors.regex("/clients.*").apply(input)||
+						PathSelectors.regex("/services.*").apply(input)||
+						PathSelectors.regex("/redis.*").apply(input)
+						
+				      )
 				// .paths(PathSelectors.any())
 				.build().globalOperationParameters(pars);
 	}
@@ -113,6 +112,6 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter  {
 		configurer.enable();
 	}
 
-
+	 
 
 }
