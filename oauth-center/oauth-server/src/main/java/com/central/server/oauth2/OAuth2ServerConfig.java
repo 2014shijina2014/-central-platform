@@ -1,4 +1,3 @@
-
 package com.central.server.oauth2;
 
 import javax.annotation.Resource;
