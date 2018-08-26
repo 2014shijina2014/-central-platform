@@ -2,12 +2,34 @@ server:
   port: 11008
 spring:
   application:
-    name: zipkin-server-native
+    name: zipkin-server-mysql
+  datasource:
+    url: jdbc:mysql://47.94.252.160:3306/zipkin_center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root
+    continueOnError: true
 #去除控制台异常
 management:
   metrics:
     web:
       server:
         auto-time-requests: false
-
 #配置在数据库创建完以后，可以删除，不然每次都会寻找这个sql，耗费时间。
+
+zipkin:
+  storage:
+    type: mysql
+sleuth:
+  enabled: false
+
+
+
+
+
+
+
+
+
+
+
+
