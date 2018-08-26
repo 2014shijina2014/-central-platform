@@ -1,0 +1,12 @@
+server:
+  port: 11008
+spring:
+  application:
+    name: zipkin-server-native
+#去除控制台异常
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+

@@ -10,5 +10,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>zipkin-center-native</module>
+		<module>zipkin-center-mysql</module>
 	</modules>
 </project>
