@@ -36,7 +36,9 @@ spring:
         mail.smtp.auth : true
         mail.smtp.timeout : 2000
         mail.smtp.starttls.enable : true
-        mail.smtp.starttls.required : true 
+        mail.smtp.starttls.required : true
+  zipkin:
+    base-url: http://127.0.0.1:11008    # zipkin监控地址
 
 
 eureka:

@@ -8,6 +8,12 @@
   <artifactId>admin-server</artifactId>
   
    <dependencies>
+	   <!-- 服务追踪 -->
+	   <dependency>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-zipkin</artifactId>
+	   </dependency>
+
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>

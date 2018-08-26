@@ -18,10 +18,12 @@ spring:
       charset:  utf8
       force: true
       enabled: true
+  zipkin:
+    base-url: http://127.0.0.1:11008
 docker:
   ipAddress: 47.94.252.160
-           
-           
+
+
 eureka:
   client:
     healthcheck:
