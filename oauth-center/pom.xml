@@ -105,11 +105,7 @@
 
 	</dependencies>
 
-
-
-
 	<modules>
 		<module>oauth-server</module>
-		<module>oauth-client</module>
 	</modules>
 </project>
