@@ -10,3 +10,4 @@ management:
       server:
         auto-time-requests: false
 
+#配置在数据库创建完以后，可以删除，不然每次都会寻找这个sql，耗费时间。
