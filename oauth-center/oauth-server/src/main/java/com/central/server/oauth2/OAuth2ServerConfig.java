@@ -94,6 +94,7 @@ public class OAuth2ServerConfig {
 
 		@Autowired
 		private UserDetailsService userDetailsService;
+
 		@Autowired(required = false)
 		private RedisTemplateTokenStore redisTokenStore;
 

@@ -8,6 +8,13 @@
   <artifactId>file-center</artifactId>
   
   	<dependencies>
+
+		<!-- 服务追踪 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+
 		 	<!-- 公共实体类模块 -->
    		<dependency>
 			<groupId>com.central</groupId>
