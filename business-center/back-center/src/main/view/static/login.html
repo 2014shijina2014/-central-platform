@@ -119,6 +119,8 @@ layui.config({
                 layer.closeAll('loading');
                 if (xhr.status == 400) {
                     layer.msg('账号或密码错误', {icon: 5});
+                }else if( xhr.status  == 500){
+                    layer.msg('服务器异常,请联系管理员', {icon: 5});
                 }
             }
         });

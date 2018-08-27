@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import com.central.client.oauth2.token.store.RedisTemplateTokenStore;
+import com.central.server.oauth2.token.store.RedisTemplateTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

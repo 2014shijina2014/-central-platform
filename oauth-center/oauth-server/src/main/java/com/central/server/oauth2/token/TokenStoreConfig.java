@@ -3,7 +3,7 @@ package com.central.server.oauth2.token;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import com.central.client.oauth2.token.store.RedisTemplateTokenStore;
+import com.central.server.oauth2.token.store.RedisTemplateTokenStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
