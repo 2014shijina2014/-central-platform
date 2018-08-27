@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import com.central.annotation.EnableLogging;
+import com.central.autoconfigure.port.PortApplicationEnvironmentPreparedEventListener;
 
 /** 
 * @author owen 624191343@qq.com
@@ -22,7 +23,14 @@ import com.central.annotation.EnableLogging;
 public class OpenAuthServerApp {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(OpenAuthServerApp.class, args);
+//		固定端口启动
+//		SpringApplication.run(OpenAuthServerApp.class, args);
+		
+		//随机端口启动
+		SpringApplication app = new SpringApplication(OpenAuthServerApp.class);
+        app.addListeners(new PortApplicationEnvironmentPreparedEventListener());
+        app.run(args);
+		
 	}
 
 }

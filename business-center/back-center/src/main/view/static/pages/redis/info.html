@@ -35,6 +35,7 @@
                 events: {
                     load: function() {
                         var series = this.series[0];
+                        //重绘页面
                         rediskeysSizeInterval = setInterval(function() {
 
                             admin.req('api-auth/redis/memoryInfo', {}, function (data) {
@@ -108,6 +109,7 @@
                 events: {
                     load: function() {
                         var series = this.series[0];
+                        //定时重绘页面
                         redisMemoryInfoInterval = setInterval(function() {
                             admin.req('api-auth/redis/keysSize', {}, function (data) {
                                 var x = data.create_time, y = data.dbSize;
