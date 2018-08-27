@@ -9,31 +9,21 @@ Eureka注册中心等多个服务, 为微服务开发所需配置管理、服务
 微代理等,努力为企业级打造最全面的微服务开发解决方案;
 
 
-#### 组织结构
+# 组织结构
 central-platform
 
-```
-├    api-commons  -- 封装基本的数据结构与Model层    
-├    api-gateway    -- SpringCloud网关	 [9200]
-├    business-center   -- 逻辑业务层		   
-├         ├  	back-center  -- 后台项目(前端项目)   [8066]
-├         ├     file-center  -- 文件中心  			[5000]
-├         └     user-center  -- 用户中心 			[7000]  
-├    db-core 	-- 数据库逻辑封装       
-├    job-center -- 分布式调度任务
-├       ├── job-core  --核心库
-├       ├── job-admin   --job管理器    
-├       └── job-demo    --job执行器
-├     monitor-center  -- 监控中心
-├       ├── admin-server  -- spring boot admin server [9001]  
-├     oauth-center		--oauth2套件 认证服务
-├       └── oauth-server    --oauth认证中心			   [8000] 
-├     register-center	--eureka服务注册发现套件 
-├		├── eureka-server	--服务注册中心			  [1111]  
-├		└── open-eureka-client    --注册服务样例工程    [7768] 
-└	  sql				--存放sql脚本
-
-```
+| 名称      | 项目名称            | 说明                                       |
+| ------- | --------------- | ---------------------------------------- |
+| API工具包  | api-commons     | 存放Model层，和部分工具类                          |
+| Cloud网关 | api-gateway     | 基于Spring Cloud构建gateway网关服务，采用OAuth2.0认证体系，管理所有服务的负载，可以集群部署； |
+| 业务中心    | business-center | 主要包括前端项目，用户中心，文件中心等服务                    |
+| 配置中心    | config-center   | 配置中心，管理整个微服务的配置;                         |
+| 数据封装    | db-core         | 数据库逻辑封装                                  |
+| 任务中心    | job-center      | 基于xxl-job实现的Demo，可以直接使用                  |
+| 监控中心    | monitor-center  | 基于Spring Boot Admin集成Turbine,Hystrix，对应用状态进行监控，对服务调用进行追踪和对熔断进行监测;集成zipkin链式追踪服务 |
+| 认证中心    | oauth-center    | 基于SpringSecurity进行安全认证，采用OAuth2.0认证体系，对客户端、用户进行认证及授权，支持多种模式； |
+| 注册中心    | register-center | 采用Euraka构建服务注册中心，负责服务注册于发现               |
+| 脚本模块    | sql             | 存放sql脚本                                  |
 
 
 

@@ -2,7 +2,10 @@ package com.central.eureka;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.turbine.EnableTurbine;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /** 
@@ -12,7 +15,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 * eureka高可用三台机器
 */
 @EnableEurekaServer
-@SpringBootApplication
+@SpringCloudApplication
+@EnableHystrixDashboard
+@EnableTurbine
 public class EurekaServerApp {
 
 	public static void main(String[] args) {
