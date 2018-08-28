@@ -156,8 +156,13 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
 
             index.regRouter(admin.getTempData("menus"));
             // index.regRouter(config.menus);
+            Q.reg('console', function () {
+                var menuPath = 'pages/console.html'
+                index.loadView('console', menuPath, '主页');
+            });
+
             Q.init({
-                index: 'user'
+                index: 'console'
             });
         },
         // 使用递归循环注册
