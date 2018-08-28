@@ -30,16 +30,6 @@ central-platform
 
 
 
-
-
-
-
-
-
-
-
-
-
 #### 技术介绍 
 
 
@@ -47,7 +37,25 @@ central-platform
 
 #### 安装教程
 
-1. ​
+1.下载代码
+
+```
+ git clone https://gitee.com/GeekPerson/central-platform.git
+```
+
+2.启动对应的服务
+
+a.先启动 register-center 注册中心的 eureka-server 注册服务
+
+b.在启动 api-gateway 网关服务
+
+c.再启动 oauth-center 认证中心 oauth-server 认证服务
+
+d.在启动 business-center 业务中心的 对应服务 file-center user-center back-center
+
+e.启动 monitor-center 监控中心 admin-server zipkin-center
+
+
 
 #### 使用说明
 
