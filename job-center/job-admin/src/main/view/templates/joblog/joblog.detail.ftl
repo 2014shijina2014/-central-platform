@@ -53,8 +53,6 @@
         </section>
     </div>
 
-    <!-- footer -->
-    <@netCommon.commonFooter />
 
 </div>
 

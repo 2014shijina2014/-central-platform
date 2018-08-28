@@ -12,7 +12,7 @@ import com.xxl.job.admin.controller.interceptor.PermissionInterceptor;
 public class MyWebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/**").excludePathPatterns("/toLogin");
+//        registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/**").excludePathPatterns("/toLogin");
         super.addInterceptors(registry);
 
     }

@@ -8,18 +8,9 @@
   	<link rel="stylesheet" href="/adminlte/plugins/datatables/dataTables.bootstrap.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if> ">
-<div class="wrapper">
-	<!-- header -->
-	<@netCommon.commonHeader />
-	<!-- left -->
-	<@netCommon.commonLeft "jobgroup" />
-	
-	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
-		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1>执行器管理<small>任务调度中心</small></h1>
-		</section>
+<div >
+
+
 
 		<!-- Main content -->
 	    <section class="content">
@@ -74,7 +65,6 @@
 				</div>
 			</div>
 	    </section>
-	</div>
 
     <!-- 新增.模态框 -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -169,8 +159,6 @@
         </div>
     </div>
 	
-	<!-- footer -->
-	<@netCommon.commonFooter />
 </div>
 
 <@netCommon.commonScript />
