@@ -35,6 +35,10 @@ central-platform
 
 
 
+
+
+
+
 #### 安装教程
 
 1.下载代码
@@ -56,10 +60,6 @@ d.在启动 business-center 业务中心的 对应服务 file-center user-center
 e.启动 monitor-center 监控中心 admin-server zipkin-center
 
 
-
-#### 使用说明
-
-1. ​
 
 #### 截图预览 
 
