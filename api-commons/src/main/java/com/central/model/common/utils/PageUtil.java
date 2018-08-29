@@ -20,14 +20,10 @@ public class PageUtil {
 	/**
 	 * 分页参数，起始位置，从0开始
 	 */
-	public static final String START = "start";
+	public static final String PAGE = "page";
 	/**
 	 * 分页参数，每页数据条数
 	 */
-	public static final String LENGTH = "length";
-
-	public static final String PAGE = "page";
-
 	public static final String LIMIT = "limit";
 
 	/**
