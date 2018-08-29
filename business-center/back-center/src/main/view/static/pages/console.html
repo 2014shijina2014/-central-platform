@@ -1,4 +1,5 @@
-<div class="layui-row layui-col-space15">
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
     <div class="card">
         <div class="card-header">
         </div>
@@ -6,12 +7,15 @@
             <div id="container" style="height:300px"></div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title"></h2>
-        </div>
-        <div class="card-block">
-            <div id="keysChart" style="height:300px"></div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"></h2>
+            </div>
+            <div class="card-block">
+                <div id="keysChart" style="height:300px"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -36,15 +40,30 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr class="md-end-block" cid="n57" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n58" mdtype="table_cell"><span md-inline="plain">脚本模块</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n59" mdtype="table_cell"><span md-inline="plain">sql</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n60" mdtype="table_cell"><span md-inline="plain">存放sql脚本</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n37" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n38" mdtype="table_cell"><span md-inline="plain">数据封装</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n39" mdtype="table_cell"><span md-inline="plain">db-core</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n40" mdtype="table_cell"><span md-inline="plain">数据库逻辑封装</span></span></td>
+                    </tr>
                     <tr class="md-end-block" cid="n21" mdtype="table_row">
                         <td><span contenteditable="true" class="td-span" cid="n22" mdtype="table_cell"><span md-inline="plain">API工具包</span></span></td>
                         <td><span contenteditable="true" class="td-span" cid="n23" mdtype="table_cell"><span md-inline="plain">api-commons</span></span></td>
                         <td><span contenteditable="true" class="td-span" cid="n24" mdtype="table_cell"><span md-inline="plain">存放Model层，和部分工具类</span></span></td>
                     </tr>
-                    <tr class="md-end-block" cid="n25" mdtype="table_row">
-                        <td><span contenteditable="true" class="td-span" cid="n26" mdtype="table_cell"><span md-inline="plain">Cloud网关</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n27" mdtype="table_cell"><span md-inline="plain">api-gateway</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n28" mdtype="table_cell"><span md-inline="plain">基于Spring Cloud构建gateway网关服务，采用OAuth2.0认证体系，管理所有服务的负载，可以集群部署；</span></span></td>
+                    <tr class="md-end-block" cid="n53" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n54" mdtype="table_cell"><span md-inline="plain">注册中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n55" mdtype="table_cell"><span md-inline="plain">register-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n56" mdtype="table_cell"><span md-inline="plain">采用Euraka构建服务注册中心，负责服务注册于发现</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n49" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n50" mdtype="table_cell"><span md-inline="plain">认证中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n51" mdtype="table_cell"><span md-inline="plain">oauth-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n52" mdtype="table_cell"><span md-inline="plain">基于SpringSecurity进行安全认证，采用OAuth2.0认证体系，对客户端、用户进行认证及授权，支持多种模式；</span></span></td>
                     </tr>
                     <tr class="md-end-block" cid="n29" mdtype="table_row">
                         <td><span contenteditable="true" class="td-span" cid="n30" mdtype="table_cell"><span md-inline="plain">业务中心</span></span></td>
@@ -56,11 +75,13 @@
                         <td><span contenteditable="true" class="td-span" cid="n35" mdtype="table_cell"><span md-inline="plain">config-center</span></span></td>
                         <td><span contenteditable="true" class="td-span" cid="n36" mdtype="table_cell"><span md-inline="plain">配置中心，管理整个微服务的配置;</span></span></td>
                     </tr>
-                    <tr class="md-end-block" cid="n37" mdtype="table_row">
-                        <td><span contenteditable="true" class="td-span" cid="n38" mdtype="table_cell"><span md-inline="plain">数据封装</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n39" mdtype="table_cell"><span md-inline="plain">db-core</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n40" mdtype="table_cell"><span md-inline="plain">数据库逻辑封装</span></span></td>
+                    <tr class="md-end-block" cid="n25" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n26" mdtype="table_cell"><span md-inline="plain">Cloud网关</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n27" mdtype="table_cell"><span md-inline="plain">api-gateway</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n28" mdtype="table_cell"><span md-inline="plain">基于Spring Cloud构建gateway网关服务，采用OAuth2.0认证体系，管理所有服务的负载，可以集群部署；</span></span></td>
                     </tr>
+
+
                     <tr class="md-end-block" cid="n41" mdtype="table_row">
                         <td><span contenteditable="true" class="td-span" cid="n42" mdtype="table_cell"><span md-inline="plain">任务中心</span></span></td>
                         <td><span contenteditable="true" class="td-span" cid="n43" mdtype="table_cell"><span md-inline="plain">job-center</span></span></td>
@@ -71,21 +92,9 @@
                         <td><span contenteditable="true" class="td-span" cid="n47" mdtype="table_cell"><span md-inline="plain">monitor-center</span></span></td>
                         <td><span contenteditable="true" class="td-span" cid="n48" mdtype="table_cell"><span md-inline="plain">基于Spring Boot Admin，对应用状态进行监控，对服务调用进行追踪和对熔断进行监测;集成zipkin链式追踪服务</span></span></td>
                     </tr>
-                    <tr class="md-end-block" cid="n49" mdtype="table_row">
-                        <td><span contenteditable="true" class="td-span" cid="n50" mdtype="table_cell"><span md-inline="plain">认证中心</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n51" mdtype="table_cell"><span md-inline="plain">oauth-center</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n52" mdtype="table_cell"><span md-inline="plain">基于SpringSecurity进行安全认证，采用OAuth2.0认证体系，对客户端、用户进行认证及授权，支持多种模式；</span></span></td>
-                    </tr>
-                    <tr class="md-end-block" cid="n53" mdtype="table_row">
-                        <td><span contenteditable="true" class="td-span" cid="n54" mdtype="table_cell"><span md-inline="plain">注册中心</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n55" mdtype="table_cell"><span md-inline="plain">register-center</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n56" mdtype="table_cell"><span md-inline="plain">采用Euraka构建服务注册中心，负责服务注册于发现</span></span></td>
-                    </tr>
-                    <tr class="md-end-block" cid="n57" mdtype="table_row">
-                        <td><span contenteditable="true" class="td-span" cid="n58" mdtype="table_cell"><span md-inline="plain">脚本模块</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n59" mdtype="table_cell"><span md-inline="plain">sql</span></span></td>
-                        <td><span contenteditable="true" class="td-span" cid="n60" mdtype="table_cell"><span md-inline="plain">存放sql脚本</span></span></td>
-                    </tr>
+
+
+
                     </tbody>
                 </table>
 
