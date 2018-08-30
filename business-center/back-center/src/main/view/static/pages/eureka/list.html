@@ -15,10 +15,9 @@
 
 <!-- 表格状态列 -->
 <script type="text/html" id="eureka-tpl-state">
-    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.id}}" lay-skin="switch" lay-text="正常|锁定"
-           {{d.enabled==true?'checked':''}}/>
+    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.instanceId}}" lay-skin="switch" lay-text="正常|锁定"
+           {{d.status=='UP'?'checked':''}}/>
 </script>
-
 
 
 <script>
@@ -31,31 +30,53 @@
         var admin = layui.admin;
 
 
-        admin.req('api-eureka/eureka/apps', {}, function (data) {
-           console.log(data);
-        }, 'GET');
+        var renderTable = function () {
+            admin.req('api-eureka/eureka/apps', {}, function (data) {
+                var applications = new Array();
+                for (var i = 0; i <  data.applications.application.length; i++) {
+                    var instances = data.applications.application[i].instance;
+                    for (var j = 0; j < instances.length; j++ ){
+                        var instance = instances[j];
+                        applications.push(instance);
+                    }
+                }
+                console.log(applications);
 
-        // // 渲染表格
-        // table.render({
-        //     elem: '#eureka-table',
-        //     url: config.eureka_server + 'api-eureka/eureka/apps',
-        //     method: 'GET',
-        //     where: {
-        //         access_token: config.getToken().access_token,
-        //     },
-        //     headers: {
-        //         Accept: 'application/json'
-        //     },
-        //     page: true,
-        //     cols: [[
-        //         {type: 'numbers'},
-        //         {field: 'id', sort: true, title: '用户编号'},
-        //         {field: 'username', sort: true, title: '账号'},
-        //         {field: 'nickname', sort: true, title: '用户名'},
-        //         {field: 'phone', sort: true, title: '手机号'},
-        //         {field: 'enabled', sort: true, templet: '#eureka-tpl-state', title: '状态'}
-        //     ]]
-        // });
+                // // 渲染表格
+                table.render({
+                    elem: '#eureka-table',
+                    data: applications,
+                    page: false,
+                    cols: [[
+                        {type: 'numbers'},
+                        {field: 'app', sort: true, title: '服务名称'},
+                        {field: 'ipAddr', sort: true, title: 'IP地址'},
+                        {field: 'homePageUrl', sort: true, title: '页面地址'},
+                        {field: 'status', sort: true, title: '状态'},
+                        {field: 'enabled', sort: true, templet: '#eureka-tpl-state', title: '状态'}
+                    ]]
+                });
+                console.log(data);
+            }, 'GET');
+        };
+
+        renderTable();
+
+        // 修改状态
+        form.on('switch(eureka-tpl-state)', function (obj) {
+            layer.load(2);
+            console.log(obj.elem.value)
+            console.log(obj.elem.checked ? 'UP' : 'DOWN')
+
+            // admin.req('api-user/users/updateEnabled', {
+            //     id: obj.elem.value,
+            //     enabled: obj.elem.checked ? 'UP' : 'DOWN'
+            // }, function (data) {
+            //
+            // }, 'GET');
+        });
+
+
 
     });
 </script>
