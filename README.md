@@ -1,5 +1,20 @@
 # central-platform
 
+<p align="center">
+ <img src="https://img.shields.io/circleci/project/vuejs/vue/dev.svg" alt="Build Status">
+  <img src="https://img.shields.io/badge/Spring%20Cloud-Finchley.RELEASE-blue.svg" alt="Coverage Status">
+  <img src="https://img.shields.io/badge/Spring%20Boot-2.0.1.RELEASE-blue.svg" alt="Downloads">
+
+</p>
+
+### 欢迎进群（群内领资料）
+
+`一键加群`
+
+<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5JSjd5D"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="open-capacity-platform交流" title="open-capacity-platform交流"></a>
+
+![](https://i.imgur.com/kxpc628.png)
+
 #### 项目介绍
 从无到有搭建企业级微服务框架，为企业级项目提供一套完善的，运行稳定，多种分布式问题的解决方案;
 
