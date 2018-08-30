@@ -155,7 +155,7 @@
 		<!-- 业务中心 -->
 		<module>business-center</module>
 		<!-- 压测 -->
-		<module>tuning-center</module>
+		<!--<module>tuning-center</module>-->
 		
 	</modules>
 </project>
