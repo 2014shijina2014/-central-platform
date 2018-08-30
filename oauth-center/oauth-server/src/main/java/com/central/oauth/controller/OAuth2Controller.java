@@ -400,24 +400,27 @@ public class OAuth2Controller {
 	public PageResult<HashMap<String, String>> getUserTokenInfo(@RequestParam Map<String, Object> params) throws Exception {
 		List<HashMap<String, String>> list = new ArrayList<>();
 
-		Set<String> keys = redisTemplate.keys("auth:" + "*") ;
+		Set<String> keys = redisTemplate.keys("access:" + "*") ;
 		//根据分页参数获取对应数据
-		List<String> pages = findKeysForPage("auth:" + "*", MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"));
+		List<String> pages = findKeysForPage("access:" + "*", MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"));
 
 		for (String page: pages) {
 			String key = page;
 
-			String accessToken = StringUtils.substringAfter(key, "auth:");
+			String accessToken = StringUtils.substringAfter(key, "access:");
 
 			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
 			HashMap<String, String> map = new HashMap<String, String>();
-
+			 
+			
+			 
+			
 			try {
 				map.put("token_type", token.getTokenType());
 				map.put("token_value", token.getValue());
 				map.put("expires_in", token.getExpiresIn()+"");
 			} catch (Exception e) {
-
+				 
 			}
 			
 			
@@ -450,6 +453,7 @@ public class OAuth2Controller {
 
 			}
 			list.add(map);
+
 		}
 
 		return PageResult.<HashMap<String, String>>builder().data(list).code(0).count((long) keys.size()).build() ;
