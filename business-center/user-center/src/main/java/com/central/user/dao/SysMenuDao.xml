@@ -15,6 +15,9 @@
 			<if test="url != null and url != ''">
 				url = #{url,jdbcType=VARCHAR},
 			</if>
+			<if test="path != null and path != ''">
+				path = #{path,jdbcType=VARCHAR},
+			</if>
 			<if test="css != null">
 				css = #{css,jdbcType=VARCHAR},
 			</if>
