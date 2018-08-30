@@ -411,13 +411,14 @@ public class OAuth2Controller {
 
 			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
 			HashMap<String, String> map = new HashMap<String, String>();
-			 
-			
-			 
-			
-			map.put("token_type", token.getTokenType());
-			map.put("token_value", token.getValue());
-			map.put("expires_in", token.getExpiresIn()+"");
+
+			try {
+				map.put("token_type", token.getTokenType());
+				map.put("token_value", token.getValue());
+				map.put("expires_in", token.getExpiresIn()+"");
+			} catch (Exception e) {
+
+			}
 			
 			
 			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
@@ -449,7 +450,6 @@ public class OAuth2Controller {
 
 			}
 			list.add(map);
-
 		}
 
 		return PageResult.<HashMap<String, String>>builder().data(list).code(0).count((long) keys.size()).build() ;
