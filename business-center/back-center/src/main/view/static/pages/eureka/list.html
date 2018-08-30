@@ -1,0 +1,61 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">服务治理</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!console">首页</a>
+          <a><cite>服务治理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+
+        <table class="layui-table" id="eureka-table" lay-filter="eureka-table"></table>
+
+    </div>
+</div>
+
+<!-- 表格状态列 -->
+<script type="text/html" id="eureka-tpl-state">
+    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.id}}" lay-skin="switch" lay-text="正常|锁定"
+           {{d.enabled==true?'checked':''}}/>
+</script>
+
+
+
+<script>
+    layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var config = layui.config;
+        var layer = layui.layer;
+        var util = layui.util;
+        var admin = layui.admin;
+
+
+        admin.req('api-eureka/eureka/apps', {}, function (data) {
+           console.log(data);
+        }, 'GET');
+
+        // // 渲染表格
+        // table.render({
+        //     elem: '#eureka-table',
+        //     url: config.eureka_server + 'api-eureka/eureka/apps',
+        //     method: 'GET',
+        //     where: {
+        //         access_token: config.getToken().access_token,
+        //     },
+        //     headers: {
+        //         Accept: 'application/json'
+        //     },
+        //     page: true,
+        //     cols: [[
+        //         {type: 'numbers'},
+        //         {field: 'id', sort: true, title: '用户编号'},
+        //         {field: 'username', sort: true, title: '账号'},
+        //         {field: 'nickname', sort: true, title: '用户名'},
+        //         {field: 'phone', sort: true, title: '手机号'},
+        //         {field: 'enabled', sort: true, templet: '#eureka-tpl-state', title: '状态'}
+        //     ]]
+        // });
+
+    });
+</script>

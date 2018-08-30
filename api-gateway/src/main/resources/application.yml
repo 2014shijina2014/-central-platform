@@ -167,6 +167,11 @@ zuul:
       path: /api-sms/**
       service-id: sms-center  
       strip-prefix: true
+    eureka:
+      sensitiveHeaders: Access-Control-Allow-Origin,Access-Control-Allow-Methods
+      path: /api-eureka/**
+      service-id: eureka-server
+      strip-prefix: true
   ssl-hostname-validation-enabled: false
 
 
