@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.ExpiringOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -36,7 +37,7 @@ public class RedisTemplateTokenStore implements TokenStore {
 	private static final String CLIENT_ID_TO_ACCESS = "client_id_to_access:";
 	private static final String UNAME_TO_ACCESS = "uname_to_access:";
 	
-
+	@Autowired
 	private RedisTemplate<String,Object> redisTemplate ;
 	
 	public RedisTemplate<String,Object> getRedisTemplate() {
