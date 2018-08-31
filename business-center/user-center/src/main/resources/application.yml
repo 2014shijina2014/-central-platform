@@ -18,12 +18,12 @@ spring:
     druid: 
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
       core:
-        url: jdbc:mysql://127.0.0.1:3306/user-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+        url: jdbc:mysql://47.94.252.160:3306/user-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver
       log:
-        url: jdbc:mysql://127.0.0.1:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+        url: jdbc:mysql://47.94.252.160:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver  
@@ -77,12 +77,12 @@ spring:
 ################### mysq end ##########################
   redis:
 ################### redis 单机版 start ########################## 
-    host: 127.0.0.1
+    host: 47.94.252.160
     port: 6379    
     timeout: 3000
     database: 0
   zipkin:
-    base-url: http://127.0.0.1:11008
+    base-url: http://47.94.252.160:11008
 ################### redis 单机版 end ##########################   
 #    cluster:
 #      nodes: 192.168.3.157:7000,192.168.3.158:7000,192.168.3.159:7000,192.168.3.157:7001,192.168.3.158:7001,192.168.3.159:7001
