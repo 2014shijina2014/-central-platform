@@ -15,7 +15,7 @@
 
 <!-- 表格状态列 -->
 <script type="text/html" id="eureka-tpl-state">
-    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.instanceId}}" lay-skin="switch" lay-text="正常|锁定"
+    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.app}}/{{d.instanceId}}" lay-skin="switch" lay-text="正常|锁定"
            {{d.status=='UP'?'checked':''}}/>
 </script>
 
@@ -75,14 +75,12 @@
         form.on('switch(eureka-tpl-state)', function (obj) {
             layer.load(2);
             console.log(obj.elem.value)
-            console.log(obj.elem.checked ? 'UP' : 'DOWN')
-
-            // admin.req('api-user/users/updateEnabled', {
-            //     id: obj.elem.value,
-            //     enabled: obj.elem.checked ? 'UP' : 'DOWN'
-            // }, function (data) {
-            //
-            // }, 'GET');
+            var status = obj.elem.checked ? 'UP' : 'DOWN';
+            // http://127.0.0.1:1111/eureka/apps/AUTH-GATEWAY/auth-gateway:192.168.31.162:9200/status?value=UP
+            admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+                layer.closeAll('loading');
+                renderTable();
+            }, 'PUT');
         });
 
 
