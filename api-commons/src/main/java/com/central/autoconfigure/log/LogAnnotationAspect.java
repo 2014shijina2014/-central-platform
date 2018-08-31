@@ -1,5 +1,6 @@
 package com.central.autoconfigure.log;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,9 @@ import org.springframework.core.annotation.Order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.central.annotation.log.LogAnnotation;
+import com.central.log.service.LogService;
+import com.central.log.service.impl.LogServiceImpl;
+import com.central.log.util.SpringUtils;
 import com.central.model.common.utils.SysUserUtil;
 import com.central.model.log.SysLog;
 import com.central.model.user.LoginAppUser;
@@ -53,11 +57,18 @@ public class LogAnnotationAspect {
 
                  Map<String, Object> params = new HashMap<>();
                  for (int i = 0; i < paramNames.length; i++) {
-                     params.put(paramNames[i], args[i]);
+                	 
+                	 if(paramNames[i] instanceof Serializable){
+                		 params.put(paramNames[i], args[i]);
+                	 }
+                	 
+                     
                  }
 
                  try {
                      log.setParams(JSONObject.toJSONString(params));
+                     
+                     
                  } catch (Exception e) {
                      logger.error("记录参数失败：{}", e.getMessage());
                  }
@@ -73,12 +84,19 @@ public class LogAnnotationAspect {
          } catch (Exception e) {
              log.setFlag(Boolean.FALSE);
              log.setRemark(e.getMessage());
+             
+             
+             
              throw e;
          } finally {
              
              CompletableFuture.runAsync(() -> {
-            	// 保存日志  elasticsearch mongondb ? 
-            	 System.out.println("owen1111111111111111111111111111111111111");
+            	 try {
+     				LogService logService = SpringUtils.getBean(LogServiceImpl.class);
+     				 logService.save(log);
+     			} catch (Exception e) {
+     				 logger.error("记录参数失败：{}", e.getMessage());
+     			}
             	 
              });
 

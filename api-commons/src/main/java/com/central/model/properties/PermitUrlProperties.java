@@ -20,7 +20,7 @@ public class PermitUrlProperties {
     private static final String[] ENDPOINTS = {"/**/actuator/health", "/**/actuator/env", "/**/actuator/metrics/**", "/**/actuator/trace", "/**/actuator/dump",
             "/**/actuator/jolokia", "/**/actuator/info", "/**/actuator/logfile", "/**/actuator/refresh", "/**/actuator/flyway", "/**/actuator/liquibase",
             "/**/actuator/heapdump", "/**/actuator/loggers", "/**/actuator/auditevents", "/**/actuator/env/PID", "/**/actuator/jolokia/**",
-            "/**/v2/api-docs/**", "/**/swagger-ui.html", "/**/swagger-resources/**", "/**/webjars/**"  };
+            "/**/v2/api-docs/**", "/**/swagger-ui.html", "/**/swagger-resources/**", "/**/webjars/**" ,"/**/druid/**" };
     
 	private String[]  http_urls;
 	

@@ -6,12 +6,20 @@ spring:
   application:
     name: auth-gateway
   datasource:
+    dynamic:
+      enable: true
     druid: 
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
-      url: jdbc:mysql://47.94.252.160:3306/oauth-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
-      username: root
-      password: root
-      driver-class-name:  com.mysql.jdbc.Driver
+      core:
+        url: jdbc:mysql://47.94.252.160:3306/oauth-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        username: root
+        password: root
+        driver-class-name:  com.mysql.jdbc.Driver
+      log:
+        url: jdbc:mysql://47.94.252.160:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        username: root
+        password: root
+        driver-class-name:  com.mysql.jdbc.Driver   
       #连接池配置(通常来说，只需要修改initialSize、minIdle、maxActive
       initial-size: 1
       max-active: 20

@@ -9,6 +9,12 @@
 	<artifactId>api-commons</artifactId>
 
 	<dependencies>
+		<!-- å…³ç³»åž‹å’Œéžå…³ç³»åž‹æ•°æ®åº“é…ç½® spring oauth db redisæ”¯æŒ -->
+		<dependency>
+			<groupId>com.central</groupId>
+			<artifactId>db-core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
@@ -43,7 +49,7 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>
             <version>3.2.0</version>
-            <!--add by owen  ÅÅ³ý½â¾öÍø¹ØswaggerÆô¶¯ÎÊÌâ -->
+            <!--add by owen  ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½swaggerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -->
             <exclusions>
             	<exclusion>
             		<groupId>com.google.guava</groupId>

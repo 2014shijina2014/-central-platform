@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
 
+import com.central.annotation.EnableLogging;
 import com.central.autoconfigure.port.PortApplicationEnvironmentPreparedEventListener;
 
 /** 
@@ -17,6 +18,7 @@ import com.central.autoconfigure.port.PortApplicationEnvironmentPreparedEventLis
 */
  
 @Configuration
+@EnableLogging
 @EnableDiscoveryClient
 @SpringBootApplication
 public class UserCenterApp {

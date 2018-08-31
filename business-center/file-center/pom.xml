@@ -120,6 +120,11 @@
 			<artifactId>swagger-bootstrap-ui</artifactId>
 			<version>1.6</version>
 		</dependency>
+		 <dependency>
+			<groupId>com.zyplayer</groupId>
+			<artifactId>swagger-mg-ui</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 		 
 		<!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
 		<dependency>

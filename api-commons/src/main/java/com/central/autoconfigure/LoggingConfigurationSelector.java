@@ -14,7 +14,10 @@ public class LoggingConfigurationSelector implements ImportSelector {
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 		// TODO Auto-generated method stub
 //		importingClassMetadata.getAllAnnotationAttributes(EnableEcho.class.getName());
-		return new String[] { "com.central.autoconfigure.log.LogAnnotationAspect"};
+		return new String[] { 
+				"com.central.autoconfigure.datasource.DataSourceAspect",
+				"com.central.autoconfigure.log.LogAnnotationAspect"
+		};
 	}
 
 }
