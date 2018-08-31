@@ -8,6 +8,7 @@ package com.central.db.config.util;
  * @create 2017年7月2日
  */
 public class DataSourceHolder {
+
     private static final ThreadLocal<DataSourceKey> dataSourceKey = new ThreadLocal<>();
 
     public static DataSourceKey getDataSourceKey() {
