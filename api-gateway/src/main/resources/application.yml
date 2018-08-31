@@ -11,12 +11,12 @@ spring:
     druid: 
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
       core:
-        url: jdbc:mysql://47.94.252.160:3306/oauth-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        url: jdbc:mysql://127.0.0.1:3306/oauth-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver
       log:
-        url: jdbc:mysql://47.94.252.160:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        url: jdbc:mysql://127.0.0.1:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver   
@@ -70,7 +70,7 @@ spring:
 ################### mysq end ##########################
   redis:
 ################### redis 单机版 start ########################## 
-    host: 47.94.252.160
+    host: 127.0.0.1
     port: 6379
     timeout: 3000
     database: 0
@@ -87,9 +87,7 @@ spring:
 #      max-idle: 500     # 连接池中的最大空闲连接
 #      min-idle: 50     # 连接池中的最小空闲连接
 #      max-wait: 1000   # 连接池最大阻塞等待时间（使用负值表示没有限制）      
-    
-docker:
-  ipAddress: 47.94.252.160
+
 
 mybatis:
   config-location: classpath:mybatis.cfg.xml

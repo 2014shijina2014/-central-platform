@@ -11,18 +11,18 @@ management:
       show-details: always  
 aliyun:
   oss:
-    access-key: LTAIMjvZWiXRuClW
-    accessKeySecret: YwJar7gkdZx3Q3Zk6TRuEAWaAz6n8y  
-    endpoint: oss-cn-beijing.aliyuncs.com  
-    bucketName: owenwangwen
-    domain: https://owenwangwen.oss-cn-beijing.aliyuncs.com    
+    access-key:
+    accessKeySecret:
+    endpoint:
+    bucketName:
+    domain:
     
 qiniu:
   oss:
-    access-key: owGiAWGn6DpU5zlrfLP4K9iQusahmspTW6PxRABW
-    accessKeySecret: 5CBWKFd1pP-OSiusd1Bvhokp-ih4i3bs2QA2r-U2
-    endpoint: http://payo7kq4i.bkt.clouddn.com
-    bucketName: owenwangwen
+    access-key:
+    accessKeySecret:
+    endpoint:
+    bucketName:
     
 spring:
   application:
@@ -33,12 +33,12 @@ spring:
     druid: 
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
       core:
-        url: jdbc:mysql://47.94.252.160:3306/file_center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        url: jdbc:mysql://127.0.0.1:3306/file_center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver
       log:
-        url: jdbc:mysql://47.94.252.160:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+        url: jdbc:mysql://127.0.0.1:3306/log-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
         username: root
         password: root
         driver-class-name:  com.mysql.jdbc.Driver   
@@ -92,7 +92,7 @@ spring:
 ################### mysq end ##########################
   redis:
 ################### redis 单机版 start ########################## 
-    host: 47.94.252.160
+    host: 127.0.0.1
     port: 6379    
     timeout: 3000
     database: 0
