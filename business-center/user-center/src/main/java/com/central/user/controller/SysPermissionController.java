@@ -42,59 +42,6 @@ public class SysPermissionController {
 	private SysPermissionService sysPermissionService;
 
 	/**
-	 * 后台管理添加权限
-	 * @param sysPermission
-	 * {
-	 *   id : *** ,
-	 *   permission : *** ,
-	 *   name: *** ,
-	 *   createTime: *** ,
-	 *   updateTime: *** 
-	 * }
-	 * @return
-	 */
-	@PreAuthorize("hasAuthority('permission:post/permissions')")
-	@ApiOperation(value = "后台管理添加权限")
-	@PostMapping("/permissions")
-	public SysPermission save(@RequestBody SysPermission sysPermission) {
-		if (StringUtils.isBlank(sysPermission.getPermission())) {
-			throw new IllegalArgumentException("权限标识不能为空");
-		}
-		if (StringUtils.isBlank(sysPermission.getName())) {
-			throw new IllegalArgumentException("权限名不能为空");
-		}
-
-		sysPermissionService.save(sysPermission);
-
-		return sysPermission;
-	}
-
-	/**
-	 * 后台管理修改权限
-	 * @param sysPermission
-	 * {
-	 *   id : *** ,
-	 *   permission : *** ,
-	 *   name: *** ,
-	 *   createTime: *** ,
-	 *   updateTime: *** 
-	 * }
-	 * @return
-	 */
-	@PreAuthorize("hasAuthority('permission:put/permissions')")
-	@ApiOperation(value = "后台管理修改权限")
-	@PutMapping("/permissions")
-	public SysPermission update(@RequestBody SysPermission sysPermission) {
-		if (StringUtils.isBlank(sysPermission.getName())) {
-			throw new IllegalArgumentException("权限名不能为空");
-		}
-
-		sysPermissionService.update(sysPermission);
-
-		return sysPermission;
-	}
-
-	/**
 	 * 删除权限标识
 	 * 参考 /permissions/1
 	 * @param id

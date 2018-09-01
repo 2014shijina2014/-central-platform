@@ -81,23 +81,6 @@ public class SysUserController {
     }
 
     /**
-     * 添加用户,根据用户名注册
-     *
-     * @param sysUser
-     * @return
-     */
-    @PostMapping("/users-anon/register")
-    public SysUser register(@RequestBody SysUser sysUser) {
-        appUserService.addSysUser(sysUser);
-
-        return sysUser;
-    }
-
-
-
-
-
-    /**
      * 管理后台，给用户重置密码
      *
      * @param id
