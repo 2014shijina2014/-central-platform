@@ -16,8 +16,8 @@ spring:
       notify:  
         mail:  
           enabled: false
-          to: 986969368@qq.com
-          from: 18579068155@163.com
+          to: 接收人
+          from: 发送人
 #          ignore-changes: UNKNOWN:UP
           ignore-changes:
             -
@@ -30,15 +30,15 @@ spring:
         location: turbine
   mail:
     host: smtp.163.com
-    username: 18579068155@163.com
-    password: 1q2w3e4r
+    username: 用户名
+    password: 密钥
     properties:
         mail.smtp.auth : true
         mail.smtp.timeout : 2000
         mail.smtp.starttls.enable : true
         mail.smtp.starttls.required : true
   zipkin:
-    base-url: http://47.94.252.160:11008    # zipkin监控地址
+    base-url: http://127.0.0.1:11008    # zipkin监控地址
 
 
 eureka:
@@ -46,7 +46,7 @@ eureka:
     healthcheck:
       enabled: true
     serviceUrl:
-      defaultZone:  http://47.99.88.28:1111/eureka  #http://130.75.131.241:8761/eureka,http://130.75.131.248:8762/eureka
+      defaultZone:  http://127.0.0.1:1111/eureka  #http://130.75.131.241:8761/eureka,http://130.75.131.248:8762/eureka
       #http://134.224.249.33:1111/eureka/  正式库
       #http://134.224.249.33:1111/eureka/  测试库
       #http://127.0.0.1:8761/eureka,http://127.0.0.1:8762/eureka
