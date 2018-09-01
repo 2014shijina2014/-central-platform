@@ -123,7 +123,7 @@
 		 <dependency>
 			<groupId>com.zyplayer</groupId>
 			<artifactId>swagger-mg-ui</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.4</version>
 		</dependency>
 		 
 		<!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
