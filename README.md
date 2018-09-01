@@ -45,15 +45,6 @@ central-platform
 
 
 
-#### 技术介绍 
-
-
-
-
-
-
-
-
 #### 安装教程
 
 1.下载代码
@@ -73,6 +64,10 @@ c.再启动 oauth-center 认证中心 oauth-server 认证服务
 d.在启动 business-center 业务中心的 对应服务 file-center user-center back-center
 
 e.启动 monitor-center 监控中心 admin-server zipkin-center
+
+
+
+完整教程可以加群联系开源作者，因一些七牛OSS账号 和 邮箱账号问题；请按照对应的配置进行设置
 
 
 
@@ -123,4 +118,16 @@ Zipkin监控
 个人信息
 
 ![](z-doc/images/QQ截图20180828001208.png)
+
+任务调度
+
+![](z-doc/images/QQ截图20180901233132.png)
+
+
+
+![](z-doc/images/QQ截图20180901233301.png)
+
+
+
+![](z-doc/images/QQ截图20180901233320.png)
 
