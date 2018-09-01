@@ -1,6 +1,6 @@
 server:
-#  port: 8000
-  port: ${randomServerPort.value[8000,8005]}    #随机端口
+  port: 8000
+#  port: ${randomServerPort.value[8000,8005]}    #随机端口
 management:
   endpoints:
     web:
@@ -84,7 +84,7 @@ spring:
     timeout: 3000
     database: 0
   zipkin:
-    base-url: http://127.0.0.1:11008
+    base-url: http://47.94.252.160:11008
 ################### redis 单机版 end ##########################   
 #    cluster:
 #      nodes: 130.75.131.237:7000,130.75.131.238:7000,130.75.131.239:7000,130.75.131.237:7001,130.75.131.238:7001,130.75.131.239:7001
@@ -148,7 +148,7 @@ eureka:
     healthcheck:
       enabled: true
     serviceUrl:
-      defaultZone:  http://127.0.0.1:1111/eureka  #http://130.75.131.241:8761/eureka,http://130.75.131.248:8762/eureka
+      defaultZone:  http://47.99.88.28:1111/eureka  #http://130.75.131.241:8761/eureka,http://130.75.131.248:8762/eureka
       #http://134.224.249.33:1111/eureka/  正式库
       #http://134.224.249.33:1111/eureka/  测试库
       #http://127.0.0.1:8761/eureka,http://127.0.0.1:8762/eureka
