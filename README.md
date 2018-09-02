@@ -43,7 +43,12 @@ central-platform
 | 脚本模块    | sql             | 存放sql脚本                                  |
 
 
+#### 演示地址
 
+http://47.94.252.160:8066
+
+账号/密码
+admin/admin
 
 #### 安装教程
 
