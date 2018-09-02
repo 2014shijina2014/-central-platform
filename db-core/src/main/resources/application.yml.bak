@@ -1,14 +1,14 @@
 spring:
   redis:
 ################### redis 单机版 start ########################## 
-    host: 47.94.252.160
+    host: 127.0.0.1
     port: 6379    
     database: 1
 ################## mysql start ############################    
   datasource:
     druid: 
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
-      url: jdbc:mysql://47.94.252.160:3306/boot_security?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+      url: jdbc:mysql://127.0.0.1:3306/boot_security?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
       username: root
       password: root
       driver-class-name:  com.mysql.jdbc.Driver
