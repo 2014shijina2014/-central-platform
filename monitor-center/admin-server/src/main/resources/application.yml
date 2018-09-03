@@ -38,7 +38,7 @@ spring:
         mail.smtp.starttls.enable : true
         mail.smtp.starttls.required : true
   zipkin:
-    base-url: http://47.94.252.160:11008    # zipkin监控地址
+    base-url: http://59.110.164.254:11008    # zipkin监控地址
 
 
 eureka:
