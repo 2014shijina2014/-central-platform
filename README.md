@@ -45,7 +45,7 @@ central-platform
 
 #### 演示地址
 
-http://47.94.252.160:8066
+http://59.110.164.254:8066 
 
 账号/密码
 admin/admin
