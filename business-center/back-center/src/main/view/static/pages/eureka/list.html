@@ -29,6 +29,7 @@
         var util = layui.util;
         var admin = layui.admin;
 
+        var falg = true;  //演示阶段
 
         var renderTable = function () {
             admin.req('api-eureka/eureka/apps', {}, function (data) {
@@ -73,17 +74,23 @@
         // 修改状态
         form.on('switch(eureka-tpl-state)', function (obj) {
             layer.load(2);
-            // console.log(obj.elem.value)
             var status = obj.elem.checked ? 'UP' : 'DOWN';
             // http://127.0.0.1:1111/eureka/apps/AUTH-GATEWAY/auth-gateway:192.168.31.162:9200/status?value=UP
-            admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
-                if (data.code == 200){
-                    setTimeout(function (args) {
-                        layer.closeAll('loading');
-                        admin.events.refresh();
-                    },3000);
-                }
-            }, 'PUT');
+            if (falg){
+                layer.closeAll('loading');
+                layer.msg("演示阶段不可以修改,请联系管理员", {icon: 1});
+                admin.events.refresh();
+            }else {
+                admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+                    if (data.code == 200){
+                        setTimeout(function (args) {
+                            layer.closeAll('loading');
+                            layer.msg("修改成功", {icon: 1});
+                            admin.events.refresh();
+                        },3000);
+                    }
+                }, 'PUT');
+            }
         });
 
     });
