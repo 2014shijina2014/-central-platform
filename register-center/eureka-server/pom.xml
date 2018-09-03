@@ -71,13 +71,13 @@
 				<configuration>
 					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
 					<dockerDirectory>src/main/docker</dockerDirectory>
+					<!-- docker远程服务器地址 -->
+					<dockerHost>http://47.99.88.28:5555</dockerHost>
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
 							<directory>${project.build.directory}</directory>
 							<include>${project.build.finalName}.jar</include>
-							<!-- docker远程服务器地址 -->
-							<dockerHost>http://47.99.88.28:5555</dockerHost>
 						</resource>
 					</resources>
 				</configuration>
