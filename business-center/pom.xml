@@ -15,6 +15,9 @@
 	<module>file-center</module>
 	<!-- 后台中心 -->
 	<module>back-center</module>
+      <!-- 代码生成器 -->
+	<module>generator-center</module>
+
 
   </modules>
 </project>
