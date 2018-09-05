@@ -12,6 +12,31 @@
 
 
 
+    <insert id="save">
+        insert into ${tableName}(
+            #foreach($column in $columns)
+                    #if( $!{velocityCount} == $!{columns.size()})
+                        ${column.columnName}
+                    #else
+                        ${column.columnName},
+                    #end
+            #end
+      ) values (
+         #foreach($column in $columns)
+            #if( $!{velocityCount} == $!{columns.size()})
+               #{${column.columnName}}
+               #else
+               #{ ${column.columnName}},
+            #end
+
+         #end
+      )
+    </insert>
+
+
+
+
+
 
 
 </mapper>
