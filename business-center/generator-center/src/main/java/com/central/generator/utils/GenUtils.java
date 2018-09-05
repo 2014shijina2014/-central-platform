@@ -36,10 +36,8 @@ public class GenUtils {
         templates.add("template/Service.java.vm");
         templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
-        templates.add("template/menu.sql.vm");
 
         templates.add("template/index.vue.vm");
-        templates.add("template/add-or-update.vue.vm");
 
         return templates;
     }
@@ -208,11 +206,6 @@ public class GenUtils {
         if (template.contains("index.vue.vm" )) {
             return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
                     File.separator + moduleName + File.separator + className.toLowerCase() + ".vue";
-        }
-
-        if (template.contains("add-or-update.vue.vm" )) {
-            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-                    File.separator + moduleName + File.separator + className.toLowerCase() + "-add-or-update.vue";
         }
 
         return null;
