@@ -13,8 +13,32 @@ import java.util.Map;
  * @email ${email}
  * @date ${datetime}
  */
-public interface ${className}Service extends IService<${className}Entity> {
+public interface ${className}Service {
+    /**
+     * 添加
+     * @param ${classname}
+     */
+    int save(${className} ${classname});
 
-    PageUtils queryPage(Map<String, Object> params);
+    /**
+     * 修改
+     * @param ${classname}
+     */
+    int update(${className} ${classname});
+
+    /**
+     * 删除
+     * @param ${classname}
+     */
+    int delete(Long id);
+
+
+    /**
+     * 列表
+     * @param params
+     * @return
+     */
+    PageResult<${className}> findAll(Map<String, Object> params);
+
 }
 

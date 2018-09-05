@@ -1,10 +1,9 @@
 package ${package}.${moduleName}.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.collections4.MapUtils;
 import ${mainPath}.common.utils.PageUtils;
 import ${mainPath}.common.utils.Query;
 
@@ -13,17 +12,52 @@ import ${package}.${moduleName}.entity.${className}Entity;
 import ${package}.${moduleName}.service.${className}Service;
 
 
-@Service("${classname}Service")
-public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
+@Service
+public class ${className}ServiceImpl  implements ${className}Service {
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        Page<${className}Entity> page = this.selectPage(
-                new Query<${className}Entity>(params).getPage(),
-                new EntityWrapper<${className}Entity>()
-        );
+    @Autowired
+    private ${className}Dao ${classname}Dao;
 
-        return new PageUtils(page);
+    /**
+     * 添加
+     * @param ${classname}
+     */
+    public int save(${className} ${classname}){
+        return ${classname}Dao.save(${classname});
+    }
+
+    /**
+     * 修改
+     * @param ${classname}
+     */
+    public int update(${className} ${classname}){
+        return ${classname}Dao.update(${classname});
+    }
+
+
+    /**
+     * 删除
+     * @param ${classname}
+     */
+    public int delete(Long id){
+        return ${classname}Dao.delete(id);
+    }
+
+
+    /**
+     * 列表
+     * @param params
+     * @return
+     */
+    public PageResult<${className}> findAll(Map<String, Object> params){
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        if (MapUtils.getInteger(params, "page")!=null && MapUtils.getInteger(params, "limit")!=null)
+            PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+
+        List<${className}> list  =  ${classname}Dao.findAll(params);
+        PageInfo<${className}> pageInfo = new PageInfo(list);
+
+        return PageResult.<${className}>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build();
     }
 
 }

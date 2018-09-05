@@ -26,7 +26,7 @@ import ${mainPath}.common.utils.R;
  * @date ${datetime}
  */
 @RestController
-@RequestMapping("${moduleName}/${pathName}")
+@RequestMapping("${pathName}")
 public class ${className}Controller {
     @Autowired
     private ${className}Service ${classname}Service;
