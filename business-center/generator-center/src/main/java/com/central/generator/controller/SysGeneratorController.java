@@ -1,11 +1,10 @@
 package com.central.generator.controller;
 
 import com.central.generator.service.SysGeneratorService;
-import com.central.model.common.Result;
+import com.central.model.common.PageResult;
 import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,10 +33,8 @@ public class SysGeneratorController {
      */
     @ResponseBody
     @RequestMapping("/list")
-    public Result list(@RequestParam Map<String, Object> params){
-
-
-        return null;
+    public PageResult list(@RequestParam Map<String, Object> params){
+        return sysGeneratorService.queryList(params);
     }
 
     /**

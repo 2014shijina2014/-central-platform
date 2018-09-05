@@ -9,9 +9,6 @@
             and table_name like concat('%', #{tableName}, '%')
         </if>
         order by create_time desc
-        <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
-        </if>
     </select>
 
     <select id="queryTotal" resultType="int">
