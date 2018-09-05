@@ -1,4 +1,4 @@
-package com.central.generator;
+package com.central;
 
 import com.central.annotation.EnableLogging;
 import org.springframework.boot.SpringApplication;
