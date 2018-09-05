@@ -178,6 +178,11 @@ zuul:
       path: /api-eureka/**
       service-id: eureka-server
       strip-prefix: true
+    generator:
+      sensitiveHeaders: Access-Control-Allow-Origin,Access-Control-Allow-Methods
+      path: /api-generator/**
+      service-id: generator-center
+      strip-prefix: true
   ssl-hostname-validation-enabled: false
 
 
