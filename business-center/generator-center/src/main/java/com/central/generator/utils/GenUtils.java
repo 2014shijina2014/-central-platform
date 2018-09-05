@@ -37,7 +37,7 @@ public class GenUtils {
         templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
 
-        templates.add("template/index.vue.vm");
+        templates.add("template/index.html.vm");
 
         return templates;
     }
@@ -203,9 +203,9 @@ public class GenUtils {
             return className.toLowerCase() + "_menu.sql";
         }
 
-        if (template.contains("index.vue.vm" )) {
-            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-                    File.separator + moduleName + File.separator + className.toLowerCase() + ".vue";
+        if (template.contains("index.html.vm" )) {
+            return "main" + File.separator + "view" + File.separator + "pages"  +
+                    File.separator + moduleName + File.separator  + "index.html";
         }
 
         return null;
