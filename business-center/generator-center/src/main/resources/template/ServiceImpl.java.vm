@@ -2,13 +2,16 @@ package ${package}.${moduleName}.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.central.model.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
-import ${mainPath}.common.utils.PageUtils;
-import ${mainPath}.common.utils.Query;
 
+import ${package}.${moduleName}.model.${className};
 import ${package}.${moduleName}.dao.${className}Dao;
-import ${package}.${moduleName}.entity.${className}Entity;
 import ${package}.${moduleName}.service.${className}Service;
 
 
@@ -37,7 +40,7 @@ public class ${className}ServiceImpl  implements ${className}Service {
 
     /**
      * 删除
-     * @param ${classname}
+     * @param id
      */
     public int delete(Long id){
         return ${classname}Dao.delete(id);

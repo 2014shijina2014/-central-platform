@@ -1,9 +1,10 @@
 package ${package}.${moduleName}.dao;
 
-import ${package}.${moduleName}.entity.${className}Entity;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import ${package}.${moduleName}.model.${className};
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
 /**
  * ${comments}
  * 
@@ -20,7 +21,7 @@ public interface ${className}Dao  {
 
     int delete(Long id);
 
-    List<${className}> findAll();
+    List<${className}> findAll(Map<String, Object> params);
 
 
 

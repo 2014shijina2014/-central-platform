@@ -1,8 +1,8 @@
 package ${package}.${moduleName}.service;
 
-import com.baomidou.mybatisplus.service.IService;
-import ${mainPath}.common.utils.PageUtils;
-import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.model.${className};
+
+import com.central.model.common.PageResult;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public interface ${className}Service {
 
     /**
      * 删除
-     * @param ${classname}
+     * @param id
      */
     int delete(Long id);
 
