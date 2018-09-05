@@ -8,6 +8,11 @@
     </div>
     <div class="layui-card-body">
 
+        <div class="layui-form toolbar">
+            搜索：<input id="generator-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+            <button id="generator-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+        </div>
+
         <table class="layui-table" id="generator-table" lay-filter="generator-table"></table>
 
     </div>
@@ -59,22 +64,31 @@
             }
         });
 
+        // 搜索按钮点击事件
+        $('#generator-btn-search').click(function () {
+            var key = $('#generator-edit-search').val();
+            table.reload('generator-table', {where: {tableName: key}});
+        });
+
         // 生成
         var generator = function (obj) {
-            layer.msg("演示阶段", {icon: 1});
-            // layer.confirm('确定要删除吗？', function (i) {
-            //     layer.close(i);
-            //     layer.load(2);
-            //     admin.req('api-file/files/' + obj.data.id, {}, function (data) {
-            //         layer.closeAll('loading');
-            //         if (data.resp_code == 0) {
-            //             layer.msg(data.resp_msg, {icon: 1});
-            //             obj.del();
-            //         } else {
-            //             layer.msg(data.resp_msg, {icon: 2});
-            //         }
-            //     }, 'DELETE');
-            // });
+            // layer.msg("演示阶段", {icon: 1});
+            var url = config.base_server + 'api-generator/generator/code?access_token='+config.getToken().access_token+"&tables="+ obj.data.tableName;
+            window.location.href =  url;
+
+            // var xhr = new XMLHttpRequest();
+            // xhr.open('GET', url, true);
+            // xhr.responseType = "blob";
+            // xhr.setRequestHeader("client_type", "DESKTOP_WEB");
+            // xhr.onload = function() {
+            //     if (this.status == 200) {
+            //         var blob = this.response;
+            //         var objecturl = URL.createObjectURL(blob);
+            //         window.location.href = objecturl;
+            //     }
+            // }
+            // xhr.send();
+
         };
 
 
